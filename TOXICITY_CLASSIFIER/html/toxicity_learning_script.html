@@ -1,0 +1,675 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Importing data from the CSV file</title><meta name="generator" content="MATLAB 8.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-10-29"><meta name="DC.source" content="toxicity_learning_script.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Importing data from the CSV file</h1><!--introduction--><p>penguin = importfile('penguin.17-10-2014-20-10-2014-utf8.csv'); save('penguin.mat');</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Loading data</a></li><li><a href="#2">Data displaying</a></li><li><a href="#3">Continuous prediction</a></li><li><a href="#4">Predictor and output matrix building</a></li><li><a href="#5">Single regression tree</a></li><li><a href="#6">Tree performance on validating and training set : pruning the tree</a></li><li><a href="#7">Discontinuous prediction</a></li><li><a href="#8">Predictor and output matrix building</a></li><li><a href="#9">Single regression tree</a></li><li><a href="#10">Tree performance on validating and training set : pruning the tree</a></li><li><a href="#11">Bootstrapped aggregated  tree</a></li><li><a href="#12">Parallel bootstrapped aggregated  tree</a></li><li><a href="#13">Performance computation</a></li><li><a href="#14">Which leaf size is the best for the tree : once again prune the bagged trees</a></li><li><a href="#15">Feature selection</a></li></ul></div><h2>Loading data<a name="1"></a></h2><pre class="codeinput">load(<span class="string">'penguin.mat'</span>);
+</pre><h2>Data displaying<a name="2"></a></h2><pre class="codeinput">disp(penguin(1:20,:));
+</pre><pre class="codeoutput">          Keyword           KeywordVolume    KeywordCpc    KeywordCompetition
+    ____________________    _____________    __________    __________________
+
+    '"assurance auto"'       1.1e+05         12.53            1              
+    '"assurance auto"'       1.1e+05         12.53            1              
+    '"assurance auto"'       1.1e+05         12.53            1              
+    '"location voiture"'    2.46e+05          4.92         0.98              
+    '"location voiture"'    2.46e+05          4.92         0.98              
+    '"location voiture"'    2.46e+05          4.92         0.98              
+    '"location voiture"'    2.46e+05          4.92         0.98              
+    '"location voiture"'    2.46e+05          4.92         0.98              
+    '"location voiture"'    2.46e+05          4.92         0.98              
+    '"location voiture"'    2.46e+05          4.92         0.98              
+    '"banque en ligne"'        33100         29.92         0.98              
+    '"banque en ligne"'        33100         29.92         0.98              
+    '"banque en ligne"'        33100         29.92         0.98              
+    '"banque en ligne"'        33100         29.92         0.98              
+    '"banque en ligne"'        33100         29.92         0.98              
+    '"banque en ligne"'        33100         29.92         0.98              
+    '"banque en ligne"'        33100         29.92         0.98              
+    '"banque en ligne"'        33100         29.92         0.98              
+    '"banque en ligne"'        33100         29.92         0.98              
+    'poker'                    60500         16.45         0.87              
+
+
+                           Site                           Pr      Alexa   
+    __________________________________________________    __    __________
+
+    'www.auto.amv.fr'                                      4    2.3413e+05
+    'assurance-auto.comprendrechoisir.com'                 4          7123
+    'www.ganassurances.fr'                                 4     4.286e+05
+    'www.fr.lastminute.com'                                6          3382
+    'www.driiveme.com'                                     4    4.6852e+05
+    'www.hibiscuslocation.com'                             2           NaN
+    'www.e-leclerc.com'                                    5         13846
+    'www.jumbocar.com'                                     4    1.4696e+06
+    'location-voiture.voyages.carrefour.fr'                0           NaN
+    'europcar-guadeloupe.com'                              5    3.4055e+06
+    'www.guidebanque.com'                                 -1     8.346e+05
+    'www.banquesenlignecomparatif.fr'                      2    1.5754e+06
+    'co.lm.xr.sa.zq.tb.zb.lt.si.ar.30.french.taggy.cz'    -1         96644
+    'www.banque-en-ligne.info'                             1             0
+    'www.ca-nmp.fr'                                        4         77289
+    'www.lefigaro.fr'                                      8           521
+    'www.cmb.fr'                                           5         19457
+    'www.barclays.fr'                                      4    1.3316e+05
+    'www.bnpparibas.net'                                   6          2422
+    'www.jeux.fr'                                          4          7625
+
+
+     RefPages     RefDomains    CitationFlow    TrustFlow    YesterdayPos
+    __________    __________    ____________    _________    ____________
+
+         11996       19         43              38            25         
+           402       78         37              28            30         
+    1.1316e+05      314         46              48            33         
+    4.7597e+05     1894         44              42            19         
+          1821      164         44              25            25         
+           252       50         28              31            27         
+    1.5921e+06     4444         49              55            29         
+          2939      184         39              29            30         
+         27683        6         29              22            34         
+         38425      121         30              27           112         
+         51734       54         44              34             8         
+         25884       72         47              32            10         
+             0        0          0               0            15         
+            11        6         20              16            18         
+         58530      330         43              45            19         
+     5.705e+06    60623         60              66            30         
+    3.0708e+05      719         46              49            32         
+         23923      567         45              49            33         
+    5.7689e+05     3198         46              39           115         
+         75098     1086         50              57            15         
+
+
+    TodayPos    Change    Change_abs    ExactAnchorsRefDomains
+    ________    ______    __________    ______________________
+
+     32          -7         7                    2            
+     38          -8         8                   20            
+     23          10        10                    3            
+     30         -11        11                 3736            
+     20           5         5                    0            
+     32          -5         5                   68            
+    NaN         NaN       102                10114            
+     17          13        13                    8            
+     25           9         9                    0            
+     21          91        91                    0            
+    NaN         NaN       123                   10            
+    105         -95        95                   10            
+    NaN         NaN       116                    0            
+     36         -18        18                    3            
+     24          -5         5                    0            
+     17          13        13           4.8837e+05            
+     22          10        10                 1141            
+     28           5         5                    1            
+      8         107       107                 5698            
+      9           6         6                    4            
+
+
+    ExactAnchorsRefPages    ContainingAnchorsRefDomains
+    ____________________    ___________________________
+
+           127                       4                 
+            58                      64                 
+           683                       9                 
+    4.7295e+05                    3736                 
+             0                       2                 
+           289                      68                 
+    1.6805e+06                   10114                 
+            33                      29                 
+             0                       0                 
+             0                       7                 
+         37391                      23                 
+          4094                      31                 
+             0                       0                 
+             7                       3                 
+             0                      16                 
+    6.1721e+06              4.8837e+05                 
+    3.7362e+05                    1141                 
+             1                       2                 
+    5.7992e+05                    5698                 
+             9                      23                 
+
+
+    ContainingAnchorsRefPages
+    _________________________
+
+           130               
+           122               
+          1197               
+    4.7295e+05               
+             7               
+           289               
+    1.6805e+06               
+           278               
+             0               
+            20               
+         46531               
+         16474               
+             0               
+             7               
+            84               
+    6.1721e+06               
+    3.7362e+05               
+             2               
+    5.7992e+05               
+            36               
+
+</pre><h2>Continuous prediction<a name="3"></a></h2><h2>Predictor and output matrix building<a name="4"></a></h2><p>predictor matrix</p><pre class="codeinput">X = [penguin.KeywordVolume penguin.KeywordCpc penguin.KeywordCompetition penguin.Pr penguin.Alexa penguin.RefPages penguin.RefDomains penguin.CitationFlow penguin.TrustFlow penguin.YesterdayPos penguin.ExactAnchorsRefDomains penguin.ExactAnchorsRefPages penguin.ContainingAnchorsRefDomains penguin.ContainingAnchorsRefPages];
+<span class="comment">% output vector we try to forecast penguin.TodayPos penguin.Change penguin.Change_abs</span>
+Y = penguin.Change;
+</pre><h2>Single regression tree<a name="5"></a></h2><pre class="codeinput">pt = cvpartition(Y,<span class="string">'holdout'</span>,0.5);
+<span class="comment">%  Extract predictors and responses for both sets</span>
+Y_t = Y(training(pt));
+X_t = X(training(pt),:);
+Y_v = Y(test(pt));
+X_v = X(test(pt),:);
+
+t = classregtree(X_t,Y_t);
+<span class="comment">%  See tree</span>
+view(t)
+</pre><pre class="codeoutput">Warning: Ignoring rows in GROUP with missing values. 
+Warning: The training set does not contain points from all groups. 
+</pre><img vspace="5" hspace="5" src="toxicity_learning_script_01.png" alt=""> <h2>Tree performance on validating and training set : pruning the tree<a name="6"></a></h2><p>How well did the single tree perform on the training set very well but overfit the noise</p><pre class="codeinput">predY = t(X_t);
+disp(<span class="string">'Full tree training set'</span>)
+
+training_residus = predY-Y_t;
+figure;
+hist(training_residus,100)
+title(<span class="string">'Training histogram error'</span>);
+figure;
+plot(1:length(predY),predY,1:length(Y_t),Y_t);
+title(<span class="string">'Training point to point error'</span>);
+
+errpct = abs(training_residus)./Y_t*100;
+MAE = mean(abs(errpct));
+disp(MAE);
+<span class="comment">% Calculate the single tree's predictions on the validating set...</span>
+predY = t(X_v);
+disp(<span class="string">'Full tree validating set'</span>)
+figure;
+plot(1:length(predY),predY,1:length(Y_v),Y_v);
+title(<span class="string">'Validating point to point error'</span>);
+
+validating_residus = predY-Y_v;
+figure;
+hist(validating_residus,100)
+title(<span class="string">'Validating histogram error'</span>);
+
+errpct = abs(validating_residus)./Y_v*100;
+MAE = mean(abs(errpct));
+disp(MAE);
+</pre><pre class="codeoutput">Full tree training set
+   57.4395
+
+Full tree validating set
+  142.7363
+
+</pre><img vspace="5" hspace="5" src="toxicity_learning_script_02.png" alt=""> <img vspace="5" hspace="5" src="toxicity_learning_script_03.png" alt=""> <img vspace="5" hspace="5" src="toxicity_learning_script_04.png" alt=""> <img vspace="5" hspace="5" src="toxicity_learning_script_05.png" alt=""> <h2>Discontinuous prediction<a name="7"></a></h2><h2>Predictor and output matrix building<a name="8"></a></h2><p>predictor matrix</p><pre class="codeinput">X = [penguin.KeywordVolume penguin.KeywordCpc penguin.KeywordCompetition penguin.Pr penguin.Alexa penguin.RefPages penguin.RefDomains penguin.CitationFlow penguin.TrustFlow penguin.YesterdayPos penguin.ExactAnchorsRefDomains penguin.ExactAnchorsRefPages penguin.ContainingAnchorsRefDomains penguin.ContainingAnchorsRefPages];
+<span class="comment">% output vector we try to forecast penguin.TodayPos penguin.Change penguin.Change_abs</span>
+Y = penguin.Change &lt;= -7;
+</pre><h2>Single regression tree<a name="9"></a></h2><pre class="codeinput">pt = cvpartition(Y,<span class="string">'holdout'</span>,0.5);
+<span class="comment">%  Extract predictors and responses for both sets</span>
+Y_t = Y(training(pt));
+X_t = X(training(pt),:);
+Y_v = Y(test(pt));
+X_v = X(test(pt),:);
+
+t = classregtree(X_t,Y_t);
+<span class="comment">%  See tree</span>
+view(t)
+</pre><img vspace="5" hspace="5" src="toxicity_learning_script_06.png" alt=""> <h2>Tree performance on validating and training set : pruning the tree<a name="10"></a></h2><p>How well did the single tree perform on the training set very well but overfit the noise</p><pre class="codeinput">predY = t(X_t);
+disp(<span class="string">'Full tree training set'</span>)
+testErrorRate(predY,Y_t);
+
+<span class="comment">% Calculate the single tree's predictions on the validating set...</span>
+predY = t(X_v);
+disp(<span class="string">'Full tree validating set'</span>)
+testErrorRate(predY,Y_v);
+
+<span class="comment">% % %% Pruning the single tree by estimating the cost on the validating set</span>
+<span class="comment">% % [cost,secost,ntnodes,bestlevel] = test(t, 'test', X_v, Y_v);</span>
+<span class="comment">% % topt = prune(t, 'level', bestlevel);</span>
+<span class="comment">% % view(topt)</span>
+<span class="comment">% %</span>
+<span class="comment">% % % Pruned tree is better on the validating set !</span>
+<span class="comment">% % % does not overfit the noise</span>
+<span class="comment">% % predY = topt(X_v);</span>
+<span class="comment">% % disp('Pruned tree validating set')</span>
+<span class="comment">% % testErrorRate(predY,Y_v );</span>
+</pre><pre class="codeoutput">Full tree training set
+Tree, % Good classified rate on set  : 92.0467
+Full tree validating set
+Tree, % Good classified rate on set  : 69.8767
+</pre><h2>Bootstrapped aggregated  tree<a name="11"></a></h2><pre class="codeinput">nTrees = 50;
+tic;
+b = TreeBagger(nTrees, X_t, Y_t);
+
+<span class="comment">% Prediction on the training set</span>
+[predY,allpred,devs] = predict(b,X_t);
+disp(<span class="string">'Bagged trees training set'</span>)
+testErrorRate(predY,Y_t);
+
+<span class="comment">% Prediction on the validating set</span>
+[predY,allpred,devs] = predict(b,X_v);
+disp(<span class="string">'Bagged trees validating set'</span>)
+testErrorRate(predY,Y_v);
+</pre><pre class="codeoutput">Bagged trees training set
+Tree, % Good classified rate on set  : 98.4287
+Bagged trees validating set
+Tree, % Good classified rate on set  : 74.6071
+</pre><h2>Parallel bootstrapped aggregated  tree<a name="12"></a></h2><pre>crossval, jackknife, bootstrp</pre><pre class="codeinput">nTrees = 50;
+matlabpool <span class="string">open</span> <span class="string">local</span>;
+opt = statset(<span class="string">'UseParallel'</span>,<span class="string">'always'</span>);
+tic;
+b = TreeBagger(nTrees, X, Y, <span class="string">'opt'</span>,opt);
+toc;
+matlabpool <span class="string">close</span>;
+</pre><pre class="codeoutput">Warning: matlabpool will be removed in a future release.
+Use parpool instead. 
+Starting matlabpool using the 'local' profile ... connected to 4 workers.
+Elapsed time is 7.140812 seconds.
+Warning: matlabpool will be removed in a future release.
+To shutdown a parallel pool use 'delete(gcp('nocreate'))' instead. 
+Parallel pool using the 'local' profile is shutting down.
+</pre><h2>Performance computation<a name="13"></a></h2><pre class="codeinput">nb_trees_step =100:100:1000;
+times = zeros(10,2);
+<span class="keyword">for</span> i=1:length(nb_trees_step)
+    <span class="comment">% Sequential computation</span>
+    nTrees = nb_trees_step(i);
+    tic;
+    b = TreeBagger(nTrees, X, Y);
+    times(i,1)=toc;
+    <span class="comment">% Parallel computation</span>
+    opt = statset(<span class="string">'UseParallel'</span>,<span class="string">'always'</span>);
+    matlabpool <span class="string">open</span> <span class="string">local</span>;
+    tic;
+    b = TreeBagger(nTrees, X, Y, <span class="string">'opt'</span>,opt);
+    times(i,2)=toc;
+    matlabpool <span class="string">close</span>;
+<span class="keyword">end</span>
+plot(times);
+legend({<span class="string">'Non Parallel'</span>, <span class="string">'Parallel'</span>})
+xlabel(<span class="string">'number of grown trees'</span>)
+ylabel(<span class="string">'second times for calibration'</span>)
+title(<span class="string">'\bf Calibration time for bagged trees : parallel vs non-parallel'</span>)
+</pre><pre class="codeoutput">Warning: matlabpool will be removed in a future release.
+Use parpool instead. 
+Starting matlabpool using the 'local' profile ... connected to 4 workers.
+Warning: matlabpool will be removed in a future release.
+To shutdown a parallel pool use 'delete(gcp('nocreate'))' instead. 
+Parallel pool using the 'local' profile is shutting down.
+Warning: matlabpool will be removed in a future release.
+Use parpool instead. 
+Starting matlabpool using the 'local' profile ... connected to 4 workers.
+Warning: matlabpool will be removed in a future release.
+To shutdown a parallel pool use 'delete(gcp('nocreate'))' instead. 
+Parallel pool using the 'local' profile is shutting down.
+Warning: matlabpool will be removed in a future release.
+Use parpool instead. 
+Starting matlabpool using the 'local' profile ... connected to 4 workers.
+Warning: matlabpool will be removed in a future release.
+To shutdown a parallel pool use 'delete(gcp('nocreate'))' instead. 
+Parallel pool using the 'local' profile is shutting down.
+Warning: matlabpool will be removed in a future release.
+Use parpool instead. 
+Starting matlabpool using the 'local' profile ... connected to 4 workers.
+Warning: matlabpool will be removed in a future release.
+To shutdown a parallel pool use 'delete(gcp('nocreate'))' instead. 
+Parallel pool using the 'local' profile is shutting down.
+Warning: matlabpool will be removed in a future release.
+Use parpool instead. 
+Starting matlabpool using the 'local' profile ... connected to 4 workers.
+Warning: matlabpool will be removed in a future release.
+To shutdown a parallel pool use 'delete(gcp('nocreate'))' instead. 
+Parallel pool using the 'local' profile is shutting down.
+Warning: matlabpool will be removed in a future release.
+Use parpool instead. 
+Starting matlabpool using the 'local' profile ... connected to 4 workers.
+Warning: matlabpool will be removed in a future release.
+To shutdown a parallel pool use 'delete(gcp('nocreate'))' instead. 
+Parallel pool using the 'local' profile is shutting down.
+Warning: matlabpool will be removed in a future release.
+Use parpool instead. 
+Starting matlabpool using the 'local' profile ... connected to 4 workers.
+Warning: matlabpool will be removed in a future release.
+To shutdown a parallel pool use 'delete(gcp('nocreate'))' instead. 
+Parallel pool using the 'local' profile is shutting down.
+Warning: matlabpool will be removed in a future release.
+Use parpool instead. 
+Starting matlabpool using the 'local' profile ... connected to 4 workers.
+Warning: matlabpool will be removed in a future release.
+To shutdown a parallel pool use 'delete(gcp('nocreate'))' instead. 
+Parallel pool using the 'local' profile is shutting down.
+Warning: matlabpool will be removed in a future release.
+Use parpool instead. 
+Starting matlabpool using the 'local' profile ... connected to 4 workers.
+Warning: matlabpool will be removed in a future release.
+To shutdown a parallel pool use 'delete(gcp('nocreate'))' instead. 
+Parallel pool using the 'local' profile is shutting down.
+Warning: matlabpool will be removed in a future release.
+Use parpool instead. 
+Starting matlabpool using the 'local' profile ... connected to 4 workers.
+Warning: matlabpool will be removed in a future release.
+To shutdown a parallel pool use 'delete(gcp('nocreate'))' instead. 
+Parallel pool using the 'local' profile is shutting down.
+</pre><img vspace="5" hspace="5" src="toxicity_learning_script_07.png" alt=""> <h2>Which leaf size is the best for the tree : once again prune the bagged trees<a name="14"></a></h2><pre class="codeinput">nTrees = 50;
+b = TreeBagger(nTrees, X_t, Y_t, <span class="string">'oobpred'</span>,<span class="string">'on'</span>);
+err=oobError(b);
+plot(err);
+xlabel(<span class="string">'number of grown trees'</span>)
+ylabel(<span class="string">'out-of-bag classification error'</span>)
+
+leaf = [1 5 10];
+nTrees = 25;
+color = <span class="string">'bgr'</span>;
+<span class="keyword">for</span> ii = 1:length(leaf)
+    b = TreeBagger(nTrees,X,Y,<span class="string">'oobpred'</span>,<span class="string">'on'</span>,<span class="string">'cat'</span>,6,<span class="string">'minleaf'</span>,leaf(ii));
+    plot(b.oobError,color(ii));
+    hold <span class="string">on</span>;
+    [percent_training,percent_validating] = validateTreeFitting(X,Y,nTrees,leaf(ii));
+    disp([<span class="string">'% Training set validation rate with leaf size'</span> num2str(leaf(ii)) <span class="string">' : '</span> num2str(percent_training*100)]);
+    disp([<span class="string">'% Validating set validation rate with leaf size'</span> num2str(leaf(ii)) <span class="string">' : '</span> num2str(percent_validating*100)]);
+<span class="keyword">end</span>
+xlabel(<span class="string">'Number of grown trees'</span>);
+ylabel(<span class="string">'Out-of-bag classification error'</span>);
+legend({<span class="string">'1'</span>, <span class="string">'5'</span>, <span class="string">'10'</span>},<span class="string">'Location'</span>,<span class="string">'NorthEast'</span>);
+title(<span class="string">'Classification Error for Different Leaf Sizes'</span>);
+hold <span class="string">off</span>;
+</pre><pre class="codeoutput">Tree, % Good classified rate on training set  : 99.3876
+Tree, % Good classified rate on validating set  : 74.4057
+% Training set validation rate with leaf size1 : 99.3876
+% Validating set validation rate with leaf size1 : 74.4057
+Tree, % Good classified rate on training set  : 96.7687
+Tree, % Good classified rate on validating set  : 75.0584
+% Training set validation rate with leaf size5 : 96.7687
+% Validating set validation rate with leaf size5 : 75.0584
+Tree, % Good classified rate on training set  : 94.4722
+Tree, % Good classified rate on validating set  : 74.6797
+% Training set validation rate with leaf size10 : 94.4722
+% Validating set validation rate with leaf size10 : 74.6797
+</pre><img vspace="5" hspace="5" src="toxicity_learning_script_08.png" alt=""> <h2>Feature selection<a name="15"></a></h2><p>The errors are comparable for the three leaf-size options. We will therefore work with a leaf size of 10, because it results in leaner trees and more efficient computations.</p><p>Note that we did not have to split the data into <i>training</i> and <i>test</i> subsets. This is done internally, it is implicit in the sampling procedure that underlies the method. At each bootstrap iteration, the bootstrap replica is the training set, and any customers left out ("out-of-bag") are used as test points to estimate the out-of-bag classification error reported above.</p><p>Next, we want to find out whether all the features are important for the accuracy of our classifier. We do this by turning on the <i>feature importance</i> measure (<tt>oobvarimp</tt>), and plot the results to visually find the most important features. We also try a larger number of trees now, and store the classification error, for further comparisons below.</p><pre class="codeinput">nTrees = 50;
+leaf = 10;
+b = TreeBagger(nTrees,X,Y,<span class="string">'oobvarimp'</span>,<span class="string">'on'</span>,<span class="string">'cat'</span>,6,<span class="string">'minleaf'</span>,leaf);
+
+bar(b.OOBPermutedVarDeltaError);
+xlabel(<span class="string">'Feature number'</span>);
+ylabel(<span class="string">'Out-of-bag feature importance'</span>);
+title(<span class="string">'Feature importance results'</span>);
+
+oobErrorFullX = b.oobError;
+</pre><img vspace="5" hspace="5" src="toxicity_learning_script_09.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Importing data from the CSV file
+% penguin = importfile('penguin.17-10-2014-20-10-2014-utf8.csv');
+% save('penguin.mat');
+
+%% Loading data
+load('penguin.mat');
+
+%% Data displaying
+disp(penguin(1:20,:));
+
+%% Continuous prediction
+%% Predictor and output matrix building
+% predictor matrix
+X = [penguin.KeywordVolume penguin.KeywordCpc penguin.KeywordCompetition penguin.Pr penguin.Alexa penguin.RefPages penguin.RefDomains penguin.CitationFlow penguin.TrustFlow penguin.YesterdayPos penguin.ExactAnchorsRefDomains penguin.ExactAnchorsRefPages penguin.ContainingAnchorsRefDomains penguin.ContainingAnchorsRefPages];
+% output vector we try to forecast penguin.TodayPos penguin.Change penguin.Change_abs
+Y = penguin.Change;
+
+%% Single regression tree
+pt = cvpartition(Y,'holdout',0.5);
+%  Extract predictors and responses for both sets
+Y_t = Y(training(pt));
+X_t = X(training(pt),:);
+Y_v = Y(test(pt));
+X_v = X(test(pt),:);
+
+t = classregtree(X_t,Y_t);
+%  See tree
+view(t)
+
+%% Tree performance on validating and training set : pruning the tree
+% How well did the single tree perform on the training set
+% very well but overfit the noise
+predY = t(X_t);
+disp('Full tree training set')
+
+training_residus = predY-Y_t;
+figure;
+hist(training_residus,100)
+title('Training histogram error');
+figure;
+plot(1:length(predY),predY,1:length(Y_t),Y_t);
+title('Training point to point error');
+
+errpct = abs(training_residus)./Y_t*100;
+MAE = mean(abs(errpct));
+disp(MAE);
+% Calculate the single tree's predictions on the validating set...
+predY = t(X_v);
+disp('Full tree validating set')
+figure;
+plot(1:length(predY),predY,1:length(Y_v),Y_v);
+title('Validating point to point error');
+
+validating_residus = predY-Y_v;
+figure;
+hist(validating_residus,100)
+title('Validating histogram error');
+
+errpct = abs(validating_residus)./Y_v*100;
+MAE = mean(abs(errpct));
+disp(MAE);
+
+%% Discontinuous prediction
+
+%% Predictor and output matrix building
+% predictor matrix
+X = [penguin.KeywordVolume penguin.KeywordCpc penguin.KeywordCompetition penguin.Pr penguin.Alexa penguin.RefPages penguin.RefDomains penguin.CitationFlow penguin.TrustFlow penguin.YesterdayPos penguin.ExactAnchorsRefDomains penguin.ExactAnchorsRefPages penguin.ContainingAnchorsRefDomains penguin.ContainingAnchorsRefPages];
+% output vector we try to forecast penguin.TodayPos penguin.Change penguin.Change_abs
+Y = penguin.Change <= -7;
+
+%% Single regression tree
+pt = cvpartition(Y,'holdout',0.5);
+%  Extract predictors and responses for both sets
+Y_t = Y(training(pt));
+X_t = X(training(pt),:);
+Y_v = Y(test(pt));
+X_v = X(test(pt),:);
+
+t = classregtree(X_t,Y_t);
+%  See tree
+view(t)
+
+%% Tree performance on validating and training set : pruning the tree
+% How well did the single tree perform on the training set
+% very well but overfit the noise
+predY = t(X_t);
+disp('Full tree training set')
+testErrorRate(predY,Y_t);
+
+% Calculate the single tree's predictions on the validating set...
+predY = t(X_v);
+disp('Full tree validating set')
+testErrorRate(predY,Y_v);
+
+% % %% Pruning the single tree by estimating the cost on the validating set
+% % [cost,secost,ntnodes,bestlevel] = test(t, 'test', X_v, Y_v);
+% % topt = prune(t, 'level', bestlevel);
+% % view(topt)
+% % 
+% % % Pruned tree is better on the validating set !
+% % % does not overfit the noise
+% % predY = topt(X_v);
+% % disp('Pruned tree validating set')
+% % testErrorRate(predY,Y_v );
+
+%% Bootstrapped aggregated  tree
+nTrees = 50;
+tic;
+b = TreeBagger(nTrees, X_t, Y_t);
+
+% Prediction on the training set
+[predY,allpred,devs] = predict(b,X_t);
+disp('Bagged trees training set')
+testErrorRate(predY,Y_t);
+
+% Prediction on the validating set
+[predY,allpred,devs] = predict(b,X_v);
+disp('Bagged trees validating set')
+testErrorRate(predY,Y_v);
+
+%% Parallel bootstrapped aggregated  tree
+%  crossval, jackknife, bootstrp
+nTrees = 50;
+matlabpool open local;
+opt = statset('UseParallel','always');
+tic;
+b = TreeBagger(nTrees, X, Y, 'opt',opt);
+toc;
+matlabpool close;
+
+%% Performance computation
+nb_trees_step =100:100:1000;
+times = zeros(10,2);
+for i=1:length(nb_trees_step)
+    % Sequential computation
+    nTrees = nb_trees_step(i);
+    tic;
+    b = TreeBagger(nTrees, X, Y);
+    times(i,1)=toc;
+    % Parallel computation
+    opt = statset('UseParallel','always');
+    matlabpool open local;
+    tic;
+    b = TreeBagger(nTrees, X, Y, 'opt',opt);
+    times(i,2)=toc;
+    matlabpool close;
+end
+plot(times);
+legend({'Non Parallel', 'Parallel'})
+xlabel('number of grown trees')
+ylabel('second times for calibration')
+title('\bf Calibration time for bagged trees : parallel vs non-parallel')
+
+%% Which leaf size is the best for the tree : once again prune the bagged trees
+nTrees = 50;
+b = TreeBagger(nTrees, X_t, Y_t, 'oobpred','on');
+err=oobError(b);
+plot(err);
+xlabel('number of grown trees')
+ylabel('out-of-bag classification error')
+
+leaf = [1 5 10];
+nTrees = 25;
+color = 'bgr';
+for ii = 1:length(leaf)
+    b = TreeBagger(nTrees,X,Y,'oobpred','on','cat',6,'minleaf',leaf(ii));
+    plot(b.oobError,color(ii));
+    hold on;
+    [percent_training,percent_validating] = validateTreeFitting(X,Y,nTrees,leaf(ii));
+    disp(['% Training set validation rate with leaf size' num2str(leaf(ii)) ' : ' num2str(percent_training*100)]);
+    disp(['% Validating set validation rate with leaf size' num2str(leaf(ii)) ' : ' num2str(percent_validating*100)]);
+end
+xlabel('Number of grown trees');
+ylabel('Out-of-bag classification error');
+legend({'1', '5', '10'},'Location','NorthEast');
+title('Classification Error for Different Leaf Sizes');
+hold off;
+
+
+
+%% Feature selection
+% The errors are comparable for the three leaf-size options. We will
+% therefore work with a leaf size of 10, because it results in leaner trees
+% and more efficient computations.
+%
+% Note that we did not have to split the data into _training_ and _test_
+% subsets. This is done internally, it is implicit in the sampling
+% procedure that underlies the method. At each bootstrap iteration, the
+% bootstrap replica is the training set, and any customers left out
+% ("out-of-bag") are used as test points to estimate the out-of-bag
+% classification error reported above.
+%
+% Next, we want to find out whether all the features are important for the
+% accuracy of our classifier. We do this by turning on the _feature
+% importance_ measure (|oobvarimp|), and plot the results to visually find
+% the most important features. We also try a larger number of trees now,
+% and store the classification error, for further comparisons below.
+
+nTrees = 50;
+leaf = 10;
+b = TreeBagger(nTrees,X,Y,'oobvarimp','on','cat',6,'minleaf',leaf);
+
+bar(b.OOBPermutedVarDeltaError);
+xlabel('Feature number');
+ylabel('Out-of-bag feature importance');
+title('Feature importance results');
+
+oobErrorFullX = b.oobError;
+
+##### SOURCE END #####
+--></body></html>
