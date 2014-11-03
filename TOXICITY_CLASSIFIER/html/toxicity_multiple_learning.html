@@ -66,8 +66,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Machine Learning for links toxicity assessment</h1><!--introduction--><p>Machine learning techniques are often used for financial analysis and decision-making tasks such as accurate forecasting, classification of risk, estimating probabilities of default, and data mining. However, implementing and comparing different machine learning techniques to choose the best approach can be challenging. Machine learning is synonymous with <b>Non-parametric</b> modeling techniques. The term non-parametric is not meant to imply that such models completely lack parameters but that the number and nature of the parameters are flexible and determined from data.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Loading data</a></li><li><a href="#2">Data displaying</a></li><li><a href="#3">Prepare the Data: Response and Predictors</a></li><li><a href="#4">Cross Validation</a></li><li><a href="#5">Tree performance on validating and training set</a></li><li><a href="#6">Speed up Computations using Parallel Computing</a></li><li><a href="#7">Neural Networks</a></li><li><a href="#8">Other Machine Learning Techniques</a></li><li><a href="#9">Generalized Linear Model - Logistic Regression</a></li><li><a href="#10">Discriminant Analysis</a></li><li><a href="#11">Classification Using Nearest Neighbors</a></li><li><a href="#12">Naive Bayes Classification</a></li><li><a href="#13">Support Vector Machines</a></li><li><a href="#14">Decision Trees</a></li><li><a href="#15">Ensemble Learning: TreeBagger</a></li><li><a href="#16">Compare Results</a></li><li><a href="#17">Simplify Model - Optional</a></li><li><a href="#18">Estimating a Good Ensemble Size : learning curve</a></li><li><a href="#19">Estimating Feature Importance</a></li><li><a href="#20">Sequential Feature Selection</a></li><li><a href="#21">TreeBagger with Reduced Feature Set</a></li><li><a href="#22">Compare Results</a></li><li><a href="#23">Shut Down Workers</a></li><li><a href="#24">References</a></li></ul></div><h2>Loading data<a name="1"></a></h2><pre class="codeinput">load(<span class="string">'penguin.mat'</span>);
-</pre><h2>Data displaying<a name="2"></a></h2><pre class="codeinput">disp(penguin(1:20,:));
+  </style></head><body><div class="content"><h1>Machine Learning for links toxicity assessment</h1><!--introduction--><p>Machine learning techniques are often used for financial analysis and decision-making tasks such as accurate forecasting, classification of risk, estimating probabilities of default, and data mining. However, implementing and comparing different machine learning techniques to choose the best approach can be challenging. Machine learning is synonymous with <b>Non-parametric</b> modeling techniques. The term non-parametric is not meant to imply that such models completely lack parameters but that the number and nature of the parameters are flexible and determined from data.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Loading data</a></li><li><a href="#2">Data displaying</a></li><li><a href="#3">Prepare the Data: Response and Predictors</a></li><li><a href="#4">Cross Validation</a></li><li><a href="#5">Tree performance on validating and training set</a></li><li><a href="#6">Neural Networks</a></li><li><a href="#7">Generalized Linear Model - Logistic Regression</a></li><li><a href="#8">Discriminant Analysis</a></li><li><a href="#9">Classification Using Nearest Neighbors</a></li><li><a href="#10">Naive Bayes Classification</a></li><li><a href="#11">Support Vector Machines</a></li><li><a href="#12">Decision Trees</a></li><li><a href="#13">Ensemble Learning: TreeBagger</a></li><li><a href="#14">Compare Results</a></li><li><a href="#15">Simplify Model - Optional</a></li><li><a href="#16">Estimating a Good Ensemble Size : learning curve</a></li><li><a href="#17">Estimating Feature Importance</a></li><li><a href="#18">Sequential Feature Selection</a></li><li><a href="#19">TreeBagger with Reduced Feature Set</a></li><li><a href="#20">Compare Results</a></li><li><a href="#21">Shut Down Workers</a></li></ul></div><h2>Loading data<a name="1"></a></h2><pre class="codeinput">load(<span class="string">'penguin.mat'</span>);
+</pre><h2>Data displaying<a name="2"></a></h2><pre class="codeinput">disp(penguin(1:5,:));
 </pre><pre class="codeoutput">          Keyword           KeywordVolume    KeywordCpc    KeywordCompetition
     ____________________    _____________    __________    __________________
 
@@ -76,152 +76,53 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     '"assurance auto"'       1.1e+05         12.53            1              
     '"location voiture"'    2.46e+05          4.92         0.98              
     '"location voiture"'    2.46e+05          4.92         0.98              
-    '"location voiture"'    2.46e+05          4.92         0.98              
-    '"location voiture"'    2.46e+05          4.92         0.98              
-    '"location voiture"'    2.46e+05          4.92         0.98              
-    '"location voiture"'    2.46e+05          4.92         0.98              
-    '"location voiture"'    2.46e+05          4.92         0.98              
-    '"banque en ligne"'        33100         29.92         0.98              
-    '"banque en ligne"'        33100         29.92         0.98              
-    '"banque en ligne"'        33100         29.92         0.98              
-    '"banque en ligne"'        33100         29.92         0.98              
-    '"banque en ligne"'        33100         29.92         0.98              
-    '"banque en ligne"'        33100         29.92         0.98              
-    '"banque en ligne"'        33100         29.92         0.98              
-    '"banque en ligne"'        33100         29.92         0.98              
-    '"banque en ligne"'        33100         29.92         0.98              
-    'poker'                    60500         16.45         0.87              
 
 
-                           Site                           Pr      Alexa   
-    __________________________________________________    __    __________
+                     Site                     Pr      Alexa        RefPages 
+    ______________________________________    __    __________    __________
 
-    'www.auto.amv.fr'                                      4    2.3413e+05
-    'assurance-auto.comprendrechoisir.com'                 4          7123
-    'www.ganassurances.fr'                                 4     4.286e+05
-    'www.fr.lastminute.com'                                6          3382
-    'www.driiveme.com'                                     4    4.6852e+05
-    'www.hibiscuslocation.com'                             2           NaN
-    'www.e-leclerc.com'                                    5         13846
-    'www.jumbocar.com'                                     4    1.4696e+06
-    'location-voiture.voyages.carrefour.fr'                0           NaN
-    'europcar-guadeloupe.com'                              5    3.4055e+06
-    'www.guidebanque.com'                                 -1     8.346e+05
-    'www.banquesenlignecomparatif.fr'                      2    1.5754e+06
-    'co.lm.xr.sa.zq.tb.zb.lt.si.ar.30.french.taggy.cz'    -1         96644
-    'www.banque-en-ligne.info'                             1             0
-    'www.ca-nmp.fr'                                        4         77289
-    'www.lefigaro.fr'                                      8           521
-    'www.cmb.fr'                                           5         19457
-    'www.barclays.fr'                                      4    1.3316e+05
-    'www.bnpparibas.net'                                   6          2422
-    'www.jeux.fr'                                          4          7625
+    'www.auto.amv.fr'                         4     2.3413e+05         11996
+    'assurance-auto.comprendrechoisir.com'    4           7123           402
+    'www.ganassurances.fr'                    4      4.286e+05    1.1316e+05
+    'www.fr.lastminute.com'                   6           3382    4.7597e+05
+    'www.driiveme.com'                        4     4.6852e+05          1821
 
 
-     RefPages     RefDomains    CitationFlow    TrustFlow    YesterdayPos
-    __________    __________    ____________    _________    ____________
+    RefDomains    CitationFlow    TrustFlow    YesterdayPos    TodayPos
+    __________    ____________    _________    ____________    ________
 
-         11996       19         43              38            25         
-           402       78         37              28            30         
-    1.1316e+05      314         46              48            33         
-    4.7597e+05     1894         44              42            19         
-          1821      164         44              25            25         
-           252       50         28              31            27         
-    1.5921e+06     4444         49              55            29         
-          2939      184         39              29            30         
-         27683        6         29              22            34         
-         38425      121         30              27           112         
-         51734       54         44              34             8         
-         25884       72         47              32            10         
-             0        0          0               0            15         
-            11        6         20              16            18         
-         58530      330         43              45            19         
-     5.705e+06    60623         60              66            30         
-    3.0708e+05      719         46              49            32         
-         23923      567         45              49            33         
-    5.7689e+05     3198         46              39           115         
-         75098     1086         50              57            15         
+      19          43              38           25              32      
+      78          37              28           30              38      
+     314          46              48           33              23      
+    1894          44              42           19              30      
+     164          44              25           25              20      
 
 
-    TodayPos    Change    Change_abs    ExactAnchorsRefDomains
-    ________    ______    __________    ______________________
+    Change    Change_abs    ExactAnchorsRefDomains    ExactAnchorsRefPages
+    ______    __________    ______________________    ____________________
 
-     32          -7         7                    2            
-     38          -8         8                   20            
-     23          10        10                    3            
-     30         -11        11                 3736            
-     20           5         5                    0            
-     32          -5         5                   68            
-    NaN         NaN       102                10114            
-     17          13        13                    8            
-     25           9         9                    0            
-     21          91        91                    0            
-    NaN         NaN       123                   10            
-    105         -95        95                   10            
-    NaN         NaN       116                    0            
-     36         -18        18                    3            
-     24          -5         5                    0            
-     17          13        13           4.8837e+05            
-     22          10        10                 1141            
-     28           5         5                    1            
-      8         107       107                 5698            
-      9           6         6                    4            
+     -7        7               2                             127          
+     -8        8              20                              58          
+     10       10               3                             683          
+    -11       11            3736                      4.7295e+05          
+      5        5               0                               0          
 
 
-    ExactAnchorsRefPages    ContainingAnchorsRefDomains
-    ____________________    ___________________________
+    ContainingAnchorsRefDomains    ContainingAnchorsRefPages
+    ___________________________    _________________________
 
-           127                       4                 
-            58                      64                 
-           683                       9                 
-    4.7295e+05                    3736                 
-             0                       2                 
-           289                      68                 
-    1.6805e+06                   10114                 
-            33                      29                 
-             0                       0                 
-             0                       7                 
-         37391                      23                 
-          4094                      31                 
-             0                       0                 
-             7                       3                 
-             0                      16                 
-    6.1721e+06              4.8837e+05                 
-    3.7362e+05                    1141                 
-             1                       2                 
-    5.7992e+05                    5698                 
-             9                      23                 
-
-
-    ContainingAnchorsRefPages
-    _________________________
-
-           130               
-           122               
-          1197               
-    4.7295e+05               
-             7               
-           289               
-    1.6805e+06               
-           278               
-             0               
-            20               
-         46531               
-         16474               
-             0               
-             7               
-            84               
-    6.1721e+06               
-    3.7362e+05               
-             2               
-    5.7992e+05               
-            36               
+       4                                  130               
+      64                                  122               
+       9                                 1197               
+    3736                           4.7295e+05               
+       2                                    7               
 
 </pre><h2>Prepare the Data: Response and Predictors<a name="3"></a></h2><p>We can segregate the data into response and predictors. This will make it easier to call subsequent functions which expect the data in this format.</p><pre class="codeinput">X = [penguin.KeywordVolume penguin.KeywordCpc penguin.KeywordCompetition penguin.Pr penguin.Alexa penguin.RefPages penguin.RefDomains penguin.CitationFlow penguin.TrustFlow penguin.YesterdayPos penguin.ExactAnchorsRefDomains penguin.ExactAnchorsRefPages penguin.ContainingAnchorsRefDomains penguin.ContainingAnchorsRefPages];
 
 catPred={<span class="string">'KeywordVolume'</span> <span class="string">'KeywordCpc'</span> <span class="string">'KeywordCompetition'</span> <span class="string">'Pr'</span> <span class="string">'Alexa'</span> <span class="string">'RefPages'</span> <span class="string">'RefDomains'</span> <span class="string">'CitationFlow'</span> <span class="string">'TrustFlow'</span> <span class="string">'YesterdayPos'</span> <span class="string">'ExactAnchorsRefDomains'</span> <span class="string">'ExactAnchorsRefPages'</span> <span class="string">'ContainingAnchorsRefDomains'</span> <span class="string">'ContainingAnchorsRefPages'</span>};
 
 <span class="comment">% output vector we try to forecast penguin.TodayPos penguin.Change penguin.Change_abs</span>
+<span class="comment">% this threshold is arbitrary ( a continuous classifier is done in another script )</span>
 Y = double(penguin.Change &lt;= -7);
 
 <span class="comment">% removing rows where some predictors miss data</span>
@@ -260,9 +161,9 @@ predY = t(Xtrain);
 predY = round(predY);
 disp(<span class="string">'Full tree training set'</span>)
 myErrorRate(predY,Ytrain);
-C_nn = confusionmat(categorical(predY),categorical(Ytrain));
+C_tree = confusionmat(categorical(predY),categorical(Ytrain));
 <span class="comment">% Examine the confusion matrix for each class as a percentage of the true class</span>
-C_nn = bsxfun(@rdivide,C_nn,sum(C_nn,2)) * 100 <span class="comment">%#ok&lt;*NOPTS&gt;</span>
+C_tree = bsxfun(@rdivide,C_tree,sum(C_tree,2)) * 100 <span class="comment">%#ok&lt;*NOPTS&gt;</span>
 
 
 <span class="comment">% Calculate the single tree's predictions on the validating set...</span>
@@ -270,29 +171,13 @@ predY = t(Xtest);
 predY = round(predY);
 disp(<span class="string">'Full tree validating set'</span>)
 myErrorRate(predY,Ytest);
-C_nn = confusionmat(categorical(predY),categorical(Ytest));
+C_tree = confusionmat(categorical(predY),categorical(Ytest));
 <span class="comment">% Examine the confusion matrix for each class as a percentage of the true class</span>
-C_nn = bsxfun(@rdivide,C_nn,sum(C_nn,2)) * 100 <span class="comment">%#ok&lt;*NOPTS&gt;</span>
-
-
-<span class="comment">% %%</span>
-<span class="comment">%</span>
-<span class="comment">%</span>
-<span class="comment">% %% Prepare Predictors/Response for Neural Networks</span>
-<span class="comment">% % When using neural networks the appropriate way to include categorical</span>
-<span class="comment">% % predictors is as dummy indicator variables. An indicator variable has</span>
-<span class="comment">% % values 0 and 1.</span>
-<span class="comment">%</span>
-<span class="comment">% %[XtrainNN, YtrainNN, XtestNN, YtestNN] = preparedataNN(Y, X, cv);</span>
-<span class="comment">% XtrainNN = X(training(cv),:);</span>
-<span class="comment">% YtrainNN = Y(training(cv),:);</span>
-<span class="comment">% % Test set</span>
-<span class="comment">% XtestNN = X(test(cv),:);</span>
-<span class="comment">% YtestNN = Y(test(cv),:);</span>
+C_tree = bsxfun(@rdivide,C_tree,sum(C_tree,2)) * 100 <span class="comment">%#ok&lt;*NOPTS&gt;</span>
 </pre><pre class="codeoutput">Full tree training set
 Tree, % Good classified rate on set  : 92.5327
 
-C_nn =
+C_tree =
 
    95.7398    4.2602
    14.8822   85.1178
@@ -300,18 +185,15 @@ C_nn =
 Full tree validating set
 Tree, % Good classified rate on set  : 66.4161
 
-C_nn =
+C_tree =
 
    77.7405   22.2595
    58.4204   41.5796
 
-</pre><img vspace="5" hspace="5" src="toxicity_multiple_learning_01.png" alt=""> <h2>Speed up Computations using Parallel Computing<a name="6"></a></h2><p>If Parallel Computing Toolbox is available, the computation will be distributed to 2 workers for speeding up the evaluation.</p><pre class="codeinput"><span class="comment">% if matlabpool('size') == 0</span>
-<span class="comment">%     matlabpool open 2</span>
-<span class="comment">% end</span>
-</pre><h2>Neural Networks<a name="7"></a></h2><p>Neural Network Toolbox supports supervised learning with feedforward, radial basis, and dynamic networks. It supports both classification and regression algorithms. It also supports unsupervised learning with self-organizing maps and competitive layers.</p><p>One can make use of the interactive tools to setup, train and validate a neural network. It is then possible to auto-generate the code for the purpose of automation. In this example, the auto-generated code has been updated to utilize a pool of workers, if available. This is achieved by simply setting the <i>useParallel</i> flag while making a call to <tt>train</tt>.</p><pre class="language-matlab">[net,~] = train(net,inputs,targets,<span class="string">'useParallel'</span>,<span class="string">'yes'</span>);
+</pre><img vspace="5" hspace="5" src="toxicity_multiple_learning_01.png" alt=""> <h2>Neural Networks<a name="6"></a></h2><p>Neural Network Toolbox supports supervised learning with feedforward, radial basis, and dynamic networks. It supports both classification and regression algorithms. It also supports unsupervised learning with self-organizing maps and competitive layers.</p><p>One can make use of the interactive tools to setup, train and validate a neural network. It is then possible to auto-generate the code for the purpose of automation. In this example, the auto-generated code has been updated to utilize a pool of workers, if available. This is achieved by simply setting the <i>useParallel</i> flag while making a call to <tt>train</tt>.</p><pre class="language-matlab">[net,~] = train(net,inputs,targets,<span class="string">'useParallel'</span>,<span class="string">'yes'</span>);
 </pre><p>If a GPU is available, it may be utilized by setting the <i>useGPU</i> flag.</p><p>The trained network is used to make a prediction on the test data and confusion matrix is generated for comparison with other techniques.</p><pre class="codeinput"><span class="comment">% Use modified autogenerated code to train the network</span>
 [~, net] = NNfun(Xtrain,Ytrain);
-
+view(net);
 <span class="comment">% Make a prediction for the test set</span>
 Y_nn = net(Xtest');
 Y_nn = round(Y_nn');
@@ -327,7 +209,7 @@ C_nn =
    99.9154    0.0846
    99.9572    0.0428
 
-</pre><h2>Other Machine Learning Techniques<a name="8"></a></h2><p>Statistics Toolbox features a number of supervised and unsupervised machine learning techniques. It supports both classification and regression algorithms. The supervised learning techniques range from non-linear regression, generalized linear regression, discriminant analysis, SVMs to decision trees and ensemble methods.</p><p>In this example, we make use of some of these techniques to perform predictive modeling. Observe that once the data has been prepared, the syntax to utilize the different modeling techniques is very similar. Most of these techniques can handle categorical predictors. The user can conveniently supply information about different parameters associated with the different algorithms.</p><h2>Generalized Linear Model - Logistic Regression<a name="9"></a></h2><p>In this example, a logistic regression model is leveraged. Response may follow normal, binomial, Poisson, gamma, or inverse Gaussian distribution.</p><p>Since the response in this data set is binary, binomial distribution is suitable.</p><pre class="codeinput"><span class="comment">% Train the classifier</span>
+</pre><img vspace="5" hspace="5" src="toxicity_multiple_learning_02.png" alt=""> <h2>Generalized Linear Model - Logistic Regression<a name="7"></a></h2><p>In this example, a logistic regression model is leveraged. Response may follow normal, binomial, Poisson, gamma, or inverse Gaussian distribution.</p><p>Since the response in this data set is binary, binomial distribution is suitable.</p><pre class="codeinput"><span class="comment">% Train the classifier</span>
 glm = GeneralizedLinearModel.fit(Xtrain,Ytrain,<span class="string">'linear'</span>,<span class="string">'Distribution'</span>,<span class="string">'binomial'</span>,<span class="string">'link'</span>,<span class="string">'logit'</span>);
 
 <span class="comment">% Make a prediction for the test set</span>
@@ -344,7 +226,7 @@ C_glm =
    92.9816    7.0184
    87.2805   12.7195
 
-</pre><h2>Discriminant Analysis<a name="10"></a></h2><p>Discriminant analysis is a classification method. It assumes that different classes generate data based on different Gaussian distributions. Linear discriminant analysis is also known as the Fisher discriminant.</p><p>Here, a quadratic discriminant classifier is used.</p><pre class="codeinput"><span class="comment">% Train the classifier</span>
+</pre><h2>Discriminant Analysis<a name="8"></a></h2><p>Discriminant analysis is a classification method. It assumes that different classes generate data based on different Gaussian distributions. Linear discriminant analysis is also known as the Fisher discriminant.</p><p>Here, a quadratic discriminant classifier is used.</p><pre class="codeinput"><span class="comment">% Train the classifier</span>
 da = ClassificationDiscriminant.fit(Xtrain,Ytrain,<span class="string">'discrimType'</span>,<span class="string">'quadratic'</span>);
 
 <span class="comment">% Make a prediction for the test set</span>
@@ -360,7 +242,7 @@ C_da =
    82.9866   17.0134
    71.0064   28.9936
 
-</pre><h2>Classification Using Nearest Neighbors<a name="11"></a></h2><p>Categorizing query points based on their distance to points in a training dataset can be a simple yet effective way of classifying new points. Various distance metrics such as euclidean, correlation, hamming, mahalonobis or your own distance metric may be used.</p><pre class="codeinput"><span class="comment">% Train the classifier</span>
+</pre><h2>Classification Using Nearest Neighbors<a name="9"></a></h2><p>Categorizing query points based on their distance to points in a training dataset can be a simple yet effective way of classifying new points. Various distance metrics such as euclidean, correlation, hamming, mahalonobis or your own distance metric may be used.</p><pre class="codeinput"><span class="comment">% Train the classifier</span>
 knn = ClassificationKNN.fit(Xtrain,Ytrain,<span class="string">'Distance'</span>,<span class="string">'seuclidean'</span>);
 
 <span class="comment">% Make a prediction for the test set</span>
@@ -376,7 +258,7 @@ C_knn =
    76.2388   23.7612
    58.2441   41.7559
 
-</pre><h2>Naive Bayes Classification<a name="12"></a></h2><p>Naive Bayes classification is based on estimating P(X|Y), the probability or probability density of features X given class Y. The Naive Bayes classification object provides support for normal (Gaussian), kernel, multinomial, and multivariate multinomial distributions</p><pre class="codeinput"><span class="comment">% The multivariate multinomial distribution (_mvmn_) is appropriate for</span>
+</pre><h2>Naive Bayes Classification<a name="10"></a></h2><p>Naive Bayes classification is based on estimating P(X|Y), the probability or probability density of features X given class Y. The Naive Bayes classification object provides support for normal (Gaussian), kernel, multinomial, and multivariate multinomial distributions</p><pre class="codeinput"><span class="comment">% The multivariate multinomial distribution (_mvmn_) is appropriate for</span>
 <span class="comment">% categorical features</span>
 <span class="comment">% Train the classifier</span>
 Nb = NaiveBayes.fit(Xtrain,Ytrain);
@@ -394,7 +276,7 @@ C_nb =
    67.7829   32.2171
    47.4090   52.5910
 
-</pre><h2>Support Vector Machines<a name="13"></a></h2><p>Support vector machine (SVM) is supported for binary response variables. An SVM classifies data by finding the best hyperplane that separates all data points of one class from those of the other class.</p><pre class="codeinput">opts = statset(<span class="string">'MaxIter'</span>,30000);
+</pre><h2>Support Vector Machines<a name="11"></a></h2><p>Support vector machine (SVM) is supported for binary response variables. An SVM classifies data by finding the best hyperplane that separates all data points of one class from those of the other class.</p><pre class="codeinput">opts = statset(<span class="string">'MaxIter'</span>,30000);
 <span class="comment">% Train the classifier</span>
 svmStruct = svmtrain(Xtrain,Ytrain,<span class="string">'kernel_function'</span>,<span class="string">'rbf'</span>,<span class="string">'kktviolationlevel'</span>,0.1,<span class="string">'options'</span>,opts);
 
@@ -409,7 +291,7 @@ C_svm =
    49.3996   50.6004
    15.0749   84.9251
 
-</pre><h2>Decision Trees<a name="14"></a></h2><p>Classification trees and regression trees are two kinds of decision trees. A decision tree is a flow-chart like structure in which internal node represents test on an attribute, each branch represents outcome of test and each leaf node represents a response (decision taken after computing all attributes). Classification trees give responses that are nominal, such as 'true' or 'false'. Regression trees give numeric responses.</p><pre class="codeinput">tic
+</pre><h2>Decision Trees<a name="12"></a></h2><p>Classification trees and regression trees are two kinds of decision trees. A decision tree is a flow-chart like structure in which internal node represents test on an attribute, each branch represents outcome of test and each leaf node represents a response (decision taken after computing all attributes). Classification trees give responses that are nominal, such as 'true' or 'false'. Regression trees give numeric responses.</p><pre class="codeinput">tic
 <span class="comment">% Train the classifier</span>
 t = ClassificationTree.fit(Xtrain,Ytrain);
 toc
@@ -421,14 +303,14 @@ Y_t = t.predict(Xtest);
 C_t = confusionmat(categorical(Ytest),categorical(Y_t));
 <span class="comment">% Examine the confusion matrix for each class as a percentage of the true class</span>
 C_t = bsxfun(@rdivide,C_t,sum(C_t,2)) * 100
-</pre><pre class="codeoutput">Elapsed time is 0.728703 seconds.
+</pre><pre class="codeoutput">Elapsed time is 0.528950 seconds.
 
 C_t =
 
    76.6109   23.3891
    57.5589   42.4411
 
-</pre><h2>Ensemble Learning: TreeBagger<a name="15"></a></h2><p>Bagging stands for bootstrap aggregation. Every tree in the ensemble is grown on an independently drawn sample of input data. To compute prediction for the ensemble of trees, TreeBagger takes an average of predictions from individual trees (for regression) or takes votes from individual trees (for classification). Ensemble techniques such as bagging combine many weak learners to produce a strong learner.</p><p>From a marketing perspective, as we are creating this predictive model, it may be more important for us to classify <b><i>yes</i></b> correctly than a <b><i>no</i></b>. If that is the case, we can include our opinion using the <i>cost</i> matrix. Here, <i>cost</i> matrix specifies that it is 5 times more costly to classify a <b><i>yes</i></b> as a <b><i>no</i></b>.</p><pre class="codeinput"><span class="comment">% Cost of misclassification</span>
+</pre><h2>Ensemble Learning: TreeBagger<a name="13"></a></h2><p>Bagging stands for bootstrap aggregation. Every tree in the ensemble is grown on an independently drawn sample of input data. To compute prediction for the ensemble of trees, TreeBagger takes an average of predictions from individual trees (for regression) or takes votes from individual trees (for classification). Ensemble techniques such as bagging combine many weak learners to produce a strong learner.</p><p>From a marketing perspective, as we are creating this predictive model, it may be more important for us to classify <b><i>yes</i></b> correctly than a <b><i>no</i></b>. If that is the case, we can include our opinion using the <i>cost</i> matrix. Here, <i>cost</i> matrix specifies that it is 5 times more costly to classify a <b><i>yes</i></b> as a <b><i>no</i></b>.</p><pre class="codeinput"><span class="comment">% Cost of misclassification</span>
 cost = [0 1
         5 0];
 <span class="comment">%opts = statset('UseParallel',true);</span>
@@ -449,16 +331,16 @@ C_tb =
    57.2637   42.7363
    21.3704   78.6296
 
-</pre><h2>Compare Results<a name="16"></a></h2><p>This visualization function is making use of a couple files downloaded from <a href="http://www.mathworks.com/matlabcentral/">MATLAB Central</a>, the user community websibte. We are leveraging social computing along the way to help us in our effort.</p><pre class="codeinput">Cmat = [C_nn C_glm C_da C_knn C_nb C_svm C_t C_tb];
+</pre><h2>Compare Results<a name="14"></a></h2><p>This visualization function is making use of a couple files downloaded from <a href="http://www.mathworks.com/matlabcentral/">MATLAB Central</a>, the user community websibte. We are leveraging social computing along the way to help us in our effort.</p><pre class="codeinput">Cmat = [C_nn C_glm C_da C_knn C_nb C_svm C_t C_tb];
 labels = {<span class="string">'Neural Net '</span>, <span class="string">'Logistic Regression '</span>, <span class="string">'Discriminant Analysis '</span>,<span class="keyword">...</span>
     <span class="string">'k-nearest Neighbors '</span>, <span class="string">'Naive Bayes '</span>, <span class="string">'Support VM '</span>, <span class="string">'Decision Trees '</span>, <span class="string">'TreeBagger '</span>};
 
 comparisonPlot( Cmat, labels )
-</pre><img vspace="5" hspace="5" src="toxicity_multiple_learning_02.png" alt=""> <h2>Simplify Model - Optional<a name="17"></a></h2><p>One may choose to examine the models further. One may even be able to improve the performance of the models. It is also possible to estimate importance of the different features, reduce the dimensionality of feature set etc.</p><h2>Estimating a Good Ensemble Size : learning curve<a name="18"></a></h2><p>Examining the out-of-bag error may give an insight into determining a good ensemble size.</p><pre class="codeinput">figure;
+</pre><img vspace="5" hspace="5" src="toxicity_multiple_learning_03.png" alt=""> <h2>Simplify Model - Optional<a name="15"></a></h2><p>One may choose to examine the models further. One may even be able to improve the performance of the models. It is also possible to estimate importance of the different features, reduce the dimensionality of feature set etc.</p><h2>Estimating a Good Ensemble Size : learning curve<a name="16"></a></h2><p>Examining the out-of-bag error may give an insight into determining a good ensemble size.</p><pre class="codeinput">figure;
 plot(oobError(tb));
 xlabel(<span class="string">'Number of Grown Trees'</span>);
 ylabel(<span class="string">'Out-of-Bag Classification Error/Misclassification Probability'</span>);
-</pre><img vspace="5" hspace="5" src="toxicity_multiple_learning_03.png" alt=""> <h2>Estimating Feature Importance<a name="19"></a></h2><p>Feature importance measures the increase in prediction error if the values of that variable are permuted across the out-of-bag observations. This measure is computed for every tree, then averaged over the entire ensemble and divided by the standard deviation over the entire ensemble.</p><pre class="codeinput">figure;
+</pre><img vspace="5" hspace="5" src="toxicity_multiple_learning_04.png" alt=""> <h2>Estimating Feature Importance<a name="17"></a></h2><p>Feature importance measures the increase in prediction error if the values of that variable are permuted across the out-of-bag observations. This measure is computed for every tree, then averaged over the entire ensemble and divided by the standard deviation over the entire ensemble.</p><pre class="codeinput">figure;
 bar(tb.OOBPermutedVarDeltaError);
 ylabel(<span class="string">'Out-Of-Bag Feature Importance'</span>);
 set(gca,<span class="string">'XTick'</span>,1:16)
@@ -468,7 +350,8 @@ set(gca,<span class="string">'XTick'</span>,1:16)
 <span class="comment">% Use file submitted from a user at MATLAB Central to rotate labels</span>
 <span class="comment">%rotateXLabels( gca, 60 )</span>
 [~,idxvarimp] = sort(tb.OOBPermutedVarDeltaError, <span class="string">'descend'</span>);
-</pre><img vspace="5" hspace="5" src="toxicity_multiple_learning_04.png" alt=""> <h2>Sequential Feature Selection<a name="20"></a></h2><p>Feature selection reduces the dimensionality of data by selecting only a subset of measured features (predictor variables) to create a model. Selection criteria involves the minimization of a specific measure of predictive error for models fit to different subsets.</p><p>Sequential feature selection can be computationally intensive. It can benefit significantly from parallel computing.</p><pre class="codeinput">opts = statset(<span class="string">'UseParallel'</span>,true);
+</pre><img vspace="5" hspace="5" src="toxicity_multiple_learning_05.png" alt=""> <h2>Sequential Feature Selection<a name="18"></a></h2><p>Feature selection reduces the dimensionality of data by selecting only a subset of measured features (predictor variables) to create a model. Selection criteria involves the minimization of a specific measure of predictive error for models fit to different subsets.</p><p>Sequential feature selection can be computationally intensive. It can benefit significantly from parallel computing.</p><pre class="codeinput">opts = statset(<span class="string">'display'</span>,<span class="string">'iter'</span>);
+opts = statset(opts,<span class="string">'UseParallel'</span>,true);
 critfun = @(Xtr,Ytr,Xte,Yte)featureImp(Xtr,Ytr,Xte,Yte,<span class="string">'TreeBagger'</span>);
 <span class="comment">% The top 5 features determined in the previous step have been included,</span>
 <span class="comment">% to reduce the number of combinations to be tried by sequentialfs*</span>
@@ -476,20 +359,40 @@ critfun = @(Xtr,Ytr,Xte,Yte)featureImp(Xtr,Ytr,Xte,Yte,<span class="string">'Tre
 <span class="comment">%[fs,history] = sequentialfs(critfun,Xtrain,Ytrain,'options',opts,'keepin',idxvarimp(1:5));</span>
 <span class="comment">%</span>
 [fs,history] = sequentialfs(critfun,Xtrain,Ytrain,<span class="string">'options'</span>,opts,<span class="string">'keepin'</span>,idxvarimp(1:5));
+[fs,history] = sequentialfs(critfun,Xtrain,Ytrain,<span class="string">'options'</span>,opts,<span class="string">'keepin'</span>,idxvarimp(1:5));
 disp(<span class="string">'Included features:'</span>);
 disp(catPred(fs)');
-</pre><pre class="codeoutput">Included features:
+disp([<span class="string">'Percentage of predictors kept : '</span> num2str(sum(fs)./length(fs)*100) <span class="string">'%'</span>]);
+</pre><pre class="codeoutput">Start forward sequential feature selection:
+Initial columns included:  2 3 10 11 13 
+Columns that can not be included:  none
+Step 1, used initial columns, criterion value 0.000566851
+Step 2, added column 5, criterion value 0.000538041
+Step 3, added column 7, criterion value 0.00052648
+Step 4, added column 9, criterion value 0.000520938
+Final columns included:  2 3 5 7 9 10 11 13 
+Start forward sequential feature selection:
+Initial columns included:  2 3 10 11 13 
+Columns that can not be included:  none
+Step 1, used initial columns, criterion value 0.000556259
+Step 2, added column 5, criterion value 0.000543932
+Step 3, added column 7, criterion value 0.000530116
+Step 4, added column 12, criterion value 0.000521046
+Step 5, added column 14, criterion value 0.000519754
+Final columns included:  2 3 5 7 10 11 12 13 14 
+Included features:
     'KeywordCpc'
     'KeywordCompetition'
     'Alexa'
-    'RefPages'
-    'CitationFlow'
+    'RefDomains'
     'YesterdayPos'
     'ExactAnchorsRefDomains'
+    'ExactAnchorsRefPages'
     'ContainingAnchorsRefDomains'
     'ContainingAnchorsRefPages'
 
-</pre><h2>TreeBagger with Reduced Feature Set<a name="21"></a></h2><pre class="codeinput">opts = statset(<span class="string">'UseParallel'</span>,true);
+Percentage of predictors kept : 64.2857%
+</pre><h2>TreeBagger with Reduced Feature Set<a name="19"></a></h2><pre class="codeinput">opts = statset(<span class="string">'UseParallel'</span>,true);
 tb_r = TreeBagger(120, Xtrain(:,fs),Ytrain,<span class="string">'method'</span>,<span class="string">'classification'</span>,<span class="string">'PredictorNames'</span>,catPred(:,fs),<span class="string">'Options'</span>,opts,<span class="string">'cost'</span>,cost);
 [Y_tb_r, classifScore] = tb_r.predict(Xtest(:,fs));
 Y_tb_r=double(categorical(Y_tb_r))-1;
@@ -498,15 +401,15 @@ C_tb_r = bsxfun(@rdivide,C_tb_r,sum(C_tb_r,2)) * 100
 </pre><pre class="codeoutput">
 C_tb_r =
 
-   56.6548   43.3452
-   21.9700   78.0300
+   56.5872   43.4128
+   22.8266   77.1734
 
-</pre><h2>Compare Results<a name="22"></a></h2><pre class="codeinput">Cmat = [C_nn C_glm C_da C_knn C_nb C_svm C_t C_tb C_tb_r];
+</pre><h2>Compare Results<a name="20"></a></h2><pre class="codeinput">Cmat = [C_nn C_glm C_da C_knn C_nb C_svm C_t C_tb C_tb_r];
 labels = {<span class="string">'Neural Net '</span>, <span class="string">'Logistic Regression '</span>, <span class="string">'Discriminant Analysis '</span>,<span class="keyword">...</span>
     <span class="string">'k-nearest Neighbors '</span>, <span class="string">'Naive Bayes '</span>, <span class="string">'Support VM '</span>, <span class="string">'Decision Trees '</span>, <span class="string">'TreeBagger '</span>, <span class="string">'Reduced TB '</span>};
 
 comparisonPlot( Cmat, labels )
-</pre><img vspace="5" hspace="5" src="toxicity_multiple_learning_05.png" alt=""> <h2>Shut Down Workers<a name="23"></a></h2><p>Release the workers if there is no more work for them</p><pre class="codeinput"><span class="keyword">if</span> matlabpool(<span class="string">'size'</span>) &gt; 0
+</pre><img vspace="5" hspace="5" src="toxicity_multiple_learning_06.png" alt=""> <h2>Shut Down Workers<a name="21"></a></h2><p>Release the workers if there is no more work for them</p><pre class="codeinput"><span class="keyword">if</span> matlabpool(<span class="string">'size'</span>) &gt; 0
     matlabpool <span class="string">close</span>
 <span class="keyword">end</span>
 </pre><pre class="codeoutput">Warning: matlabpool will be removed in a future release.
@@ -516,7 +419,7 @@ To check if a pool is already started use 'isempty(gcp('nocreate'))'.
 Warning: matlabpool will be removed in a future release.
 To shutdown a parallel pool use 'delete(gcp('nocreate'))' instead. 
 Parallel pool using the 'local' profile is shutting down.
-</pre><h2>References<a name="24"></a></h2><div><ol><li>[Moro et al., 2011] S. Moro, R. Laureano and P. Cortez. Using Data Mining for Bank Direct Marketing: An Application of the CRISP-DM Methodology.   In P. Novais et al. (Eds.), Proceedings of the European Simulation and Modelling Conference - ESM'2011, pp. 117-121, Guimar&Atilde;&pound;es, Portugal, October, 2011. EUROSIS.</li></ol></div><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a><br></p></div><!--
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Machine Learning for links toxicity assessment
 % Machine learning techniques are often used for financial analysis and
@@ -533,7 +436,7 @@ Parallel pool using the 'local' profile is shutting down.
 load('penguin.mat');
 
 %% Data displaying
-disp(penguin(1:20,:));
+disp(penguin(1:5,:));
 
 
 %% Prepare the Data: Response and Predictors
@@ -545,6 +448,7 @@ X = [penguin.KeywordVolume penguin.KeywordCpc penguin.KeywordCompetition penguin
 catPred={'KeywordVolume' 'KeywordCpc' 'KeywordCompetition' 'Pr' 'Alexa' 'RefPages' 'RefDomains' 'CitationFlow' 'TrustFlow' 'YesterdayPos' 'ExactAnchorsRefDomains' 'ExactAnchorsRefPages' 'ContainingAnchorsRefDomains' 'ContainingAnchorsRefPages'};
 
 % output vector we try to forecast penguin.TodayPos penguin.Change penguin.Change_abs
+% this threshold is arbitrary ( a continuous classifier is done in another script )
 Y = double(penguin.Change <= -7);
 
 % removing rows where some predictors miss data
@@ -593,9 +497,9 @@ predY = t(Xtrain);
 predY = round(predY);
 disp('Full tree training set')
 myErrorRate(predY,Ytrain);
-C_nn = confusionmat(categorical(predY),categorical(Ytrain));
+C_tree = confusionmat(categorical(predY),categorical(Ytrain));
 % Examine the confusion matrix for each class as a percentage of the true class
-C_nn = bsxfun(@rdivide,C_nn,sum(C_nn,2)) * 100 %#ok<*NOPTS>
+C_tree = bsxfun(@rdivide,C_tree,sum(C_tree,2)) * 100 %#ok<*NOPTS>
 
 
 % Calculate the single tree's predictions on the validating set...
@@ -603,34 +507,10 @@ predY = t(Xtest);
 predY = round(predY);
 disp('Full tree validating set')
 myErrorRate(predY,Ytest);
-C_nn = confusionmat(categorical(predY),categorical(Ytest));
+C_tree = confusionmat(categorical(predY),categorical(Ytest));
 % Examine the confusion matrix for each class as a percentage of the true class
-C_nn = bsxfun(@rdivide,C_nn,sum(C_nn,2)) * 100 %#ok<*NOPTS>
+C_tree = bsxfun(@rdivide,C_tree,sum(C_tree,2)) * 100 %#ok<*NOPTS>
 
-
-% %%
-% 
-% 
-% %% Prepare Predictors/Response for Neural Networks
-% % When using neural networks the appropriate way to include categorical
-% % predictors is as dummy indicator variables. An indicator variable has
-% % values 0 and 1.
-% 
-% %[XtrainNN, YtrainNN, XtestNN, YtestNN] = preparedataNN(Y, X, cv);
-% XtrainNN = X(training(cv),:);
-% YtrainNN = Y(training(cv),:);
-% % Test set
-% XtestNN = X(test(cv),:);
-% YtestNN = Y(test(cv),:);
-
-
-%% Speed up Computations using Parallel Computing
-% If Parallel Computing Toolbox is available, the computation will be
-% distributed to 2 workers for speeding up the evaluation.
-
-% if matlabpool('size') == 0 
-%     matlabpool open 2
-% end
 
 %% Neural Networks
 % Neural Network Toolbox supports supervised learning with feedforward,
@@ -653,7 +533,7 @@ C_nn = bsxfun(@rdivide,C_nn,sum(C_nn,2)) * 100 %#ok<*NOPTS>
 
 % Use modified autogenerated code to train the network
 [~, net] = NNfun(Xtrain,Ytrain);
-
+view(net);
 % Make a prediction for the test set
 Y_nn = net(Xtest');
 Y_nn = round(Y_nn');
@@ -662,20 +542,6 @@ Y_nn = round(Y_nn');
 C_nn = confusionmat(categorical(Ytest),categorical(Y_nn));
 % Examine the confusion matrix for each class as a percentage of the true class
 C_nn = bsxfun(@rdivide,C_nn,sum(C_nn,2)) * 100 %#ok<*NOPTS>
-
-%% Other Machine Learning Techniques
-% Statistics Toolbox features a number of supervised and unsupervised
-% machine learning techniques. It supports both classification and
-% regression algorithms. The supervised learning techniques range from
-% non-linear regression, generalized linear regression, discriminant
-% analysis, SVMs to decision trees and ensemble methods.
-% 
-% In this example, we make use of some of these techniques to perform
-% predictive modeling. Observe that once the data has been prepared, the
-% syntax to utilize the different modeling techniques is very similar. Most
-% of these techniques can handle categorical predictors. The user can
-% conveniently supply information about different parameters associated
-% with the different algorithms.
 
 %% Generalized Linear Model - Logistic Regression
 % In this example, a logistic regression model is leveraged. Response may
@@ -871,8 +737,8 @@ set(gca,'XTick',1:16)
 % 
 % Sequential feature selection can be computationally intensive. It can
 % benefit significantly from parallel computing.
-
-opts = statset('UseParallel',true);
+opts = statset('display','iter');
+opts = statset(opts,'UseParallel',true);
 critfun = @(Xtr,Ytr,Xte,Yte)featureImp(Xtr,Ytr,Xte,Yte,'TreeBagger');
 % The top 5 features determined in the previous step have been included,
 % to reduce the number of combinations to be tried by sequentialfs*
@@ -880,8 +746,11 @@ critfun = @(Xtr,Ytr,Xte,Yte)featureImp(Xtr,Ytr,Xte,Yte,'TreeBagger');
 %[fs,history] = sequentialfs(critfun,Xtrain,Ytrain,'options',opts,'keepin',idxvarimp(1:5));
 %
 [fs,history] = sequentialfs(critfun,Xtrain,Ytrain,'options',opts,'keepin',idxvarimp(1:5));
+[fs,history] = sequentialfs(critfun,Xtrain,Ytrain,'options',opts,'keepin',idxvarimp(1:5));
 disp('Included features:');
 disp(catPred(fs)');
+disp(['Percentage of predictors kept : ' num2str(sum(fs)./length(fs)*100) '%']);
+
 
 %% TreeBagger with Reduced Feature Set
 
@@ -907,9 +776,6 @@ comparisonPlot( Cmat, labels )
 if matlabpool('size') > 0
     matlabpool close
 end
-%% References
-% # [Moro et al., 2011] S. Moro, R. Laureano and P. Cortez. Using Data Mining for Bank Direct Marketing: An Application of the CRISP-DM Methodology. 
-%   In P. Novais et al. (Eds.), Proceedings of the European Simulation and Modelling Conference - ESM'2011, pp. 117-121, GuimarÃ£es, Portugal, October, 2011. EUROSIS.
 
 ##### SOURCE END #####
 --></body></html>

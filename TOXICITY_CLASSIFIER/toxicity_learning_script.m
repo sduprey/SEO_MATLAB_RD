@@ -92,15 +92,6 @@ predY = t(X_v);
 disp('Full tree validating set')
 testErrorRate(predY,Y_v);
 
-% % %% Pruning the single tree by estimating the cost on the validating set
-% % [cost,secost,ntnodes,bestlevel] = test(t, 'test', X_v, Y_v);
-% % topt = prune(t, 'level', bestlevel);
-% % view(topt)
-% % 
-% % % Pruned tree is better on the validating set !
-% % % does not overfit the noise
-% % predY = topt(X_v);
-% % disp('Pruned tree validating set')
 % % testErrorRate(predY,Y_v );
 
 %% Bootstrapped aggregated  tree
