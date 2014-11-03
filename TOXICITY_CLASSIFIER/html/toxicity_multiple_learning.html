@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Machine Learning for links toxicity assessment</title><meta name="generator" content="MATLAB 8.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-10-31"><meta name="DC.source" content="toxicity_multiple_learning.m"><style type="text/css">
+      --><title>Machine Learning for links toxicity assessment</title><meta name="generator" content="MATLAB 8.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-11-03"><meta name="DC.source" content="toxicity_multiple_learning.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -245,12 +245,12 @@ disp(<span class="string">'Test Set'</span>)
 tabulate(Ytest)
 </pre><pre class="codeoutput">Training Set
   Value    Count   Percent
-      0     8832     71.38%
-      1     3542     28.62%
+      0     8826     71.33%
+      1     3548     28.67%
 Test Set
   Value    Count   Percent
-      0     5907     71.62%
-      1     2341     28.38%
+      0     5913     71.69%
+      1     2335     28.31%
 </pre><h2>Tree performance on validating and training set<a name="5"></a></h2><pre class="codeinput">t = classregtree(Xtrain,Ytrain);
 <span class="comment">%  See tree</span>
 view(t)
@@ -290,20 +290,20 @@ C_nn = bsxfun(@rdivide,C_nn,sum(C_nn,2)) * 100 <span class="comment">%#ok&lt;*NO
 <span class="comment">% XtestNN = X(test(cv),:);</span>
 <span class="comment">% YtestNN = Y(test(cv),:);</span>
 </pre><pre class="codeoutput">Full tree training set
-Tree, % Good classified rate on set  : 92.3953
+Tree, % Good classified rate on set  : 92.5327
 
 C_nn =
 
-   95.3037    4.6963
-   14.5157   85.4843
+   95.7398    4.2602
+   14.8822   85.1178
 
 Full tree validating set
-Tree, % Good classified rate on set  : 66.3797
+Tree, % Good classified rate on set  : 66.4161
 
 C_nn =
 
-   77.5395   22.4605
-   58.4441   41.5559
+   77.7405   22.2595
+   58.4204   41.5796
 
 </pre><img vspace="5" hspace="5" src="toxicity_multiple_learning_01.png" alt=""> <h2>Speed up Computations using Parallel Computing<a name="6"></a></h2><p>If Parallel Computing Toolbox is available, the computation will be distributed to 2 workers for speeding up the evaluation.</p><pre class="codeinput"><span class="comment">% if matlabpool('size') == 0</span>
 <span class="comment">%     matlabpool open 2</span>
@@ -320,11 +320,12 @@ Y_nn = round(Y_nn');
 C_nn = confusionmat(categorical(Ytest),categorical(Y_nn));
 <span class="comment">% Examine the confusion matrix for each class as a percentage of the true class</span>
 C_nn = bsxfun(@rdivide,C_nn,sum(C_nn,2)) * 100 <span class="comment">%#ok&lt;*NOPTS&gt;</span>
-</pre><pre class="codeoutput">
+</pre><pre class="codeoutput">Starting parallel pool (parpool) using the 'local' profile ... connected to 4 workers.
+
 C_nn =
 
-   94.1933    5.8067
-   90.7305    9.2695
+   99.9154    0.0846
+   99.9572    0.0428
 
 </pre><h2>Other Machine Learning Techniques<a name="8"></a></h2><p>Statistics Toolbox features a number of supervised and unsupervised machine learning techniques. It supports both classification and regression algorithms. The supervised learning techniques range from non-linear regression, generalized linear regression, discriminant analysis, SVMs to decision trees and ensemble methods.</p><p>In this example, we make use of some of these techniques to perform predictive modeling. Observe that once the data has been prepared, the syntax to utilize the different modeling techniques is very similar. Most of these techniques can handle categorical predictors. The user can conveniently supply information about different parameters associated with the different algorithms.</p><h2>Generalized Linear Model - Logistic Regression<a name="9"></a></h2><p>In this example, a logistic regression model is leveraged. Response may follow normal, binomial, Poisson, gamma, or inverse Gaussian distribution.</p><p>Since the response in this data set is binary, binomial distribution is suitable.</p><pre class="codeinput"><span class="comment">% Train the classifier</span>
 glm = GeneralizedLinearModel.fit(Xtrain,Ytrain,<span class="string">'linear'</span>,<span class="string">'Distribution'</span>,<span class="string">'binomial'</span>,<span class="string">'link'</span>,<span class="string">'logit'</span>);
@@ -340,8 +341,8 @@ C_glm = bsxfun(@rdivide,C_glm,sum(C_glm,2)) * 100
 </pre><pre class="codeoutput">
 C_glm =
 
-   91.6540    8.3460
-   85.8180   14.1820
+   92.9816    7.0184
+   87.2805   12.7195
 
 </pre><h2>Discriminant Analysis<a name="10"></a></h2><p>Discriminant analysis is a classification method. It assumes that different classes generate data based on different Gaussian distributions. Linear discriminant analysis is also known as the Fisher discriminant.</p><p>Here, a quadratic discriminant classifier is used.</p><pre class="codeinput"><span class="comment">% Train the classifier</span>
 da = ClassificationDiscriminant.fit(Xtrain,Ytrain,<span class="string">'discrimType'</span>,<span class="string">'quadratic'</span>);
@@ -356,8 +357,8 @@ C_da = bsxfun(@rdivide,C_da,sum(C_da,2)) * 100
 </pre><pre class="codeoutput">
 C_da =
 
-   76.8580   23.1420
-   61.4695   38.5305
+   82.9866   17.0134
+   71.0064   28.9936
 
 </pre><h2>Classification Using Nearest Neighbors<a name="11"></a></h2><p>Categorizing query points based on their distance to points in a training dataset can be a simple yet effective way of classifying new points. Various distance metrics such as euclidean, correlation, hamming, mahalonobis or your own distance metric may be used.</p><pre class="codeinput"><span class="comment">% Train the classifier</span>
 knn = ClassificationKNN.fit(Xtrain,Ytrain,<span class="string">'Distance'</span>,<span class="string">'seuclidean'</span>);
@@ -372,8 +373,8 @@ C_knn = bsxfun(@rdivide,C_knn,sum(C_knn,2)) * 100
 </pre><pre class="codeoutput">
 C_knn =
 
-   76.2316   23.7684
-   56.9415   43.0585
+   76.2388   23.7612
+   58.2441   41.7559
 
 </pre><h2>Naive Bayes Classification<a name="12"></a></h2><p>Naive Bayes classification is based on estimating P(X|Y), the probability or probability density of features X given class Y. The Naive Bayes classification object provides support for normal (Gaussian), kernel, multinomial, and multivariate multinomial distributions</p><pre class="codeinput"><span class="comment">% The multivariate multinomial distribution (_mvmn_) is appropriate for</span>
 <span class="comment">% categorical features</span>
@@ -390,8 +391,8 @@ C_nb = bsxfun(@rdivide,C_nb,sum(C_nb,2)) * 100
 </pre><pre class="codeoutput">
 C_nb =
 
-   47.0289   52.9711
-   16.0188   83.9812
+   67.7829   32.2171
+   47.4090   52.5910
 
 </pre><h2>Support Vector Machines<a name="13"></a></h2><p>Support vector machine (SVM) is supported for binary response variables. An SVM classifies data by finding the best hyperplane that separates all data points of one class from those of the other class.</p><pre class="codeinput">opts = statset(<span class="string">'MaxIter'</span>,30000);
 <span class="comment">% Train the classifier</span>
@@ -405,8 +406,8 @@ C_svm = bsxfun(@rdivide,C_svm,sum(C_svm,2)) * 100
 </pre><pre class="codeoutput">
 C_svm =
 
-   53.0557   46.9443
-   21.3584   78.6416
+   49.3996   50.6004
+   15.0749   84.9251
 
 </pre><h2>Decision Trees<a name="14"></a></h2><p>Classification trees and regression trees are two kinds of decision trees. A decision tree is a flow-chart like structure in which internal node represents test on an attribute, each branch represents outcome of test and each leaf node represents a response (decision taken after computing all attributes). Classification trees give responses that are nominal, such as 'true' or 'false'. Regression trees give numeric responses.</p><pre class="codeinput">tic
 <span class="comment">% Train the classifier</span>
@@ -420,12 +421,12 @@ Y_t = t.predict(Xtest);
 C_t = confusionmat(categorical(Ytest),categorical(Y_t));
 <span class="comment">% Examine the confusion matrix for each class as a percentage of the true class</span>
 C_t = bsxfun(@rdivide,C_t,sum(C_t,2)) * 100
-</pre><pre class="codeoutput">Elapsed time is 0.702190 seconds.
+</pre><pre class="codeoutput">Elapsed time is 0.728703 seconds.
 
 C_t =
 
-   77.1627   22.8373
-   57.3686   42.6314
+   76.6109   23.3891
+   57.5589   42.4411
 
 </pre><h2>Ensemble Learning: TreeBagger<a name="15"></a></h2><p>Bagging stands for bootstrap aggregation. Every tree in the ensemble is grown on an independently drawn sample of input data. To compute prediction for the ensemble of trees, TreeBagger takes an average of predictions from individual trees (for regression) or takes votes from individual trees (for classification). Ensemble techniques such as bagging combine many weak learners to produce a strong learner.</p><p>From a marketing perspective, as we are creating this predictive model, it may be more important for us to classify <b><i>yes</i></b> correctly than a <b><i>no</i></b>. If that is the case, we can include our opinion using the <i>cost</i> matrix. Here, <i>cost</i> matrix specifies that it is 5 times more costly to classify a <b><i>yes</i></b> as a <b><i>no</i></b>.</p><pre class="codeinput"><span class="comment">% Cost of misclassification</span>
 cost = [0 1
@@ -445,8 +446,8 @@ C_tb = bsxfun(@rdivide,C_tb,sum(C_tb,2)) * 100
 </pre><pre class="codeoutput">
 C_tb =
 
-   56.3399   43.6601
-   21.2730   78.7270
+   57.2637   42.7363
+   21.3704   78.6296
 
 </pre><h2>Compare Results<a name="16"></a></h2><p>This visualization function is making use of a couple files downloaded from <a href="http://www.mathworks.com/matlabcentral/">MATLAB Central</a>, the user community websibte. We are leveraging social computing along the way to help us in our effort.</p><pre class="codeinput">Cmat = [C_nn C_glm C_da C_knn C_nb C_svm C_t C_tb];
 labels = {<span class="string">'Neural Net '</span>, <span class="string">'Logistic Regression '</span>, <span class="string">'Discriminant Analysis '</span>,<span class="keyword">...</span>
@@ -470,17 +471,19 @@ set(gca,<span class="string">'XTick'</span>,1:16)
 </pre><img vspace="5" hspace="5" src="toxicity_multiple_learning_04.png" alt=""> <h2>Sequential Feature Selection<a name="20"></a></h2><p>Feature selection reduces the dimensionality of data by selecting only a subset of measured features (predictor variables) to create a model. Selection criteria involves the minimization of a specific measure of predictive error for models fit to different subsets.</p><p>Sequential feature selection can be computationally intensive. It can benefit significantly from parallel computing.</p><pre class="codeinput">opts = statset(<span class="string">'UseParallel'</span>,true);
 critfun = @(Xtr,Ytr,Xte,Yte)featureImp(Xtr,Ytr,Xte,Yte,<span class="string">'TreeBagger'</span>);
 <span class="comment">% The top 5 features determined in the previous step have been included,</span>
-<span class="comment">% to reduce the number of combinations to be tried by sequentialfs</span>
+<span class="comment">% to reduce the number of combinations to be tried by sequentialfs*</span>
+<span class="comment">% we here keep just 5 predictors</span>
+<span class="comment">%[fs,history] = sequentialfs(critfun,Xtrain,Ytrain,'options',opts,'keepin',idxvarimp(1:5));</span>
+<span class="comment">%</span>
 [fs,history] = sequentialfs(critfun,Xtrain,Ytrain,<span class="string">'options'</span>,opts,<span class="string">'keepin'</span>,idxvarimp(1:5));
 disp(<span class="string">'Included features:'</span>);
 disp(catPred(fs)');
 </pre><pre class="codeoutput">Included features:
-    'KeywordVolume'
     'KeywordCpc'
     'KeywordCompetition'
     'Alexa'
     'RefPages'
-    'RefDomains'
+    'CitationFlow'
     'YesterdayPos'
     'ExactAnchorsRefDomains'
     'ContainingAnchorsRefDomains'
@@ -495,8 +498,8 @@ C_tb_r = bsxfun(@rdivide,C_tb_r,sum(C_tb_r,2)) * 100
 </pre><pre class="codeoutput">
 C_tb_r =
 
-   57.3726   42.6274
-   22.2127   77.7873
+   56.6548   43.3452
+   21.9700   78.0300
 
 </pre><h2>Compare Results<a name="22"></a></h2><pre class="codeinput">Cmat = [C_nn C_glm C_da C_knn C_nb C_svm C_t C_tb C_tb_r];
 labels = {<span class="string">'Neural Net '</span>, <span class="string">'Logistic Regression '</span>, <span class="string">'Discriminant Analysis '</span>,<span class="keyword">...</span>
@@ -872,7 +875,10 @@ set(gca,'XTick',1:16)
 opts = statset('UseParallel',true);
 critfun = @(Xtr,Ytr,Xte,Yte)featureImp(Xtr,Ytr,Xte,Yte,'TreeBagger');
 % The top 5 features determined in the previous step have been included,
-% to reduce the number of combinations to be tried by sequentialfs
+% to reduce the number of combinations to be tried by sequentialfs*
+% we here keep just 5 predictors
+%[fs,history] = sequentialfs(critfun,Xtrain,Ytrain,'options',opts,'keepin',idxvarimp(1:5));
+%
 [fs,history] = sequentialfs(critfun,Xtrain,Ytrain,'options',opts,'keepin',idxvarimp(1:5));
 disp('Included features:');
 disp(catPred(fs)');
@@ -885,8 +891,6 @@ tb_r = TreeBagger(120, Xtrain(:,fs),Ytrain,'method','classification','PredictorN
 Y_tb_r=double(categorical(Y_tb_r))-1;
 C_tb_r = confusionmat(categorical(Ytest),categorical(Y_tb_r));
 C_tb_r = bsxfun(@rdivide,C_tb_r,sum(C_tb_r,2)) * 100
-
-
 
 %% Compare Results
 

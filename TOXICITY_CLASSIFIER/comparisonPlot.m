@@ -19,7 +19,7 @@ for i = 1:numel(h)
     set(h(i),'FaceColor',colors(i));
 end
 ylabel('Percentage')
-title({'Bank Marketing Campaign','Misclassification Rate'},'FontWeight','bold')
+title({'Toxicity classifying algorithm','Misclassification Rate'},'FontWeight','bold')
 ylim([0 101])
 legend({'No','Misclassified','Yes','Misclassified'},'Location','EastOutside')
 rotateXLabels( gca, 60 );

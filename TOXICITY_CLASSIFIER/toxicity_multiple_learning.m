@@ -355,7 +355,10 @@ set(gca,'XTick',1:16)
 opts = statset('UseParallel',true);
 critfun = @(Xtr,Ytr,Xte,Yte)featureImp(Xtr,Ytr,Xte,Yte,'TreeBagger');
 % The top 5 features determined in the previous step have been included,
-% to reduce the number of combinations to be tried by sequentialfs
+% to reduce the number of combinations to be tried by sequentialfs*
+% we here keep just 5 predictors
+%[fs,history] = sequentialfs(critfun,Xtrain,Ytrain,'options',opts,'keepin',idxvarimp(1:5));
+%
 [fs,history] = sequentialfs(critfun,Xtrain,Ytrain,'options',opts,'keepin',idxvarimp(1:5));
 disp('Included features:');
 disp(catPred(fs)');
@@ -368,8 +371,6 @@ tb_r = TreeBagger(120, Xtrain(:,fs),Ytrain,'method','classification','PredictorN
 Y_tb_r=double(categorical(Y_tb_r))-1;
 C_tb_r = confusionmat(categorical(Ytest),categorical(Y_tb_r));
 C_tb_r = bsxfun(@rdivide,C_tb_r,sum(C_tb_r,2)) * 100
-
-
 
 %% Compare Results
 
