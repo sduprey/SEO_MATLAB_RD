@@ -1,0 +1,1284 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Importing data from the CSV file</title><meta name="generator" content="MATLAB 8.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-10-28"><meta name="DC.source" content="toxicity_learning_script.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Importing data from the CSV file</h1><!--introduction--><p>penguin = importfile('penguin.17-10-2014-20-10-2014-utf8.csv'); save('penguin.mat');</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Loading data</a></li><li><a href="#2">Continuous prediction</a></li><li><a href="#3">Predictor and output matrix building</a></li><li><a href="#4">Single regression tree</a></li><li><a href="#5">Tree performance on validating and training set : pruning the tree</a></li><li><a href="#6">Discontinuous prediction</a></li><li><a href="#7">Predictor and output matrix building</a></li><li><a href="#8">Single regression tree</a></li><li><a href="#9">Tree performance on validating and training set : pruning the tree</a></li><li><a href="#10">Bootstrapped aggregated  tree</a></li><li><a href="#11">Parallel bootstrapped aggregated  tree</a></li><li><a href="#12">Performance computation</a></li><li><a href="#13">Which leaf size is the best for the tree : once again prune the bagged trees</a></li><li><a href="#14">Feature selection</a></li></ul></div><h2>Loading data<a name="1"></a></h2><pre class="codeinput">load(<span class="string">'penguin.mat'</span>);
+</pre><h2>Continuous prediction<a name="2"></a></h2><h2>Predictor and output matrix building<a name="3"></a></h2><p>predictor matrix</p><pre class="codeinput">X = [penguin.KeywordVolume penguin.KeywordCpc penguin.KeywordCompetition penguin.Pr penguin.Alexa penguin.RefPages penguin.RefDomains penguin.CitationFlow penguin.TrustFlow penguin.YesterdayPos penguin.ExactAnchorsRefDomains penguin.ExactAnchorsRefPages penguin.ContainingAnchorsRefDomains penguin.ContainingAnchorsRefPages];
+<span class="comment">% output vector we try to forecast penguin.TodayPos penguin.Change penguin.Change_abs</span>
+Y = penguin.Change;
+</pre><h2>Single regression tree<a name="4"></a></h2><pre class="codeinput">pt = cvpartition(Y,<span class="string">'holdout'</span>,0.5);
+<span class="comment">%  Extract predictors and responses for both sets</span>
+Y_t = Y(training(pt));
+X_t = X(training(pt),:);
+Y_v = Y(test(pt));
+X_v = X(test(pt),:);
+
+t = classregtree(X_t,Y_t);
+<span class="comment">%  See tree</span>
+view(t)
+</pre><pre class="codeoutput">Warning: Ignoring rows in GROUP with missing values. 
+Warning: The training set does not contain points from all groups. 
+</pre><img vspace="5" hspace="5" src="toxicity_learning_script_01.png" alt=""> <h2>Tree performance on validating and training set : pruning the tree<a name="5"></a></h2><p>How well did the single tree perform on the training set very well but overfit the noise</p><pre class="codeinput">predY = t(X_t);
+disp(<span class="string">'Full tree training set'</span>)
+
+training_residus = predY-Y_t;
+figure;
+hist(training_residus,100)
+title(<span class="string">'Training histogram error'</span>);
+figure;
+plot(1:length(predY),predY,1:length(Y_t),Y_t);
+title(<span class="string">'Training point to point error'</span>);
+
+errpct = abs(training_residus)./Y_t*100;
+MAE = mean(abs(errpct));
+disp(MAE);
+<span class="comment">% Calculate the single tree's predictions on the validating set...</span>
+predY = t(X_v);
+disp(<span class="string">'Full tree validating set'</span>)
+figure;
+plot(1:length(predY),predY,1:length(Y_v),Y_v);
+title(<span class="string">'Validating point to point error'</span>);
+
+validating_residus = predY-Y_v;
+figure;
+hist(validating_residus,100)
+title(<span class="string">'Validating histogram error'</span>);
+
+errpct = abs(validating_residus)./Y_v*100;
+MAE = mean(abs(errpct));
+disp(MAE);
+</pre><pre class="codeoutput">Full tree training set
+   55.9633
+
+Full tree validating set
+  146.4844
+
+</pre><img vspace="5" hspace="5" src="toxicity_learning_script_02.png" alt=""> <img vspace="5" hspace="5" src="toxicity_learning_script_03.png" alt=""> <img vspace="5" hspace="5" src="toxicity_learning_script_04.png" alt=""> <img vspace="5" hspace="5" src="toxicity_learning_script_05.png" alt=""> <h2>Discontinuous prediction<a name="6"></a></h2><h2>Predictor and output matrix building<a name="7"></a></h2><p>predictor matrix</p><pre class="codeinput">X = [penguin.KeywordVolume penguin.KeywordCpc penguin.KeywordCompetition penguin.Pr penguin.Alexa penguin.RefPages penguin.RefDomains penguin.CitationFlow penguin.TrustFlow penguin.YesterdayPos penguin.ExactAnchorsRefDomains penguin.ExactAnchorsRefPages penguin.ContainingAnchorsRefDomains penguin.ContainingAnchorsRefPages];
+<span class="comment">% output vector we try to forecast penguin.TodayPos penguin.Change penguin.Change_abs</span>
+Y = penguin.Change &lt;= -7;
+</pre><h2>Single regression tree<a name="8"></a></h2><pre class="codeinput">pt = cvpartition(Y,<span class="string">'holdout'</span>,0.5);
+<span class="comment">%  Extract predictors and responses for both sets</span>
+Y_t = Y(training(pt));
+X_t = X(training(pt),:);
+Y_v = Y(test(pt));
+X_v = X(test(pt),:);
+
+t = classregtree(X_t,Y_t);
+<span class="comment">%  See tree</span>
+view(t)
+</pre><img vspace="5" hspace="5" src="toxicity_learning_script_06.png" alt=""> <h2>Tree performance on validating and training set : pruning the tree<a name="9"></a></h2><p>How well did the single tree perform on the training set very well but overfit the noise</p><pre class="codeinput">predY = t(X_t);
+disp(<span class="string">'Full tree training set'</span>)
+testErrorRate(predY,Y_t);
+
+<span class="comment">% Calculate the single tree's predictions on the validating set...</span>
+predY = t(X_v);
+disp(<span class="string">'Full tree validating set'</span>)
+testErrorRate(predY,Y_v);
+
+<span class="comment">% % %% Pruning the single tree by estimating the cost on the validating set</span>
+<span class="comment">% % [cost,secost,ntnodes,bestlevel] = test(t, 'test', X_v, Y_v);</span>
+<span class="comment">% % topt = prune(t, 'level', bestlevel);</span>
+<span class="comment">% % view(topt)</span>
+<span class="comment">% %</span>
+<span class="comment">% % % Pruned tree is better on the validating set !</span>
+<span class="comment">% % % does not overfit the noise</span>
+<span class="comment">% % predY = topt(X_v);</span>
+<span class="comment">% % disp('Pruned tree validating set')</span>
+<span class="comment">% % testErrorRate(predY,Y_v );</span>
+</pre><pre class="codeoutput">Full tree training set
+Tree, % Good classified rate on set  : 92.3771
+Full tree validating set
+Tree, % Good classified rate on set  : 69.1353
+</pre><h2>Bootstrapped aggregated  tree<a name="10"></a></h2><pre class="codeinput">nTrees = 50;
+tic;
+b = TreeBagger(nTrees, X_t, Y_t);
+
+<span class="comment">% Prediction on the training set</span>
+[predY,allpred,devs] = predict(b,X_t);
+disp(<span class="string">'Bagged trees training set'</span>)
+testErrorRate(predY,Y_t);
+
+<span class="comment">% Prediction on the validating set</span>
+[predY,allpred,devs] = predict(b,X_v);
+disp(<span class="string">'Bagged trees validating set'</span>)
+testErrorRate(predY,Y_v);
+</pre><pre class="codeoutput">Bagged trees training set
+Tree, % Good classified rate on set  : 99.299
+Bagged trees validating set
+Tree, % Good classified rate on set  : 73.9866
+</pre><h2>Parallel bootstrapped aggregated  tree<a name="11"></a></h2><pre>crossval, jackknife, bootstrp</pre><pre class="codeinput">nTrees = 50;
+matlabpool <span class="string">open</span> <span class="string">local</span>;
+opt = statset(<span class="string">'UseParallel'</span>,<span class="string">'always'</span>);
+tic;
+b = TreeBagger(nTrees, X, Y, <span class="string">'opt'</span>,opt);
+toc;
+matlabpool <span class="string">close</span>;
+</pre><pre class="codeoutput">Warning: matlabpool will be removed in a future release.
+Use parpool instead. 
+Starting matlabpool using the 'local' profile ... </pre><pre class="codeoutput error">Error using matlabpool (line 151)
+Found an interactive session. You cannot have multiple interactive sessions open simultaneously. To terminate the existing session, use 'delete(gcp)'.
+
+Error in toxicity_learning_script (line 121)
+matlabpool open local;
+</pre><h2>Performance computation<a name="12"></a></h2><pre class="codeinput">nb_trees_step =100:100:1000;
+times = zeros(10,2);
+<span class="keyword">for</span> i=1:length(nb_trees_step)
+    <span class="comment">% Sequential computation</span>
+    nTrees = nb_trees_step(i);
+    tic;
+    b = TreeBagger(nTrees, X, Y);
+    times(i,1)=toc;
+    <span class="comment">% Parallel computation</span>
+    opt = statset(<span class="string">'UseParallel'</span>,<span class="string">'always'</span>);
+    matlabpool <span class="string">open</span> <span class="string">local</span>;
+    tic;
+    b = TreeBagger(nTrees, X, Y, <span class="string">'opt'</span>,opt);
+    times(i,2)=toc;
+    matlabpool <span class="string">close</span>;
+<span class="keyword">end</span>
+plot(times);
+legend({<span class="string">'Non Parallel'</span>, <span class="string">'Parallel'</span>})
+xlabel(<span class="string">'number of grown trees'</span>)
+ylabel(<span class="string">'second times for calibration'</span>)
+title(<span class="string">'\bf Calibration time for bagged trees : parallel vs non-parallel'</span>)
+</pre><h2>Which leaf size is the best for the tree : once again prune the bagged trees<a name="13"></a></h2><pre class="codeinput">nTrees = 50;
+b = TreeBagger(nTrees, X_t, Y_t, <span class="string">'oobpred'</span>,<span class="string">'on'</span>);
+err=oobError(b);
+plot(err);
+xlabel(<span class="string">'number of grown trees'</span>)
+ylabel(<span class="string">'out-of-bag classification error'</span>)
+
+leaf = [1 5 10];
+nTrees = 25;
+color = <span class="string">'bgr'</span>;
+<span class="keyword">for</span> ii = 1:length(leaf)
+    b = TreeBagger(nTrees,X,Y,<span class="string">'oobpred'</span>,<span class="string">'on'</span>,<span class="string">'cat'</span>,6,<span class="string">'minleaf'</span>,leaf(ii));
+    plot(b.oobError,color(ii));
+    hold <span class="string">on</span>;
+    [percent_training,C_training,percent_validating,C_validating] = validateTreeFitting(X,Y,nTrees,leaf(ii));
+    disp([<span class="string">'% Training set validation rate with leaf size'</span> num2str(leaf(ii)) <span class="string">' : '</span> num2str(percent_training*100)]);
+    disp(<span class="string">'Training Confusion matrix with order AAA AA A BBB BB B CCC'</span>);
+    C_training <span class="comment">%#ok&lt;NOPTS&gt;</span>
+    disp([<span class="string">'% Validating set validation rate with leaf size'</span> num2str(leaf(ii)) <span class="string">' : '</span> num2str(percent_validating*100)]);
+    disp(<span class="string">'Validating Confusion matrix with order AAA AA A BBB BB B CCC'</span>);
+    C_validating <span class="comment">%#ok&lt;NOPTS&gt;</span>
+<span class="keyword">end</span>
+xlabel(<span class="string">'Number of grown trees'</span>);
+ylabel(<span class="string">'Out-of-bag classification error'</span>);
+legend({<span class="string">'1'</span>, <span class="string">'5'</span>, <span class="string">'10'</span>},<span class="string">'Location'</span>,<span class="string">'NorthEast'</span>);
+title(<span class="string">'Classification Error for Different Leaf Sizes'</span>);
+hold <span class="string">off</span>;
+</pre><h2>Feature selection<a name="14"></a></h2><p>The errors are comparable for the three leaf-size options. We will therefore work with a leaf size of 10, because it results in leaner trees and more efficient computations.</p><p>Note that we did not have to split the data into <i>training</i> and <i>test</i> subsets. This is done internally, it is implicit in the sampling procedure that underlies the method. At each bootstrap iteration, the bootstrap replica is the training set, and any customers left out ("out-of-bag") are used as test points to estimate the out-of-bag classification error reported above.</p><p>Next, we want to find out whether all the features are important for the accuracy of our classifier. We do this by turning on the <i>feature importance</i> measure (<tt>oobvarimp</tt>), and plot the results to visually find the most important features. We also try a larger number of trees now, and store the classification error, for further comparisons below.</p><pre class="codeinput">nTrees = 50;
+leaf = 10;
+b = TreeBagger(nTrees,X,Y,<span class="string">'oobvarimp'</span>,<span class="string">'on'</span>,<span class="string">'cat'</span>,6,<span class="string">'minleaf'</span>,leaf);
+
+bar(b.OOBPermutedVarDeltaError);
+xlabel(<span class="string">'Feature number'</span>);
+ylabel(<span class="string">'Out-of-bag feature importance'</span>);
+title(<span class="string">'Feature importance results'</span>);
+
+oobErrorFullX = b.oobError;
+
+<span class="comment">% % % %%</span>
+<span class="comment">% % % % Features 2, 4 and 6 stand out from the rest. Feature 4, market value of</span>
+<span class="comment">% % % % equity / book value of total debt (|MVE_BVTD|), is the most important</span>
+<span class="comment">% % % % predictor for this data set. This ratio is closely related to the</span>
+<span class="comment">% % % % predictors of creditworthiness in structural models, such as Merton's</span>
+<span class="comment">% % % % model [5], where the value of the firm's equity is compared to its</span>
+<span class="comment">% % % % outstanding debt to determine the default probability.</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % % Information on the industry sector, feature 6 (|Industry|), is also</span>
+<span class="comment">% % % % relatively more important than other variables to assess the</span>
+<span class="comment">% % % % creditworthiness of a firm for this data set.</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % % Although not as important as |MVE_BVTD|, feature 2, retained earnings /</span>
+<span class="comment">% % % % total assets (|RE_TA|), stands out from the rest. There is a correlation</span>
+<span class="comment">% % % % between retained earnings and the age of a firm (the longer a firm has</span>
+<span class="comment">% % % % existed, the more earnings it can accumulate, in general), and in turn</span>
+<span class="comment">% % % % the age of a firm is correlated to its creditworthiness (older firms tend</span>
+<span class="comment">% % % % to be more likely to survive in tough times).</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % % Let us fit a new classification ensemble using only predictors</span>
+<span class="comment">% % % % |RE_TA|, |MVE_BVTD|, and |Industry|. We compare its classification error</span>
+<span class="comment">% % % % with the previous classifier, which uses all features.</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % X = [creditDS.RE_TA creditDS.MVE_BVTD creditDS.Industry];</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % b = TreeBagger(nTrees,X,Y,'oobpred','on','cat',3,'minleaf',leaf);</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % oobErrorX246 = b.oobError;</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % plot(oobErrorFullX,'b');</span>
+<span class="comment">% % % hold on;</span>
+<span class="comment">% % % plot(oobErrorX246,'r');</span>
+<span class="comment">% % % xlabel('Number of grown trees');</span>
+<span class="comment">% % % ylabel('Out-of-bag classification error');</span>
+<span class="comment">% % % legend({'All features', 'Features 2, 4, 6'},'Location','NorthEast');</span>
+<span class="comment">% % % title('Classification Error for Different Sets of Predictors');</span>
+<span class="comment">% % % hold off;</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % %%</span>
+<span class="comment">% % % % The accuracy of the classification does not deteriorate significantly</span>
+<span class="comment">% % % % when we remove the features with relatively low importance (1, 3, and 5),</span>
+<span class="comment">% % % % so we will use the more parsimonious classification ensemble for our</span>
+<span class="comment">% % % % predictions.</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % % In this example, we have started with a set of six features only, and</span>
+<span class="comment">% % % % used the feature importance measure of the classifier, and the</span>
+<span class="comment">% % % % out-of-bag classification error as criteria to screen out three of the</span>
+<span class="comment">% % % % variables. Feature selection can be a time consuming process when the</span>
+<span class="comment">% % % % initial set of potential predictors contains dozens of variables. Besides</span>
+<span class="comment">% % % % the tools we have used here (variable importance and a "visual"</span>
+<span class="comment">% % % % comparison of out-of-bag errors), tools such as |sequentialfs| in</span>
+<span class="comment">% % % % Statistics Toolbox can be helpful for these types of analyses. (See also</span>
+<span class="comment">% % % % the demo "Selecting Features for Classifying High-dimensional Data," also</span>
+<span class="comment">% % % % in Statistics Toolbox). However, in the end, a successful feature</span>
+<span class="comment">% % % % selection process requires a combination of quantitative tools and an</span>
+<span class="comment">% % % % analyst's judgement.</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % % For example, the variable importance measure we used</span>
+<span class="comment">% % % % here is a ranking mechanism that estimates the relative impact of a</span>
+<span class="comment">% % % % feature by measuring how much the predictive accuracy of the classifier</span>
+<span class="comment">% % % % deteriorates when this feature's values are randomly permuted. The idea</span>
+<span class="comment">% % % % is that when the feature in question adds little to the predictive power</span>
+<span class="comment">% % % % of the classifier, using altered (in this case permuted) values should</span>
+<span class="comment">% % % % not impact the classification results. Relevant information, on the other</span>
+<span class="comment">% % % % hand, cannot be randomly swapped without degrading the predictions. Now,</span>
+<span class="comment">% % % % if two highly correlated features are important, they will both rank high</span>
+<span class="comment">% % % % in this analysis. In that case, keeping one of these features should</span>
+<span class="comment">% % % % suffice for accurate classifications, but one would not know that from</span>
+<span class="comment">% % % % the ranking results alone. One would have to check the correlations</span>
+<span class="comment">% % % % separately, or use an expert's judgement. That is to say, tools like</span>
+<span class="comment">% % % % variable importance or |sequentialfs| can greatly help for feature</span>
+<span class="comment">% % % % selection, but an analyst's judgment is a key piece in this process.</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % %%</span>
+<span class="comment">% % % % At this point, the classifier could be saved (e.g., |save classifier.mat</span>
+<span class="comment">% % % % b|), to be loaded in a future session (|load classifier|) to classify new</span>
+<span class="comment">% % % % customers. For efficiency, it is recommended to keep a compact version of</span>
+<span class="comment">% % % % the classifier once the training process is finished.</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % b = b.compact;</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % %% Classifying New Data</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % % Here we use the previously constructed classification ensemble to assign</span>
+<span class="comment">% % % % credit ratings to new customers. Because the ratings of existing</span>
+<span class="comment">% % % % customers need to be reviewed, too, on a regular basis, especially when</span>
+<span class="comment">% % % % their financial information has substantially changed, the data set could</span>
+<span class="comment">% % % % also contain a list of existing customers under review. We start by</span>
+<span class="comment">% % % % loading the new data.</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % newDS = dataset('file','CreditRating_NewCompanies.dat','delimiter',',');</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % %%</span>
+<span class="comment">% % % % To predict the credit rating for this new data, we call the |predict|</span>
+<span class="comment">% % % % method on the classifier. The method returns two arguments, the predicted</span>
+<span class="comment">% % % % class and the classification score. We certainly want to get both output</span>
+<span class="comment">% % % % arguments, since the classification scores contain information on how</span>
+<span class="comment">% % % % certain the predicted ratings seem to be. We could copy variables</span>
+<span class="comment">% % % % |RE_TA|, |MVE_BVTD| and |Industry| into a matrix |X|, as before, but</span>
+<span class="comment">% % % % since we will make only one call to |predict|, we can skip this step and</span>
+<span class="comment">% % % % use |newDS| directly.</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % [predClass,classifScore] = b.predict([newDS.RE_TA newDS.MVE_BVTD...</span>
+<span class="comment">% % %     newDS.Industry]);</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % %%</span>
+<span class="comment">% % % % At this point, we can create a report. Here we only display on the screen</span>
+<span class="comment">% % % % a small report for the first three customers, for illustration purposes,</span>
+<span class="comment">% % % % but MATLAB's deployment tools could greatly improve the workflow here.</span>
+<span class="comment">% % % % For example, using MATLAB Builder(TM) JA, credit analysts could run this</span>
+<span class="comment">% % % % classification remotely, using a web browser, and get a report, without</span>
+<span class="comment">% % % % even having MATLAB on their desktops.</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % for i = 1:3</span>
+<span class="comment">% % %     fprintf('Customer %d:\n',newDS.ID(i));</span>
+<span class="comment">% % %     fprintf('   RE/TA    = %5.2f\n',newDS.RE_TA(i));</span>
+<span class="comment">% % %     fprintf('   MVE/BVTD = %5.2f\n',newDS.MVE_BVTD(i));</span>
+<span class="comment">% % %     fprintf('   Industry = %2d\n',newDS.Industry(i));</span>
+<span class="comment">% % %     fprintf('   Predicted Rating : %s\n',predClass{i});</span>
+<span class="comment">% % %     fprintf('   Classification score : \n');</span>
+<span class="comment">% % %     for j = 1:length(b.ClassNames)</span>
+<span class="comment">% % %         if (classifScore(i,j)&gt;0)</span>
+<span class="comment">% % %             fprintf('      %s : %5.4f \n',b.ClassNames{j},classifScore(i,j));</span>
+<span class="comment">% % %         end</span>
+<span class="comment">% % %     end</span>
+<span class="comment">% % % end</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % %%</span>
+<span class="comment">% % % % Keeping records of the predicted ratings and corresponding scores can be</span>
+<span class="comment">% % % % useful for periodic assessments of the quality of the classifier. We</span>
+<span class="comment">% % % % store this information here in the |dataset| array |predDS|.</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % predDS = dataset({newDS.ID,'ID'},{predClass,'PredRating'},...</span>
+<span class="comment">% % %     {classifScore,'sAAA','sAA','sA','sBBB','sBB','sB','sCCC'});</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % %%</span>
+<span class="comment">% % % % This information could be saved, for example, to a comma-delimited text file</span>
+<span class="comment">% % % % |PredictedRatings.dat| using the command</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % %    export(predDS,'file','PredictedRatings.dat','delimiter',',')</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % % or written directly to a database using Database Toolbox.</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % %% Back-Testing: Profiling the Classification Process</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % % _Validation_ or _back-testing_ is the process of profiling or assessing</span>
+<span class="comment">% % % % the quality of the credit ratings. There are many different measures and</span>
+<span class="comment">% % % % tests related to this task (see, for example, Basel Committee on Banking</span>
+<span class="comment">% % % % Supervision [2]). In this demo, we focus on the following two questions:</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % % * How accurate are the predicted ratings, as compared to the actual</span>
+<span class="comment">% % % % ratings? Here "predicted ratings" refers to those obtained from the</span>
+<span class="comment">% % % % automated classification process, and "actual ratings" to those assigned</span>
+<span class="comment">% % % % by a credit committee that puts together the predicted ratings and their</span>
+<span class="comment">% % % % classification scores, and other pieces of information, such as news and</span>
+<span class="comment">% % % % the state of the economy to determine a final rating.</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % % * How well do the actual ratings rank customers according to their</span>
+<span class="comment">% % % % creditworthiness? This is done in an _ex-post_ analysis performed, for</span>
+<span class="comment">% % % % example, one year later, when it is known which companies defaulted</span>
+<span class="comment">% % % % during the year.</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % % The file |CreditRating_ExPost.dat| contains "follow up" data on the same</span>
+<span class="comment">% % % % companies considered in the previous section. It contains the actual</span>
+<span class="comment">% % % % ratings that the committee assigned to these companies, as well as a</span>
+<span class="comment">% % % % "default flag" that indicates whether the corresponding company defaulted</span>
+<span class="comment">% % % % within one year of the rating process (if 1) or not (if 0).</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % exPostDS = dataset('file','CreditRating_ExPost.dat','delimiter',',');</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % %%</span>
+<span class="comment">% % % % If this were a new MATLAB session, besides reading the follow up data</span>
+<span class="comment">% % % % from |CreditRating_ExPost.dat| we would need to load the predicted ratings</span>
+<span class="comment">% % % % information stored in |predDS|, for example, with the command</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % %    predDS = dataset('file','PredictedRatings.dat','delimiter',',')</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % %%</span>
+<span class="comment">% % % % *Comparing predicted ratings vs. actual ratings.* The rationale to train</span>
+<span class="comment">% % % % an automated classifier is to expedite the work of the credit committee.</span>
+<span class="comment">% % % % The more accurate the predicted ratings are, the less time the committee</span>
+<span class="comment">% % % % has to spend reviewing the predicted ratings. So it is conceivable that</span>
+<span class="comment">% % % % the committee wants to have regular checks on how closely the predicted</span>
+<span class="comment">% % % % ratings match the final ratings they assign, and to recommend re-training</span>
+<span class="comment">% % % % the automated classifier (and maybe include new features, for example) if</span>
+<span class="comment">% % % % the mismatch seems concerning.</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % % The first tool we can use to compare predicted vs. actual ratings is a</span>
+<span class="comment">% % % % _confusion matrix_, readily available in Statistics Toolbox:</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % C = confusionmat(exPostDS.Rating,predDS.PredRating,...</span>
+<span class="comment">% % %     'order',{'AAA' 'AA' 'A' 'BBB' 'BB' 'B' 'CCC'})</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % %%</span>
+<span class="comment">% % % % The rows in |C| correspond to the actual ratings, and the columns to the</span>
+<span class="comment">% % % % predicted ratings. The amount in the position |(i,j)| in this matrix</span>
+<span class="comment">% % % % indicates how many customers received an actual rating |i| and were</span>
+<span class="comment">% % % % predicted as rating |j|. For example, position |(3,2)| tells us how many</span>
+<span class="comment">% % % % customers received a rating of 'A' by the credit committee, but were</span>
+<span class="comment">% % % % predicted as 'AA' with the automated classifier. One can also present</span>
+<span class="comment">% % % % this matrix in percentage form with a simple transformation:</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % Cperc = diag(sum(C,2))\C</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % %%</span>
+<span class="comment">% % % % Good agreement between the predicted and the actual ratings would result</span>
+<span class="comment">% % % % in values in the main diagonal that dominate the rest of the values in a</span>
+<span class="comment">% % % % row, ideally values close to 1. In this case, we actually see an</span>
+<span class="comment">% % % % important disagreement for 'B,' since about half of the customers that</span>
+<span class="comment">% % % % were rated as 'B' by the credit committee had been predicted as 'BB' by</span>
+<span class="comment">% % % % the automated classifier. On the other hand, it is good to see that</span>
+<span class="comment">% % % % ratings differ in at most one notch in most cases, with the only</span>
+<span class="comment">% % % % exception of 'BBB.'</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % % A confusion matrix could also be used to compare the internal ratings</span>
+<span class="comment">% % % % assigned by the institution against third-party ratings; this is often</span>
+<span class="comment">% % % % done in practice.</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % % For each specific rating, we can compute yet another measure of agreement</span>
+<span class="comment">% % % % between predicted and actual ratings. We can build a _Receiver Operating</span>
+<span class="comment">% % % % Characteristic (ROC) curve_ using the |perfcurve| function from</span>
+<span class="comment">% % % % Statistics Toolbox, and check the _area under the curve (AUC)_. The</span>
+<span class="comment">% % % % |perfcurve| function takes as an argument the actual ratings, which are</span>
+<span class="comment">% % % % our benchmark, the standard we are comparing against, and the 'BBB'</span>
+<span class="comment">% % % % classification scores determined by the automated process. Let us</span>
+<span class="comment">% % % % build a ROC and calculate the AUC for rating 'BBB' in our example.</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % [xVal,yVal,T,auc] = perfcurve(exPostDS.Rating,predDS.sBBB,'BBB');</span>
+<span class="comment">% % % plot(xVal,yVal);</span>
+<span class="comment">% % % xlabel('False positive rate');</span>
+<span class="comment">% % % ylabel('True positive rate');</span>
+<span class="comment">% % % text(0.5,0.25,strcat('AUC=',num2str(auc)),'EdgeColor','k');</span>
+<span class="comment">% % % title('ROC curve BBB, predicted vs. actual rating');</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % %%</span>
+<span class="comment">% % % % Here is an explanation of how the ROC is built. Recall that for each</span>
+<span class="comment">% % % % customer the automated classifier returns a classification score for each</span>
+<span class="comment">% % % % of the credit ratings, in particular, for 'BBB,' which can be interpreted</span>
+<span class="comment">% % % % as how likely it is that this particular customer should be rated 'BBB.'</span>
+<span class="comment">% % % % In order to build the ROC curve, one needs to vary the</span>
+<span class="comment">% % % % _classification threshold_. That is, the minimum score to classify</span>
+<span class="comment">% % % % a customer as 'BBB.' In other words, if the threshold is |t|, we only</span>
+<span class="comment">% % % % classify customers as 'BBB' if their 'BBB' score is greater than or equal</span>
+<span class="comment">% % % % to |t|. For example, suppose that company _XYZ_ had a 'BBB' score of</span>
+<span class="comment">% % % % 0.87. If the actual rating of _XYZ_ (the information in</span>
+<span class="comment">% % % % |exPostDS.Rating|) is 'BBB,' then _XYZ_ would be correctly classified as</span>
+<span class="comment">% % % % 'BBB' for any threshold of up to 0.87. This would be a _true positive_,</span>
+<span class="comment">% % % % and it would increase what is call the _sensitivity_ of the classifier.</span>
+<span class="comment">% % % % For any threshold greater than 0.87, this company would not receive a</span>
+<span class="comment">% % % % 'BBB' rating, and we would have a _false negative_ case. To complete the</span>
+<span class="comment">% % % % description, suppose now that _XYZ_'s actual rating is 'BB.' Then it</span>
+<span class="comment">% % % % would be correctly rejected as a 'BBB' for thresholds of more than 0.87,</span>
+<span class="comment">% % % % becoming a _true negative_, and thus increasing the so called</span>
+<span class="comment">% % % % _specificity_ of the classifier. However, for thresholds of up to 0.87,</span>
+<span class="comment">% % % % it would become a _false positive_ (it would be classified as 'BBB,' when</span>
+<span class="comment">% % % % it actually is a 'BB'). The ROC curve is constructed by plotting the</span>
+<span class="comment">% % % % proportion of true positives (sensitivity), versus false positives</span>
+<span class="comment">% % % % (1-specificity), as the threshold varies from 0 to 1.</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % % The AUC, as its name indicates, is the area under the ROC curve. The</span>
+<span class="comment">% % % % closer the AUC is to 1, the more accurate the classifier (a perfect</span>
+<span class="comment">% % % % classifier would have an AUC of 1). In this example, the AUC seems high</span>
+<span class="comment">% % % % enough, but it would be up to the committee to decide which level of AUC</span>
+<span class="comment">% % % % for the ratings should trigger a recommendation to improve the automated</span>
+<span class="comment">% % % % classifier.</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % %%</span>
+<span class="comment">% % % % *Comparing actual ratings vs. defaults in the following year.* A common</span>
+<span class="comment">% % % % tool used to assess the ranking of customers implicit in the credit</span>
+<span class="comment">% % % % ratings is the _Cumulative Accuracy Profile (CAP)_, and the associated</span>
+<span class="comment">% % % % _accuracy ratio_ measure. The idea is to measure the relationship between</span>
+<span class="comment">% % % % the credit ratings assigned and the number of defaults observed in the</span>
+<span class="comment">% % % % following year. One would expect that fewer defaults are observed for</span>
+<span class="comment">% % % % better rating classes. If the default rate were the same for all ratings,</span>
+<span class="comment">% % % % the rating system would be no different from a naive (and useless)</span>
+<span class="comment">% % % % classification system in which customers were randomly assigned a rating,</span>
+<span class="comment">% % % % independently of their creditworthiness.</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % % It is not hard to see that the |perfcurve| function can also be used to</span>
+<span class="comment">% % % % construct the CAP. The standard we compare against is not a rating, as</span>
+<span class="comment">% % % % before, but the default flag that we loaded from the |CreditRating_ExPost.dat|</span>
+<span class="comment">% % % % file. The score we use is a "dummy score" that indicates the ranking in</span>
+<span class="comment">% % % % creditworthiness implicit in the list of ratings. The dummy score only</span>
+<span class="comment">% % % % needs to satisfy that better ratings get lower dummy scores (they are</span>
+<span class="comment">% % % % "less likely to have a default flag of 1"), and that any two customers</span>
+<span class="comment">% % % % with the same rating get the same dummy score. A default probability</span>
+<span class="comment">% % % % could be passed as a score, of course, but we do not have default</span>
+<span class="comment">% % % % probabilities here, and in fact _we do not need to have estimates of the</span>
+<span class="comment">% % % % default probabilities to construct the CAP_, because we are not</span>
+<span class="comment">% % % % validating default probabilities. All we are assessing with this tool is</span>
+<span class="comment">% % % % how well the ratings _rank_ customers according to their</span>
+<span class="comment">% % % % creditworthiness.</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % % Usually, the CAP of the rating system under consideration is plotted</span>
+<span class="comment">% % % % together with the CAP of the "perfect rating system." The latter is a</span>
+<span class="comment">% % % % hypothetical credit rating system for which the lowest rating includes</span>
+<span class="comment">% % % % all the defaulters, and no other customers. The area under this perfect</span>
+<span class="comment">% % % % curve is the maximum possible AUC attainable by a rating system. By</span>
+<span class="comment">% % % % convention, the AUC is adjusted for CAPs to subtract the area under the</span>
+<span class="comment">% % % % _naive system_'s CAP, that is, the CAP of the system that randomly</span>
+<span class="comment">% % % % assigns ratings to customers. The naive system's CAP is simply a straight</span>
+<span class="comment">% % % % line from the origin to (1,1), with an AUC of 0.5. The _accuracy ratio_</span>
+<span class="comment">% % % % for a rating system is then defined as the ratio of the adjusted AUC (AUC</span>
+<span class="comment">% % % % of the system in consideration minus AUC of the naive system) to the</span>
+<span class="comment">% % % % maximum accuracy (AUC of the perfect system minus AUC of the naive</span>
+<span class="comment">% % % % system).</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % ratingsList = {'AAA' 'AA' 'A' 'BBB' 'BB' 'B' 'CCC'};</span>
+<span class="comment">% % % Nratings = length(ratingsList);</span>
+<span class="comment">% % % dummyDelta = 1/(Nratings+1);</span>
+<span class="comment">% % % dummyRank = linspace(dummyDelta,1-dummyDelta,Nratings)';</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % D = exPostDS.Def_tplus1;</span>
+<span class="comment">% % % fracTotDef = sum(D)/length(D);</span>
+<span class="comment">% % % maxAcc = 0.5 - 0.5 * fracTotDef;</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % R = double(ordinal(exPostDS.Rating,[],ratingsList));</span>
+<span class="comment">% % % S = dummyRank(R);</span>
+<span class="comment">% % % [xVal,yVal,~,auc] = perfcurve(D,S,1);</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % accRatio = (auc-0.5)/maxAcc;</span>
+<span class="comment">% % % fprintf('Accuracy ratio for actual ratings: %5.3f\n',accRatio);</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % xPerfect(1) = 0; xPerfect(2) = fracTotDef; xPerfect(3) = 1;</span>
+<span class="comment">% % % yPerfect(1) = 0; yPerfect(2) = 1; yPerfect(3) = 1;</span>
+<span class="comment">% % % xNaive(1) = 0; xNaive(2) = 1;</span>
+<span class="comment">% % % yNaive(1) = 0; yNaive(2) = 1;</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % plot(xPerfect,yPerfect,'--k',xVal,yVal,'b',xNaive,yNaive,'-.k');</span>
+<span class="comment">% % % xlabel('Fraction of all companies');</span>
+<span class="comment">% % % ylabel('Fraction of defaulted companies');</span>
+<span class="comment">% % % title('Cumulative Accuracy Profile');</span>
+<span class="comment">% % % legend({'Perfect','Actual','Naive'},'Location','SouthEast');</span>
+<span class="comment">% % % text(xVal(2)+0.01,yVal(2)-0.01,'CCC')</span>
+<span class="comment">% % % text(xVal(3)+0.01,yVal(3)-0.02,'B')</span>
+<span class="comment">% % % text(xVal(4)+0.01,yVal(4)-0.03,'BB')</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % %%</span>
+<span class="comment">% % % % The key to reading the information of the CAP is in the "kinks," labeled</span>
+<span class="comment">% % % % in the plot for ratings 'CCC,' 'B,' and 'BB.' For example, the second</span>
+<span class="comment">% % % % kink is associated with the second lowest rating, 'B,' and it is located</span>
+<span class="comment">% % % % at (0.097, 0.714). This means that 9.7% of the customers were ranked 'B'</span>
+<span class="comment">% % % % _or lower_, and they account for 71.4% of the defaults observed.</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % % In general, the accuracy ratio should be treated as a relative, rather</span>
+<span class="comment">% % % % than an absolute measure. For example, we can add the CAP of the</span>
+<span class="comment">% % % % predicted ratings in the same plot, and compute its accuracy ratio to</span>
+<span class="comment">% % % % compare it with the accuracy ratio of the actual ratings.</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % Rpred = double(ordinal(predDS.PredRating,[],ratingsList));</span>
+<span class="comment">% % % Spred = dummyRank(Rpred);</span>
+<span class="comment">% % % [xValPred,yValPred,~,aucPred] = perfcurve(D,Spred,1);</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % accRatioPred = (aucPred-0.5)/maxAcc;</span>
+<span class="comment">% % % fprintf('Accuracy ratio for predicted ratings: %5.3f\n',accRatioPred);</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % plot(xPerfect,yPerfect,'--k',xVal,yVal,'b',xNaive,yNaive,'-.k',...</span>
+<span class="comment">% % %     xValPred,yValPred,':r');</span>
+<span class="comment">% % % xlabel('Fraction of all companies');</span>
+<span class="comment">% % % ylabel('Fraction of defaulted companies');</span>
+<span class="comment">% % % title('Cumulative Accuracy Profile');</span>
+<span class="comment">% % % legend({'Perfect','Actual','Naive','Predicted'},'Location','SouthEast');</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % %%</span>
+<span class="comment">% % % % The accuracy ratio of the predicted rating is smaller, and its CAP is</span>
+<span class="comment">% % % % mostly below the CAP of the actual rating. This is reasonable, since the</span>
+<span class="comment">% % % % actual ratings are assigned by the credit committees that take into</span>
+<span class="comment">% % % % consideration the predicted ratings _and_ extra information that can be</span>
+<span class="comment">% % % % important to fine-tune the ratings.</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % %% Final Remarks</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % % MATLAB offers a wide range of machine learning tools, besides bagged</span>
+<span class="comment">% % % % decision trees, that can be used in the context of credit rating. In</span>
+<span class="comment">% % % % Statistics Toolbox you can find classification tools such as discriminant</span>
+<span class="comment">% % % % analysis and naive Bayes classifiers. MATLAB also offers Neural Networks</span>
+<span class="comment">% % % % Toolbox(TM). Also, Database Toolbox and MATLAB's deployment tools</span>
+<span class="comment">% % % % such as MATLAB Builder JA may provide you with more flexibility to adapt</span>
+<span class="comment">% % % % the workflow presented here to your own preferences and needs.</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % % No probabilities of default have been computed in this demo. For credit</span>
+<span class="comment">% % % % ratings, the probabilities of default are usually computed based on</span>
+<span class="comment">% % % % credit-rating migration history. See the |transprob| reference page in</span>
+<span class="comment">% % % % Financial Toolbox(TM) for more information.</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % %% Bibliography</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % % [1] Altman, E., "Financial Ratios, Discriminant Analysis and the</span>
+<span class="comment">% % % % Prediction of Corporate Bankruptcy," _Journal of Finance_, Vol. 23, No.</span>
+<span class="comment">% % % % 4, (Sep., 1968), pp. 589-609.</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % % [2] Basel Committee on Banking Supervision, "Studies on the Validation of</span>
+<span class="comment">% % % % Internal Rating Systems," Bank for International Settlements (BIS),</span>
+<span class="comment">% % % % Working Papers No. 14, revised version, May 2005. Available at:</span>
+<span class="comment">% % % % http://www.bis.org/publ/bcbs_wp14.htm.</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % % [3] Basel Committee on Banking Supervision, "International Convergence of</span>
+<span class="comment">% % % % Capital Measurement and Capital Standards: A Revised Framework," Bank for</span>
+<span class="comment">% % % % International Settlements (BIS), comprehensive version, June 2006.</span>
+<span class="comment">% % % % Available at: http://www.bis.org/publ/bcbsca.htm.</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % % [4] Loeffler, G., and P. N. Posch, _Credit Risk Modeling Using Excel and</span>
+<span class="comment">% % % % VBA_, West Sussex, England: Wiley Finance, 2007.</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % % % [5] Merton, R., "On the Pricing of Corporate Debt: The Risk Structure of</span>
+<span class="comment">% % % % Interest Rates," _Journal of Finance_, Vol. 29, No. 2, (May, 1974), pp.</span>
+<span class="comment">% % % % 449-70.</span>
+<span class="comment">% % % %</span>
+<span class="comment">% % %</span>
+<span class="comment">% % % displayEndOfDemoMessage(mfilename)</span>
+<span class="comment">% % %</span>
+<span class="comment">% % %</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Importing data from the CSV file
+% penguin = importfile('penguin.17-10-2014-20-10-2014-utf8.csv');
+% save('penguin.mat');
+
+%% Loading data
+load('penguin.mat');
+
+%% Continuous prediction
+%% Predictor and output matrix building
+% predictor matrix
+X = [penguin.KeywordVolume penguin.KeywordCpc penguin.KeywordCompetition penguin.Pr penguin.Alexa penguin.RefPages penguin.RefDomains penguin.CitationFlow penguin.TrustFlow penguin.YesterdayPos penguin.ExactAnchorsRefDomains penguin.ExactAnchorsRefPages penguin.ContainingAnchorsRefDomains penguin.ContainingAnchorsRefPages];
+% output vector we try to forecast penguin.TodayPos penguin.Change penguin.Change_abs
+Y = penguin.Change;
+
+%% Single regression tree
+pt = cvpartition(Y,'holdout',0.5);
+%  Extract predictors and responses for both sets
+Y_t = Y(training(pt));
+X_t = X(training(pt),:);
+Y_v = Y(test(pt));
+X_v = X(test(pt),:);
+
+t = classregtree(X_t,Y_t);
+%  See tree
+view(t)
+
+%% Tree performance on validating and training set : pruning the tree
+% How well did the single tree perform on the training set
+% very well but overfit the noise
+predY = t(X_t);
+disp('Full tree training set')
+
+training_residus = predY-Y_t;
+figure;
+hist(training_residus,100)
+title('Training histogram error');
+figure;
+plot(1:length(predY),predY,1:length(Y_t),Y_t);
+title('Training point to point error');
+
+errpct = abs(training_residus)./Y_t*100;
+MAE = mean(abs(errpct));
+disp(MAE);
+% Calculate the single tree's predictions on the validating set...
+predY = t(X_v);
+disp('Full tree validating set')
+figure;
+plot(1:length(predY),predY,1:length(Y_v),Y_v);
+title('Validating point to point error');
+
+validating_residus = predY-Y_v;
+figure;
+hist(validating_residus,100)
+title('Validating histogram error');
+
+errpct = abs(validating_residus)./Y_v*100;
+MAE = mean(abs(errpct));
+disp(MAE);
+
+%% Discontinuous prediction
+
+%% Predictor and output matrix building
+% predictor matrix
+X = [penguin.KeywordVolume penguin.KeywordCpc penguin.KeywordCompetition penguin.Pr penguin.Alexa penguin.RefPages penguin.RefDomains penguin.CitationFlow penguin.TrustFlow penguin.YesterdayPos penguin.ExactAnchorsRefDomains penguin.ExactAnchorsRefPages penguin.ContainingAnchorsRefDomains penguin.ContainingAnchorsRefPages];
+% output vector we try to forecast penguin.TodayPos penguin.Change penguin.Change_abs
+Y = penguin.Change <= -7;
+
+%% Single regression tree
+pt = cvpartition(Y,'holdout',0.5);
+%  Extract predictors and responses for both sets
+Y_t = Y(training(pt));
+X_t = X(training(pt),:);
+Y_v = Y(test(pt));
+X_v = X(test(pt),:);
+
+t = classregtree(X_t,Y_t);
+%  See tree
+view(t)
+
+%% Tree performance on validating and training set : pruning the tree
+% How well did the single tree perform on the training set
+% very well but overfit the noise
+predY = t(X_t);
+disp('Full tree training set')
+testErrorRate(predY,Y_t);
+
+% Calculate the single tree's predictions on the validating set...
+predY = t(X_v);
+disp('Full tree validating set')
+testErrorRate(predY,Y_v);
+
+% % %% Pruning the single tree by estimating the cost on the validating set
+% % [cost,secost,ntnodes,bestlevel] = test(t, 'test', X_v, Y_v);
+% % topt = prune(t, 'level', bestlevel);
+% % view(topt)
+% % 
+% % % Pruned tree is better on the validating set !
+% % % does not overfit the noise
+% % predY = topt(X_v);
+% % disp('Pruned tree validating set')
+% % testErrorRate(predY,Y_v );
+
+%% Bootstrapped aggregated  tree
+nTrees = 50;
+tic;
+b = TreeBagger(nTrees, X_t, Y_t);
+
+% Prediction on the training set
+[predY,allpred,devs] = predict(b,X_t);
+disp('Bagged trees training set')
+testErrorRate(predY,Y_t);
+
+% Prediction on the validating set
+[predY,allpred,devs] = predict(b,X_v);
+disp('Bagged trees validating set')
+testErrorRate(predY,Y_v);
+
+%% Parallel bootstrapped aggregated  tree
+%  crossval, jackknife, bootstrp
+nTrees = 50;
+matlabpool open local;
+opt = statset('UseParallel','always');
+tic;
+b = TreeBagger(nTrees, X, Y, 'opt',opt);
+toc;
+matlabpool close;
+
+%% Performance computation
+nb_trees_step =100:100:1000;
+times = zeros(10,2);
+for i=1:length(nb_trees_step)
+    % Sequential computation
+    nTrees = nb_trees_step(i);
+    tic;
+    b = TreeBagger(nTrees, X, Y);
+    times(i,1)=toc;
+    % Parallel computation
+    opt = statset('UseParallel','always');
+    matlabpool open local;
+    tic;
+    b = TreeBagger(nTrees, X, Y, 'opt',opt);
+    times(i,2)=toc;
+    matlabpool close;
+end
+plot(times);
+legend({'Non Parallel', 'Parallel'})
+xlabel('number of grown trees')
+ylabel('second times for calibration')
+title('\bf Calibration time for bagged trees : parallel vs non-parallel')
+
+%% Which leaf size is the best for the tree : once again prune the bagged trees
+nTrees = 50;
+b = TreeBagger(nTrees, X_t, Y_t, 'oobpred','on');
+err=oobError(b);
+plot(err);
+xlabel('number of grown trees')
+ylabel('out-of-bag classification error')
+
+leaf = [1 5 10];
+nTrees = 25;
+color = 'bgr';
+for ii = 1:length(leaf)
+    b = TreeBagger(nTrees,X,Y,'oobpred','on','cat',6,'minleaf',leaf(ii));
+    plot(b.oobError,color(ii));
+    hold on;
+    [percent_training,C_training,percent_validating,C_validating] = validateTreeFitting(X,Y,nTrees,leaf(ii));
+    disp(['% Training set validation rate with leaf size' num2str(leaf(ii)) ' : ' num2str(percent_training*100)]);
+    disp('Training Confusion matrix with order AAA AA A BBB BB B CCC');
+    C_training %#ok<NOPTS>
+    disp(['% Validating set validation rate with leaf size' num2str(leaf(ii)) ' : ' num2str(percent_validating*100)]);
+    disp('Validating Confusion matrix with order AAA AA A BBB BB B CCC');
+    C_validating %#ok<NOPTS>
+end
+xlabel('Number of grown trees');
+ylabel('Out-of-bag classification error');
+legend({'1', '5', '10'},'Location','NorthEast');
+title('Classification Error for Different Leaf Sizes');
+hold off;
+
+
+
+%% Feature selection
+% The errors are comparable for the three leaf-size options. We will
+% therefore work with a leaf size of 10, because it results in leaner trees
+% and more efficient computations.
+%
+% Note that we did not have to split the data into _training_ and _test_
+% subsets. This is done internally, it is implicit in the sampling
+% procedure that underlies the method. At each bootstrap iteration, the
+% bootstrap replica is the training set, and any customers left out
+% ("out-of-bag") are used as test points to estimate the out-of-bag
+% classification error reported above.
+%
+% Next, we want to find out whether all the features are important for the
+% accuracy of our classifier. We do this by turning on the _feature
+% importance_ measure (|oobvarimp|), and plot the results to visually find
+% the most important features. We also try a larger number of trees now,
+% and store the classification error, for further comparisons below.
+
+nTrees = 50;
+leaf = 10;
+b = TreeBagger(nTrees,X,Y,'oobvarimp','on','cat',6,'minleaf',leaf);
+
+bar(b.OOBPermutedVarDeltaError);
+xlabel('Feature number');
+ylabel('Out-of-bag feature importance');
+title('Feature importance results');
+
+oobErrorFullX = b.oobError;
+
+% % % %%
+% % % % Features 2, 4 and 6 stand out from the rest. Feature 4, market value of
+% % % % equity / book value of total debt (|MVE_BVTD|), is the most important
+% % % % predictor for this data set. This ratio is closely related to the
+% % % % predictors of creditworthiness in structural models, such as Merton's
+% % % % model [5], where the value of the firm's equity is compared to its
+% % % % outstanding debt to determine the default probability.
+% % % %
+% % % % Information on the industry sector, feature 6 (|Industry|), is also
+% % % % relatively more important than other variables to assess the
+% % % % creditworthiness of a firm for this data set.
+% % % %
+% % % % Although not as important as |MVE_BVTD|, feature 2, retained earnings /
+% % % % total assets (|RE_TA|), stands out from the rest. There is a correlation
+% % % % between retained earnings and the age of a firm (the longer a firm has
+% % % % existed, the more earnings it can accumulate, in general), and in turn
+% % % % the age of a firm is correlated to its creditworthiness (older firms tend
+% % % % to be more likely to survive in tough times).
+% % % %
+% % % % Let us fit a new classification ensemble using only predictors
+% % % % |RE_TA|, |MVE_BVTD|, and |Industry|. We compare its classification error
+% % % % with the previous classifier, which uses all features.
+% % % 
+% % % X = [creditDS.RE_TA creditDS.MVE_BVTD creditDS.Industry];
+% % % 
+% % % b = TreeBagger(nTrees,X,Y,'oobpred','on','cat',3,'minleaf',leaf);
+% % % 
+% % % oobErrorX246 = b.oobError;
+% % % 
+% % % plot(oobErrorFullX,'b');
+% % % hold on;
+% % % plot(oobErrorX246,'r');
+% % % xlabel('Number of grown trees');
+% % % ylabel('Out-of-bag classification error');
+% % % legend({'All features', 'Features 2, 4, 6'},'Location','NorthEast');
+% % % title('Classification Error for Different Sets of Predictors');
+% % % hold off;
+% % % 
+% % % %%
+% % % % The accuracy of the classification does not deteriorate significantly
+% % % % when we remove the features with relatively low importance (1, 3, and 5),
+% % % % so we will use the more parsimonious classification ensemble for our
+% % % % predictions.
+% % % %
+% % % % In this example, we have started with a set of six features only, and
+% % % % used the feature importance measure of the classifier, and the
+% % % % out-of-bag classification error as criteria to screen out three of the
+% % % % variables. Feature selection can be a time consuming process when the
+% % % % initial set of potential predictors contains dozens of variables. Besides
+% % % % the tools we have used here (variable importance and a "visual"
+% % % % comparison of out-of-bag errors), tools such as |sequentialfs| in
+% % % % Statistics Toolbox can be helpful for these types of analyses. (See also
+% % % % the demo "Selecting Features for Classifying High-dimensional Data," also
+% % % % in Statistics Toolbox). However, in the end, a successful feature
+% % % % selection process requires a combination of quantitative tools and an
+% % % % analyst's judgement.
+% % % %
+% % % % For example, the variable importance measure we used
+% % % % here is a ranking mechanism that estimates the relative impact of a
+% % % % feature by measuring how much the predictive accuracy of the classifier
+% % % % deteriorates when this feature's values are randomly permuted. The idea
+% % % % is that when the feature in question adds little to the predictive power
+% % % % of the classifier, using altered (in this case permuted) values should
+% % % % not impact the classification results. Relevant information, on the other
+% % % % hand, cannot be randomly swapped without degrading the predictions. Now,
+% % % % if two highly correlated features are important, they will both rank high
+% % % % in this analysis. In that case, keeping one of these features should
+% % % % suffice for accurate classifications, but one would not know that from
+% % % % the ranking results alone. One would have to check the correlations
+% % % % separately, or use an expert's judgement. That is to say, tools like
+% % % % variable importance or |sequentialfs| can greatly help for feature
+% % % % selection, but an analyst's judgment is a key piece in this process.
+% % % 
+% % % %%
+% % % % At this point, the classifier could be saved (e.g., |save classifier.mat
+% % % % b|), to be loaded in a future session (|load classifier|) to classify new
+% % % % customers. For efficiency, it is recommended to keep a compact version of
+% % % % the classifier once the training process is finished.
+% % % 
+% % % b = b.compact;
+% % % 
+% % % %% Classifying New Data
+% % % %
+% % % % Here we use the previously constructed classification ensemble to assign
+% % % % credit ratings to new customers. Because the ratings of existing
+% % % % customers need to be reviewed, too, on a regular basis, especially when
+% % % % their financial information has substantially changed, the data set could
+% % % % also contain a list of existing customers under review. We start by
+% % % % loading the new data.
+% % % 
+% % % newDS = dataset('file','CreditRating_NewCompanies.dat','delimiter',',');
+% % % 
+% % % %%
+% % % % To predict the credit rating for this new data, we call the |predict|
+% % % % method on the classifier. The method returns two arguments, the predicted
+% % % % class and the classification score. We certainly want to get both output
+% % % % arguments, since the classification scores contain information on how
+% % % % certain the predicted ratings seem to be. We could copy variables
+% % % % |RE_TA|, |MVE_BVTD| and |Industry| into a matrix |X|, as before, but
+% % % % since we will make only one call to |predict|, we can skip this step and
+% % % % use |newDS| directly.
+% % % 
+% % % [predClass,classifScore] = b.predict([newDS.RE_TA newDS.MVE_BVTD...
+% % %     newDS.Industry]);
+% % % 
+% % % %%
+% % % % At this point, we can create a report. Here we only display on the screen
+% % % % a small report for the first three customers, for illustration purposes,
+% % % % but MATLAB's deployment tools could greatly improve the workflow here.
+% % % % For example, using MATLAB Builder(TM) JA, credit analysts could run this
+% % % % classification remotely, using a web browser, and get a report, without
+% % % % even having MATLAB on their desktops.
+% % % 
+% % % for i = 1:3
+% % %     fprintf('Customer %d:\n',newDS.ID(i));
+% % %     fprintf('   RE/TA    = %5.2f\n',newDS.RE_TA(i));
+% % %     fprintf('   MVE/BVTD = %5.2f\n',newDS.MVE_BVTD(i));
+% % %     fprintf('   Industry = %2d\n',newDS.Industry(i));
+% % %     fprintf('   Predicted Rating : %s\n',predClass{i});
+% % %     fprintf('   Classification score : \n');
+% % %     for j = 1:length(b.ClassNames)
+% % %         if (classifScore(i,j)>0)
+% % %             fprintf('      %s : %5.4f \n',b.ClassNames{j},classifScore(i,j));
+% % %         end
+% % %     end
+% % % end
+% % % 
+% % % %%
+% % % % Keeping records of the predicted ratings and corresponding scores can be
+% % % % useful for periodic assessments of the quality of the classifier. We
+% % % % store this information here in the |dataset| array |predDS|.
+% % % 
+% % % predDS = dataset({newDS.ID,'ID'},{predClass,'PredRating'},...
+% % %     {classifScore,'sAAA','sAA','sA','sBBB','sBB','sB','sCCC'});
+% % % 
+% % % %%
+% % % % This information could be saved, for example, to a comma-delimited text file
+% % % % |PredictedRatings.dat| using the command
+% % % %
+% % % %    export(predDS,'file','PredictedRatings.dat','delimiter',',')
+% % % %
+% % % % or written directly to a database using Database Toolbox.
+% % % 
+% % % %% Back-Testing: Profiling the Classification Process
+% % % %
+% % % % _Validation_ or _back-testing_ is the process of profiling or assessing
+% % % % the quality of the credit ratings. There are many different measures and
+% % % % tests related to this task (see, for example, Basel Committee on Banking
+% % % % Supervision [2]). In this demo, we focus on the following two questions:
+% % % %
+% % % % * How accurate are the predicted ratings, as compared to the actual
+% % % % ratings? Here "predicted ratings" refers to those obtained from the
+% % % % automated classification process, and "actual ratings" to those assigned
+% % % % by a credit committee that puts together the predicted ratings and their
+% % % % classification scores, and other pieces of information, such as news and
+% % % % the state of the economy to determine a final rating.
+% % % %
+% % % % * How well do the actual ratings rank customers according to their
+% % % % creditworthiness? This is done in an _ex-post_ analysis performed, for
+% % % % example, one year later, when it is known which companies defaulted
+% % % % during the year.
+% % % %
+% % % % The file |CreditRating_ExPost.dat| contains "follow up" data on the same
+% % % % companies considered in the previous section. It contains the actual
+% % % % ratings that the committee assigned to these companies, as well as a
+% % % % "default flag" that indicates whether the corresponding company defaulted
+% % % % within one year of the rating process (if 1) or not (if 0).
+% % % 
+% % % exPostDS = dataset('file','CreditRating_ExPost.dat','delimiter',',');
+% % % 
+% % % %%
+% % % % If this were a new MATLAB session, besides reading the follow up data
+% % % % from |CreditRating_ExPost.dat| we would need to load the predicted ratings
+% % % % information stored in |predDS|, for example, with the command
+% % % %
+% % % %    predDS = dataset('file','PredictedRatings.dat','delimiter',',')
+% % % 
+% % % %%
+% % % % *Comparing predicted ratings vs. actual ratings.* The rationale to train
+% % % % an automated classifier is to expedite the work of the credit committee.
+% % % % The more accurate the predicted ratings are, the less time the committee
+% % % % has to spend reviewing the predicted ratings. So it is conceivable that
+% % % % the committee wants to have regular checks on how closely the predicted
+% % % % ratings match the final ratings they assign, and to recommend re-training
+% % % % the automated classifier (and maybe include new features, for example) if
+% % % % the mismatch seems concerning.
+% % % %
+% % % % The first tool we can use to compare predicted vs. actual ratings is a
+% % % % _confusion matrix_, readily available in Statistics Toolbox:
+% % % 
+% % % C = confusionmat(exPostDS.Rating,predDS.PredRating,...
+% % %     'order',{'AAA' 'AA' 'A' 'BBB' 'BB' 'B' 'CCC'})
+% % % 
+% % % %%
+% % % % The rows in |C| correspond to the actual ratings, and the columns to the
+% % % % predicted ratings. The amount in the position |(i,j)| in this matrix
+% % % % indicates how many customers received an actual rating |i| and were
+% % % % predicted as rating |j|. For example, position |(3,2)| tells us how many
+% % % % customers received a rating of 'A' by the credit committee, but were
+% % % % predicted as 'AA' with the automated classifier. One can also present
+% % % % this matrix in percentage form with a simple transformation:
+% % % 
+% % % Cperc = diag(sum(C,2))\C
+% % % 
+% % % %%
+% % % % Good agreement between the predicted and the actual ratings would result
+% % % % in values in the main diagonal that dominate the rest of the values in a
+% % % % row, ideally values close to 1. In this case, we actually see an
+% % % % important disagreement for 'B,' since about half of the customers that
+% % % % were rated as 'B' by the credit committee had been predicted as 'BB' by
+% % % % the automated classifier. On the other hand, it is good to see that
+% % % % ratings differ in at most one notch in most cases, with the only
+% % % % exception of 'BBB.'
+% % % %
+% % % % A confusion matrix could also be used to compare the internal ratings
+% % % % assigned by the institution against third-party ratings; this is often
+% % % % done in practice.
+% % % %
+% % % % For each specific rating, we can compute yet another measure of agreement
+% % % % between predicted and actual ratings. We can build a _Receiver Operating
+% % % % Characteristic (ROC) curve_ using the |perfcurve| function from
+% % % % Statistics Toolbox, and check the _area under the curve (AUC)_. The
+% % % % |perfcurve| function takes as an argument the actual ratings, which are
+% % % % our benchmark, the standard we are comparing against, and the 'BBB'
+% % % % classification scores determined by the automated process. Let us
+% % % % build a ROC and calculate the AUC for rating 'BBB' in our example.
+% % % 
+% % % [xVal,yVal,T,auc] = perfcurve(exPostDS.Rating,predDS.sBBB,'BBB');
+% % % plot(xVal,yVal);
+% % % xlabel('False positive rate');
+% % % ylabel('True positive rate');
+% % % text(0.5,0.25,strcat('AUC=',num2str(auc)),'EdgeColor','k');
+% % % title('ROC curve BBB, predicted vs. actual rating');
+% % % 
+% % % %%
+% % % % Here is an explanation of how the ROC is built. Recall that for each
+% % % % customer the automated classifier returns a classification score for each
+% % % % of the credit ratings, in particular, for 'BBB,' which can be interpreted
+% % % % as how likely it is that this particular customer should be rated 'BBB.'
+% % % % In order to build the ROC curve, one needs to vary the
+% % % % _classification threshold_. That is, the minimum score to classify
+% % % % a customer as 'BBB.' In other words, if the threshold is |t|, we only
+% % % % classify customers as 'BBB' if their 'BBB' score is greater than or equal
+% % % % to |t|. For example, suppose that company _XYZ_ had a 'BBB' score of
+% % % % 0.87. If the actual rating of _XYZ_ (the information in
+% % % % |exPostDS.Rating|) is 'BBB,' then _XYZ_ would be correctly classified as
+% % % % 'BBB' for any threshold of up to 0.87. This would be a _true positive_,
+% % % % and it would increase what is call the _sensitivity_ of the classifier.
+% % % % For any threshold greater than 0.87, this company would not receive a
+% % % % 'BBB' rating, and we would have a _false negative_ case. To complete the
+% % % % description, suppose now that _XYZ_'s actual rating is 'BB.' Then it
+% % % % would be correctly rejected as a 'BBB' for thresholds of more than 0.87,
+% % % % becoming a _true negative_, and thus increasing the so called
+% % % % _specificity_ of the classifier. However, for thresholds of up to 0.87,
+% % % % it would become a _false positive_ (it would be classified as 'BBB,' when
+% % % % it actually is a 'BB'). The ROC curve is constructed by plotting the
+% % % % proportion of true positives (sensitivity), versus false positives
+% % % % (1-specificity), as the threshold varies from 0 to 1.
+% % % %
+% % % % The AUC, as its name indicates, is the area under the ROC curve. The
+% % % % closer the AUC is to 1, the more accurate the classifier (a perfect
+% % % % classifier would have an AUC of 1). In this example, the AUC seems high
+% % % % enough, but it would be up to the committee to decide which level of AUC
+% % % % for the ratings should trigger a recommendation to improve the automated
+% % % % classifier.
+% % % 
+% % % %%
+% % % % *Comparing actual ratings vs. defaults in the following year.* A common
+% % % % tool used to assess the ranking of customers implicit in the credit
+% % % % ratings is the _Cumulative Accuracy Profile (CAP)_, and the associated
+% % % % _accuracy ratio_ measure. The idea is to measure the relationship between
+% % % % the credit ratings assigned and the number of defaults observed in the
+% % % % following year. One would expect that fewer defaults are observed for
+% % % % better rating classes. If the default rate were the same for all ratings,
+% % % % the rating system would be no different from a naive (and useless)
+% % % % classification system in which customers were randomly assigned a rating,
+% % % % independently of their creditworthiness.
+% % % %
+% % % % It is not hard to see that the |perfcurve| function can also be used to
+% % % % construct the CAP. The standard we compare against is not a rating, as
+% % % % before, but the default flag that we loaded from the |CreditRating_ExPost.dat|
+% % % % file. The score we use is a "dummy score" that indicates the ranking in
+% % % % creditworthiness implicit in the list of ratings. The dummy score only
+% % % % needs to satisfy that better ratings get lower dummy scores (they are
+% % % % "less likely to have a default flag of 1"), and that any two customers
+% % % % with the same rating get the same dummy score. A default probability
+% % % % could be passed as a score, of course, but we do not have default
+% % % % probabilities here, and in fact _we do not need to have estimates of the
+% % % % default probabilities to construct the CAP_, because we are not
+% % % % validating default probabilities. All we are assessing with this tool is
+% % % % how well the ratings _rank_ customers according to their
+% % % % creditworthiness.
+% % % %
+% % % % Usually, the CAP of the rating system under consideration is plotted
+% % % % together with the CAP of the "perfect rating system." The latter is a
+% % % % hypothetical credit rating system for which the lowest rating includes
+% % % % all the defaulters, and no other customers. The area under this perfect
+% % % % curve is the maximum possible AUC attainable by a rating system. By
+% % % % convention, the AUC is adjusted for CAPs to subtract the area under the
+% % % % _naive system_'s CAP, that is, the CAP of the system that randomly
+% % % % assigns ratings to customers. The naive system's CAP is simply a straight
+% % % % line from the origin to (1,1), with an AUC of 0.5. The _accuracy ratio_
+% % % % for a rating system is then defined as the ratio of the adjusted AUC (AUC
+% % % % of the system in consideration minus AUC of the naive system) to the
+% % % % maximum accuracy (AUC of the perfect system minus AUC of the naive
+% % % % system).
+% % % 
+% % % ratingsList = {'AAA' 'AA' 'A' 'BBB' 'BB' 'B' 'CCC'};
+% % % Nratings = length(ratingsList);
+% % % dummyDelta = 1/(Nratings+1);
+% % % dummyRank = linspace(dummyDelta,1-dummyDelta,Nratings)';
+% % % 
+% % % D = exPostDS.Def_tplus1;
+% % % fracTotDef = sum(D)/length(D);
+% % % maxAcc = 0.5 - 0.5 * fracTotDef;
+% % % 
+% % % R = double(ordinal(exPostDS.Rating,[],ratingsList));
+% % % S = dummyRank(R);
+% % % [xVal,yVal,~,auc] = perfcurve(D,S,1);
+% % % 
+% % % accRatio = (auc-0.5)/maxAcc;
+% % % fprintf('Accuracy ratio for actual ratings: %5.3f\n',accRatio);
+% % % 
+% % % xPerfect(1) = 0; xPerfect(2) = fracTotDef; xPerfect(3) = 1;
+% % % yPerfect(1) = 0; yPerfect(2) = 1; yPerfect(3) = 1;
+% % % xNaive(1) = 0; xNaive(2) = 1;
+% % % yNaive(1) = 0; yNaive(2) = 1;
+% % % 
+% % % plot(xPerfect,yPerfect,'REPLACE_WITH_DASH_DASHk',xVal,yVal,'b',xNaive,yNaive,'-.k');
+% % % xlabel('Fraction of all companies');
+% % % ylabel('Fraction of defaulted companies');
+% % % title('Cumulative Accuracy Profile');
+% % % legend({'Perfect','Actual','Naive'},'Location','SouthEast');
+% % % text(xVal(2)+0.01,yVal(2)-0.01,'CCC')
+% % % text(xVal(3)+0.01,yVal(3)-0.02,'B')
+% % % text(xVal(4)+0.01,yVal(4)-0.03,'BB')
+% % % 
+% % % %%
+% % % % The key to reading the information of the CAP is in the "kinks," labeled
+% % % % in the plot for ratings 'CCC,' 'B,' and 'BB.' For example, the second
+% % % % kink is associated with the second lowest rating, 'B,' and it is located
+% % % % at (0.097, 0.714). This means that 9.7% of the customers were ranked 'B'
+% % % % _or lower_, and they account for 71.4% of the defaults observed.
+% % % %
+% % % % In general, the accuracy ratio should be treated as a relative, rather
+% % % % than an absolute measure. For example, we can add the CAP of the
+% % % % predicted ratings in the same plot, and compute its accuracy ratio to
+% % % % compare it with the accuracy ratio of the actual ratings.
+% % % 
+% % % Rpred = double(ordinal(predDS.PredRating,[],ratingsList));
+% % % Spred = dummyRank(Rpred);
+% % % [xValPred,yValPred,~,aucPred] = perfcurve(D,Spred,1);
+% % % 
+% % % accRatioPred = (aucPred-0.5)/maxAcc;
+% % % fprintf('Accuracy ratio for predicted ratings: %5.3f\n',accRatioPred);
+% % % 
+% % % plot(xPerfect,yPerfect,'REPLACE_WITH_DASH_DASHk',xVal,yVal,'b',xNaive,yNaive,'-.k',...
+% % %     xValPred,yValPred,':r');
+% % % xlabel('Fraction of all companies');
+% % % ylabel('Fraction of defaulted companies');
+% % % title('Cumulative Accuracy Profile');
+% % % legend({'Perfect','Actual','Naive','Predicted'},'Location','SouthEast');
+% % % 
+% % % %%
+% % % % The accuracy ratio of the predicted rating is smaller, and its CAP is
+% % % % mostly below the CAP of the actual rating. This is reasonable, since the
+% % % % actual ratings are assigned by the credit committees that take into
+% % % % consideration the predicted ratings _and_ extra information that can be
+% % % % important to fine-tune the ratings.
+% % % 
+% % % %% Final Remarks
+% % % %
+% % % % MATLAB offers a wide range of machine learning tools, besides bagged
+% % % % decision trees, that can be used in the context of credit rating. In
+% % % % Statistics Toolbox you can find classification tools such as discriminant
+% % % % analysis and naive Bayes classifiers. MATLAB also offers Neural Networks
+% % % % Toolbox(TM). Also, Database Toolbox and MATLAB's deployment tools
+% % % % such as MATLAB Builder JA may provide you with more flexibility to adapt
+% % % % the workflow presented here to your own preferences and needs.
+% % % %
+% % % % No probabilities of default have been computed in this demo. For credit
+% % % % ratings, the probabilities of default are usually computed based on
+% % % % credit-rating migration history. See the |transprob| reference page in
+% % % % Financial Toolbox(TM) for more information.
+% % % 
+% % % %% Bibliography
+% % % %
+% % % % [1] Altman, E., "Financial Ratios, Discriminant Analysis and the
+% % % % Prediction of Corporate Bankruptcy," _Journal of Finance_, Vol. 23, No.
+% % % % 4, (Sep., 1968), pp. 589-609.
+% % % %
+% % % % [2] Basel Committee on Banking Supervision, "Studies on the Validation of
+% % % % Internal Rating Systems," Bank for International Settlements (BIS),
+% % % % Working Papers No. 14, revised version, May 2005. Available at:
+% % % % http://www.bis.org/publ/bcbs_wp14.htm.
+% % % %
+% % % % [3] Basel Committee on Banking Supervision, "International Convergence of
+% % % % Capital Measurement and Capital Standards: A Revised Framework," Bank for
+% % % % International Settlements (BIS), comprehensive version, June 2006.
+% % % % Available at: http://www.bis.org/publ/bcbsca.htm.
+% % % %
+% % % % [4] Loeffler, G., and P. N. Posch, _Credit Risk Modeling Using Excel and
+% % % % VBA_, West Sussex, England: Wiley Finance, 2007.
+% % % %
+% % % % [5] Merton, R., "On the Pricing of Corporate Debt: The Risk Structure of
+% % % % Interest Rates," _Journal of Finance_, Vol. 29, No. 2, (May, 1974), pp.
+% % % % 449-70.
+% % % %
+% % % 
+% % % displayEndOfDemoMessage(mfilename)
+% % % 
+% % % 
+
+##### SOURCE END #####
+--></body></html>
