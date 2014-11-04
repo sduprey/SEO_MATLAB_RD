@@ -1,0 +1,302 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>displaying_script</title><meta name="generator" content="MATLAB 8.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-10-20"><meta name="DC.source" content="displaying_script.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Loading computed data</a></li><li><a href="#2">Putting all entities together in a 2d scatter plot where coverage rate is the size of the marker</a></li><li><a href="#3">Putting all entities together in a 3d scatter plot</a></li><li><a href="#4">Comparing concurrency for each magasin</a></li></ul></div><h2>Loading computed data<a name="1"></a></h2><h2>Putting all entities together in a 2d scatter plot where coverage rate is the size of the marker<a name="2"></a></h2><img vspace="5" hspace="5" src="displaying_script_01.png" alt=""> <h2>Putting all entities together in a 3d scatter plot<a name="3"></a></h2><h2>Comparing concurrency for each magasin<a name="4"></a></h2><pre class="codeoutput">informatique
+</pre><img vspace="5" hspace="5" src="displaying_script_02.png" alt=""> <pre class="codeoutput">musique-cd-dvd
+</pre><img vspace="5" hspace="5" src="displaying_script_03.png" alt=""> <pre class="codeoutput">musique-instruments
+</pre><img vspace="5" hspace="5" src="displaying_script_04.png" alt=""> <pre class="codeoutput">dvd
+</pre><img vspace="5" hspace="5" src="displaying_script_05.png" alt=""> <pre class="codeoutput">livres-bd
+</pre><img vspace="5" hspace="5" src="displaying_script_06.png" alt=""> <pre class="codeoutput">jeux-pc-video-console
+</pre><img vspace="5" hspace="5" src="displaying_script_07.png" alt=""> <pre class="codeoutput">juniors
+</pre><img vspace="5" hspace="5" src="displaying_script_08.png" alt=""> <pre class="codeoutput">high-tech
+</pre><img vspace="5" hspace="5" src="displaying_script_09.png" alt=""> <pre class="codeoutput">vin-champagne
+</pre><img vspace="5" hspace="5" src="displaying_script_10.png" alt=""> <pre class="codeoutput">photo-numerique
+</pre><img vspace="5" hspace="5" src="displaying_script_11.png" alt=""> <pre class="codeoutput">bagages
+</pre><img vspace="5" hspace="5" src="displaying_script_12.png" alt=""> <pre class="codeoutput">electromenager
+</pre><img vspace="5" hspace="5" src="displaying_script_13.png" alt=""> <pre class="codeoutput">le-sport
+</pre><img vspace="5" hspace="5" src="displaying_script_14.png" alt=""> <pre class="codeoutput">telephonie
+</pre><img vspace="5" hspace="5" src="displaying_script_15.png" alt=""> <pre class="codeoutput">arts-loisirs
+</pre><img vspace="5" hspace="5" src="displaying_script_16.png" alt=""> <pre class="codeoutput">pret-a-porter
+</pre><img vspace="5" hspace="5" src="displaying_script_17.png" alt=""> <pre class="codeoutput">chaussures
+</pre><img vspace="5" hspace="5" src="displaying_script_18.png" alt=""> <pre class="codeoutput">destockage
+</pre><img vspace="5" hspace="5" src="displaying_script_19.png" alt=""> <pre class="codeoutput">auto
+</pre><img vspace="5" hspace="5" src="displaying_script_20.png" alt=""> <pre class="codeoutput">Unknown
+</pre><img vspace="5" hspace="5" src="displaying_script_21.png" alt=""> <pre class="codeoutput">maison
+</pre><img vspace="5" hspace="5" src="displaying_script_22.png" alt=""> <pre class="codeoutput">boutique-cadeaux
+</pre><img vspace="5" hspace="5" src="displaying_script_23.png" alt=""> <pre class="codeoutput">bijouterie
+</pre><img vspace="5" hspace="5" src="displaying_script_24.png" alt=""> <pre class="codeoutput">au-quotidien
+</pre><img vspace="5" hspace="5" src="displaying_script_25.png" alt=""> <pre class="codeoutput">jardin
+</pre><img vspace="5" hspace="5" src="displaying_script_26.png" alt=""> <pre class="codeoutput">personnalisation-3d
+</pre><img vspace="5" hspace="5" src="displaying_script_27.png" alt=""> <pre class="codeoutput">animalerie
+</pre><img vspace="5" hspace="5" src="displaying_script_28.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Loading computed data
+load('global_results.mat');
+load('page_type_data.mat');
+amplifying_factor = 100;
+entity_to_keep=1:10;
+
+my_entity=my_entity(entity_to_keep);
+coverage_rate_per_entity=coverage_rate_per_entity(entity_to_keep);
+average_search_position_per_entity=average_search_position_per_entity(entity_to_keep);
+average_search_volume_per_entity=average_search_volume_per_entity(entity_to_keep);
+
+average_search_position_per_entity_per_magasin=average_search_position_per_entity_per_magasin(entity_to_keep,:);
+average_search_volume_per_entity_per_magasin=average_search_volume_per_entity_per_magasin(entity_to_keep,:);
+coverage_rate_per_entity_per_magasin=coverage_rate_per_entity_per_magasin(entity_to_keep,:);
+
+%% Putting all entities together in a 2d scatter plot where coverage rate is the size of the marker
+h=figure('Name','Macro_all_entity_2d','toolbar','none','menubar','none','units','pixels','position',[10 10 1000 1250]);
+scatter(average_search_position_per_entity,average_search_volume_per_entity,amplifying_factor*coverage_rate_per_entity);
+xlabel('Average Search Position');
+ylabel('Average Search Volume');
+text(average_search_position_per_entity,average_search_volume_per_entity,my_entity);
+title('Concurrency overview for position, volume and coverage on a 2d graph')
+saveas(h,['Macro_all_entity_2d' '.jpg'],'jpg');
+
+%% Putting all entities together in a 3d scatter plot
+h=figure('Name','Macro_all_entity_3d','toolbar','none','menubar','none','units','pixels','position',[10 10 1000 1250],'Color',[1 1 1]);
+scatter3(average_search_position_per_entity,average_search_volume_per_entity,coverage_rate_per_entity);
+xlabel('Average Search Position');
+ylabel('Average Search Volume');
+zlabel('Coverage rate');
+text(average_search_position_per_entity,average_search_volume_per_entity,coverage_rate_per_entity,my_entity);
+title('Concurrency overview for position, volume and coverage on a 3d graph')
+saveas(h,['Macro_all_entity_3d' '.jpg'],'jpg');
+for mag=1:length(my_magasin)
+    %% Comparing concurrency for each magasin
+    disp(my_magasin{mag});
+    h=figure('Name',['Macro' my_magasin{mag}],'toolbar','none','menubar','none','units','pixels','position',[10 10 5000 7250]);
+    % we compare cdiscount to every other concurrents
+    loc_magasin=my_magasin{mag};
+    local_avg_pos=average_search_position_per_entity_per_magasin(:,mag);
+    local_avg_vol=average_search_volume_per_entity_per_magasin(:,mag);
+    local_cov_rat=coverage_rate_per_entity_per_magasin(:,mag);
+    scatter(local_avg_pos,local_avg_vol,amplifying_factor*local_cov_rat);
+    xlabel('Average Search Position');
+    ylabel('Average Search Volume');
+    text(local_avg_pos,local_avg_vol,my_entity);
+    title(['Magasin ' loc_magasin])
+    saveas(h,['Macro_' my_magasin{mag} '.jpg'],'jpg');
+end
+
+% %% Reporting per page type
+% %% Cdiscount Vitrine pages analysis
+% type='Vitrine';
+% display_pagetype_reporting(type,vitrine_data);
+% 
+% %% Cdiscount fiche produit pages analysis
+% type='Fiche produit';
+% display_pagetype_reporting(type,fiche_produit_data);
+% 
+% %% Cdiscount liste produit filtre pages analysis
+% type='Liste produit filtre';
+% display_pagetype_reporting(type,liste_produit_filtre_data);
+% 
+% %% Cdiscount page marque pages analysis
+% type='Page Marque';
+% display_pagetype_reporting(type,page_marque_data);
+% 
+% %% Cdiscount page concept pages analysis
+% type='Page Concept';
+% display_pagetype_reporting(type,page_concept_data);
+% 
+% %% Cdiscount SearchDexing pages analysis
+% type='SearchDexing';
+% display_pagetype_reporting(type,search_dexing_data);
+% 
+% %% Getting data from the database referential & storing it efficiently in memory
+% javaaddpath('C:\My_MathWorks_Work\PRODUCTS\postgresql-9.3-1102.jdbc4.jar');
+% setdbprefs ('DataReturnFormat', 'table');
+% conn = database('KEYWORDSDB','postgres','root','Vendor','PostgreSQL',...
+%     'Server','localhost');
+% 
+% %% magasin reporting
+% current_magasin='informatique';
+% my_entity = {'cdiscount.com';'materiel.net';'pearl.fr';'amazon.fr';'rueducommerce.fr';'darty.com';'fnac.com';'priceminister.com';'ldlc.com';'boulanger.fr';'french.alibaba.com';'pixmania.fr'};
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='musique-cd-dvd';
+% my_entity = {'cdiscount.com';'amazon.fr';'rueducommerce.fr';'fnac.com';'priceminister.com';'pixmania.fr'};
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='musique-instruments';
+% my_entity = {'cdiscount.com';'amazon.fr';'ebay.fr';'rueducommerce.fr';'fnac.com';'priceminister.com';'pixmania.fr'};
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='dvd';
+% my_entity = {'cdiscount.com';'amazon.fr';'fnac.com'};
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='livres-bd';
+% my_entity = {'cdiscount.com';'amazon.fr';'fnac.com'};
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='jeux-pc-video-console';
+% my_entity = {'cdiscount.com';'amazon.fr';'ebay.fr';'rueducommerce.fr';'darty.com';'fnac.com';'priceminister.com';'ldlc.com';'boulanger.fr';'french.alibaba.com';'pixmania.fr'};
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='juniors';
+% my_entity = {'cdiscount.com';'aubert.com';'autourdebebe.com';'king-jouet.com';'toysrus.fr';'amazon.fr';'rueducommerce.fr';'fnac.com';'priceminister.com';'zalando.fr';'french.alibaba.com'};
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='high-tech';
+% my_entity = {'cdiscount.com';'materiel.net';'pearl.fr';'amazon.fr';'ebay.fr';'rueducommerce.fr';'darty.com';'fnac.com';'priceminister.com';'ldlc.com';'boulanger.fr';'french.alibaba.com';'pixmania.fr'};
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='vin-champagne';
+% my_entity = {'cdiscount.com';'auchan.fr';'vinatis.com'};
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='photo-numerique';
+% my_entity = {'cdiscount.com';'materiel.net';'pearl.fr';'amazon.fr';'ebay.fr';'rueducommerce.fr';'darty.com';'fnac.com';'priceminister.com';'ldlc.com';'boulanger.fr';'french.alibaba.com';'pixmania.fr'};
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='bagages';
+% my_entity = {'cdiscount.com';'amazon.fr';'rueducommerce.fr';'priceminister.com'};
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='electromenager';
+% my_entity = {'cdiscount.com';'amazon.fr';'rueducommerce.fr';'conforama.fr';'darty.com';'priceminister.com';'french.alibaba.com'};
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='le-sport';
+% my_entity = {'cdiscount.com';'amazon.fr';'rueducommerce.fr';'priceminister.com';'zalando.fr';'french.alibaba.com'};
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='telephonie';
+% my_entity = {'cdiscount.com';'materiel.net';'pearl.fr';'amazon.fr';'ebay.fr';'rueducommerce.fr';'darty.com';'fnac.com';'priceminister.com';'ldlc.com';'boulanger.fr';'french.alibaba.com';'pixmania.fr'};
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='arts-loisirs';
+% my_entity = {'cdiscount.com';'amazon.fr';'ebay.fr';'rueducommerce.fr';'fnac.com';'french.alibaba.com'};
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='pret-a-porter';
+% my_entity = {'cdiscount.com';'amazon.fr';'ebay.fr';'rueducommerce.fr';'priceminister.com';'zalando.fr';'french.alibaba.com'};
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='chaussures';
+% my_entity = {'cdiscount.com';'amazon.fr';'rueducommerce.fr';'priceminister.com';'zalando.fr';'french.alibaba.com'};
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='auto';
+% my_entity = {'cdiscount.com';'amazon.fr';'rueducommerce.fr'};
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='maison';
+% my_entity = {'cdiscount.com';'amazon.fr';'rueducommerce.fr';'conforama.fr';'priceminister.com'};
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='boutique-cadeaux';
+% my_entity = {'cdiscount.com';'amazon.fr';'rueducommerce.fr';'priceminister.com'};
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='bijouterie';
+% my_entity = {'cdiscount.com';'amazon.fr';'rueducommerce.fr';'priceminister.com'};
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='au-quotidien';
+% my_entity = {'cdiscount.com';'amazon.fr';'ebay.fr';'rueducommerce.fr';'priceminister.com'};
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='jardin';
+% my_entity = {'cdiscount.com';'amazon.fr';'ebay.fr';'rueducommerce.fr';'priceminister.com'};
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='animalerie';
+% my_entity = {'cdiscount.com';'amazon.fr';'ebay.fr';'rueducommerce.fr';'priceminister.com'};
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %%
+% close(conn);
+##### SOURCE END #####
+--></body></html>
