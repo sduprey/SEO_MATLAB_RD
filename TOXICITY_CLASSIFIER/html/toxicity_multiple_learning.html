@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Machine Learning for links toxicity assessment</title><meta name="generator" content="MATLAB 8.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-11-03"><meta name="DC.source" content="toxicity_multiple_learning.m"><style type="text/css">
+      --><title>Machine Learning for links toxicity assessment</title><meta name="generator" content="MATLAB 8.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-11-04"><meta name="DC.source" content="toxicity_multiple_learning.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -117,9 +117,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     3736                           4.7295e+05               
        2                                    7               
 
-</pre><h2>Prepare the Data: Response and Predictors<a name="3"></a></h2><p>We can segregate the data into response and predictors. This will make it easier to call subsequent functions which expect the data in this format.</p><pre class="codeinput">X = [penguin.KeywordVolume penguin.KeywordCpc penguin.KeywordCompetition penguin.Pr penguin.Alexa penguin.RefPages penguin.RefDomains penguin.CitationFlow penguin.TrustFlow penguin.YesterdayPos penguin.ExactAnchorsRefDomains penguin.ExactAnchorsRefPages penguin.ContainingAnchorsRefDomains penguin.ContainingAnchorsRefPages];
+</pre><h2>Prepare the Data: Response and Predictors<a name="3"></a></h2><p>We can segregate the data into response and predictors. This will make it easier to call subsequent functions which expect the data in this format.</p><pre class="codeinput">X = [penguin.KeywordVolume penguin.KeywordCpc penguin.KeywordCompetition penguin.Pr penguin.RefPages penguin.RefDomains penguin.CitationFlow penguin.TrustFlow penguin.YesterdayPos penguin.ExactAnchorsRefDomains penguin.ExactAnchorsRefPages penguin.ContainingAnchorsRefDomains penguin.ContainingAnchorsRefPages];
 
-catPred={<span class="string">'KeywordVolume'</span> <span class="string">'KeywordCpc'</span> <span class="string">'KeywordCompetition'</span> <span class="string">'Pr'</span> <span class="string">'Alexa'</span> <span class="string">'RefPages'</span> <span class="string">'RefDomains'</span> <span class="string">'CitationFlow'</span> <span class="string">'TrustFlow'</span> <span class="string">'YesterdayPos'</span> <span class="string">'ExactAnchorsRefDomains'</span> <span class="string">'ExactAnchorsRefPages'</span> <span class="string">'ContainingAnchorsRefDomains'</span> <span class="string">'ContainingAnchorsRefPages'</span>};
+catPred={<span class="string">'KeywordVolume'</span> <span class="string">'KeywordCpc'</span> <span class="string">'KeywordCompetition'</span> <span class="string">'Pr'</span> <span class="string">'RefPages'</span> <span class="string">'RefDomains'</span> <span class="string">'CitationFlow'</span> <span class="string">'TrustFlow'</span> <span class="string">'YesterdayPos'</span> <span class="string">'ExactAnchorsRefDomains'</span> <span class="string">'ExactAnchorsRefPages'</span> <span class="string">'ContainingAnchorsRefDomains'</span> <span class="string">'ContainingAnchorsRefPages'</span>};
 
 <span class="comment">% output vector we try to forecast penguin.TodayPos penguin.Change penguin.Change_abs</span>
 <span class="comment">% this threshold is arbitrary ( a continuous classifier is done in another script )</span>
@@ -146,12 +146,12 @@ disp(<span class="string">'Test Set'</span>)
 tabulate(Ytest)
 </pre><pre class="codeoutput">Training Set
   Value    Count   Percent
-      0     8826     71.33%
-      1     3548     28.67%
+      0     9647     71.35%
+      1     3874     28.65%
 Test Set
   Value    Count   Percent
-      0     5913     71.69%
-      1     2335     28.31%
+      0     6499     72.11%
+      1     2514     27.89%
 </pre><h2>Tree performance on validating and training set<a name="5"></a></h2><pre class="codeinput">t = classregtree(Xtrain,Ytrain);
 <span class="comment">%  See tree</span>
 view(t)
@@ -175,20 +175,20 @@ C_tree = confusionmat(categorical(predY),categorical(Ytest));
 <span class="comment">% Examine the confusion matrix for each class as a percentage of the true class</span>
 C_tree = bsxfun(@rdivide,C_tree,sum(C_tree,2)) * 100 <span class="comment">%#ok&lt;*NOPTS&gt;</span>
 </pre><pre class="codeoutput">Full tree training set
-Tree, % Good classified rate on set  : 92.5327
+Tree, % Good classified rate on set  : 92.4858
 
 C_tree =
 
-   95.7398    4.2602
-   14.8822   85.1178
+   96.0222    3.9778
+   15.5164   84.4836
 
 Full tree validating set
-Tree, % Good classified rate on set  : 66.4161
+Tree, % Good classified rate on set  : 66.5039
 
 C_tree =
 
-   77.7405   22.2595
-   58.4204   41.5796
+   78.0374   21.9626
+   58.9954   41.0046
 
 </pre><img vspace="5" hspace="5" src="toxicity_multiple_learning_01.png" alt=""> <h2>Neural Networks<a name="6"></a></h2><p>Neural Network Toolbox supports supervised learning with feedforward, radial basis, and dynamic networks. It supports both classification and regression algorithms. It also supports unsupervised learning with self-organizing maps and competitive layers.</p><p>One can make use of the interactive tools to setup, train and validate a neural network. It is then possible to auto-generate the code for the purpose of automation. In this example, the auto-generated code has been updated to utilize a pool of workers, if available. This is achieved by simply setting the <i>useParallel</i> flag while making a call to <tt>train</tt>.</p><pre class="language-matlab">[net,~] = train(net,inputs,targets,<span class="string">'useParallel'</span>,<span class="string">'yes'</span>);
 </pre><p>If a GPU is available, it may be utilized by setting the <i>useGPU</i> flag.</p><p>The trained network is used to make a prediction on the test data and confusion matrix is generated for comparison with other techniques.</p><pre class="codeinput"><span class="comment">% Use modified autogenerated code to train the network</span>
@@ -206,8 +206,8 @@ C_nn = bsxfun(@rdivide,C_nn,sum(C_nn,2)) * 100 <span class="comment">%#ok&lt;*NO
 
 C_nn =
 
-   99.9154    0.0846
-   99.9572    0.0428
+   94.9531    5.0469
+   90.2546    9.7454
 
 </pre><img vspace="5" hspace="5" src="toxicity_multiple_learning_02.png" alt=""> <h2>Generalized Linear Model - Logistic Regression<a name="7"></a></h2><p>In this example, a logistic regression model is leveraged. Response may follow normal, binomial, Poisson, gamma, or inverse Gaussian distribution.</p><p>Since the response in this data set is binary, binomial distribution is suitable.</p><pre class="codeinput"><span class="comment">% Train the classifier</span>
 glm = GeneralizedLinearModel.fit(Xtrain,Ytrain,<span class="string">'linear'</span>,<span class="string">'Distribution'</span>,<span class="string">'binomial'</span>,<span class="string">'link'</span>,<span class="string">'logit'</span>);
@@ -223,8 +223,8 @@ C_glm = bsxfun(@rdivide,C_glm,sum(C_glm,2)) * 100
 </pre><pre class="codeoutput">
 C_glm =
 
-   92.9816    7.0184
-   87.2805   12.7195
+   92.6450    7.3550
+   86.2371   13.7629
 
 </pre><h2>Discriminant Analysis<a name="8"></a></h2><p>Discriminant analysis is a classification method. It assumes that different classes generate data based on different Gaussian distributions. Linear discriminant analysis is also known as the Fisher discriminant.</p><p>Here, a quadratic discriminant classifier is used.</p><pre class="codeinput"><span class="comment">% Train the classifier</span>
 da = ClassificationDiscriminant.fit(Xtrain,Ytrain,<span class="string">'discrimType'</span>,<span class="string">'quadratic'</span>);
@@ -239,8 +239,8 @@ C_da = bsxfun(@rdivide,C_da,sum(C_da,2)) * 100
 </pre><pre class="codeoutput">
 C_da =
 
-   82.9866   17.0134
-   71.0064   28.9936
+   98.1228    1.8772
+   97.4543    2.5457
 
 </pre><h2>Classification Using Nearest Neighbors<a name="9"></a></h2><p>Categorizing query points based on their distance to points in a training dataset can be a simple yet effective way of classifying new points. Various distance metrics such as euclidean, correlation, hamming, mahalonobis or your own distance metric may be used.</p><pre class="codeinput"><span class="comment">% Train the classifier</span>
 knn = ClassificationKNN.fit(Xtrain,Ytrain,<span class="string">'Distance'</span>,<span class="string">'seuclidean'</span>);
@@ -255,8 +255,8 @@ C_knn = bsxfun(@rdivide,C_knn,sum(C_knn,2)) * 100
 </pre><pre class="codeoutput">
 C_knn =
 
-   76.2388   23.7612
-   58.2441   41.7559
+   75.2885   24.7115
+   59.8250   40.1750
 
 </pre><h2>Naive Bayes Classification<a name="10"></a></h2><p>Naive Bayes classification is based on estimating P(X|Y), the probability or probability density of features X given class Y. The Naive Bayes classification object provides support for normal (Gaussian), kernel, multinomial, and multivariate multinomial distributions</p><pre class="codeinput"><span class="comment">% The multivariate multinomial distribution (_mvmn_) is appropriate for</span>
 <span class="comment">% categorical features</span>
@@ -273,8 +273,8 @@ C_nb = bsxfun(@rdivide,C_nb,sum(C_nb,2)) * 100
 </pre><pre class="codeoutput">
 C_nb =
 
-   67.7829   32.2171
-   47.4090   52.5910
+   62.8097   37.1903
+   39.1806   60.8194
 
 </pre><h2>Support Vector Machines<a name="11"></a></h2><p>Support vector machine (SVM) is supported for binary response variables. An SVM classifies data by finding the best hyperplane that separates all data points of one class from those of the other class.</p><pre class="codeinput">opts = statset(<span class="string">'MaxIter'</span>,30000);
 <span class="comment">% Train the classifier</span>
@@ -288,8 +288,8 @@ C_svm = bsxfun(@rdivide,C_svm,sum(C_svm,2)) * 100
 </pre><pre class="codeoutput">
 C_svm =
 
-   49.3996   50.6004
-   15.0749   84.9251
+   47.9305   52.0695
+   14.0811   85.9189
 
 </pre><h2>Decision Trees<a name="12"></a></h2><p>Classification trees and regression trees are two kinds of decision trees. A decision tree is a flow-chart like structure in which internal node represents test on an attribute, each branch represents outcome of test and each leaf node represents a response (decision taken after computing all attributes). Classification trees give responses that are nominal, such as 'true' or 'false'. Regression trees give numeric responses.</p><pre class="codeinput">tic
 <span class="comment">% Train the classifier</span>
@@ -303,12 +303,12 @@ Y_t = t.predict(Xtest);
 C_t = confusionmat(categorical(Ytest),categorical(Y_t));
 <span class="comment">% Examine the confusion matrix for each class as a percentage of the true class</span>
 C_t = bsxfun(@rdivide,C_t,sum(C_t,2)) * 100
-</pre><pre class="codeoutput">Elapsed time is 0.528950 seconds.
+</pre><pre class="codeoutput">Elapsed time is 0.505899 seconds.
 
 C_t =
 
-   76.6109   23.3891
-   57.5589   42.4411
+   76.3502   23.6498
+   56.7224   43.2776
 
 </pre><h2>Ensemble Learning: TreeBagger<a name="13"></a></h2><p>Bagging stands for bootstrap aggregation. Every tree in the ensemble is grown on an independently drawn sample of input data. To compute prediction for the ensemble of trees, TreeBagger takes an average of predictions from individual trees (for regression) or takes votes from individual trees (for classification). Ensemble techniques such as bagging combine many weak learners to produce a strong learner.</p><p>From a marketing perspective, as we are creating this predictive model, it may be more important for us to classify <b><i>yes</i></b> correctly than a <b><i>no</i></b>. If that is the case, we can include our opinion using the <i>cost</i> matrix. Here, <i>cost</i> matrix specifies that it is 5 times more costly to classify a <b><i>yes</i></b> as a <b><i>no</i></b>.</p><pre class="codeinput"><span class="comment">% Cost of misclassification</span>
 cost = [0 1
@@ -328,8 +328,8 @@ C_tb = bsxfun(@rdivide,C_tb,sum(C_tb,2)) * 100
 </pre><pre class="codeoutput">
 C_tb =
 
-   57.2637   42.7363
-   21.3704   78.6296
+   55.9163   44.0837
+   20.5251   79.4749
 
 </pre><h2>Compare Results<a name="14"></a></h2><p>This visualization function is making use of a couple files downloaded from <a href="http://www.mathworks.com/matlabcentral/">MATLAB Central</a>, the user community websibte. We are leveraging social computing along the way to help us in our effort.</p><pre class="codeinput">Cmat = [C_nn C_glm C_da C_knn C_nb C_svm C_t C_tb];
 labels = {<span class="string">'Neural Net '</span>, <span class="string">'Logistic Regression '</span>, <span class="string">'Discriminant Analysis '</span>,<span class="keyword">...</span>
@@ -364,34 +364,40 @@ disp(<span class="string">'Included features:'</span>);
 disp(catPred(fs)');
 disp([<span class="string">'Percentage of predictors kept : '</span> num2str(sum(fs)./length(fs)*100) <span class="string">'%'</span>]);
 </pre><pre class="codeoutput">Start forward sequential feature selection:
-Initial columns included:  2 3 10 11 13 
+Initial columns included:  1 2 3 9 12 
 Columns that can not be included:  none
-Step 1, used initial columns, criterion value 0.000566851
-Step 2, added column 5, criterion value 0.000538041
-Step 3, added column 7, criterion value 0.00052648
-Step 4, added column 9, criterion value 0.000520938
-Final columns included:  2 3 5 7 9 10 11 13 
+Step 1, used initial columns, criterion value 0.000511759
+Step 2, added column 11, criterion value 0.000502644
+Step 3, added column 13, criterion value 0.000494243
+Step 4, added column 5, criterion value 0.000489064
+Final columns included:  1 2 3 5 9 11 12 13 
 Start forward sequential feature selection:
-Initial columns included:  2 3 10 11 13 
+Initial columns included:  1 2 3 9 12 
 Columns that can not be included:  none
-Step 1, used initial columns, criterion value 0.000556259
-Step 2, added column 5, criterion value 0.000543932
-Step 3, added column 7, criterion value 0.000530116
-Step 4, added column 12, criterion value 0.000521046
-Step 5, added column 14, criterion value 0.000519754
-Final columns included:  2 3 5 7 10 11 12 13 14 
+Step 1, used initial columns, criterion value 0.00050942
+Step 2, added column 4, criterion value 0.000495904
+Step 3, added column 6, criterion value 0.000487469
+Step 4, added column 10, criterion value 0.000485233
+Step 5, added column 11, criterion value 0.000483666
+Step 6, added column 5, criterion value 0.00048251
+Step 7, added column 7, criterion value 0.000481991
+Step 8, added column 8, criterion value 0.000481276
+Final columns included:  1 2 3 4 5 6 7 8 9 10 11 12 
 Included features:
+    'KeywordVolume'
     'KeywordCpc'
     'KeywordCompetition'
-    'Alexa'
+    'Pr'
+    'RefPages'
     'RefDomains'
+    'CitationFlow'
+    'TrustFlow'
     'YesterdayPos'
     'ExactAnchorsRefDomains'
     'ExactAnchorsRefPages'
     'ContainingAnchorsRefDomains'
-    'ContainingAnchorsRefPages'
 
-Percentage of predictors kept : 64.2857%
+Percentage of predictors kept : 92.3077%
 </pre><h2>TreeBagger with Reduced Feature Set<a name="19"></a></h2><pre class="codeinput">opts = statset(<span class="string">'UseParallel'</span>,true);
 tb_r = TreeBagger(120, Xtrain(:,fs),Ytrain,<span class="string">'method'</span>,<span class="string">'classification'</span>,<span class="string">'PredictorNames'</span>,catPred(:,fs),<span class="string">'Options'</span>,opts,<span class="string">'cost'</span>,cost);
 [Y_tb_r, classifScore] = tb_r.predict(Xtest(:,fs));
@@ -401,8 +407,8 @@ C_tb_r = bsxfun(@rdivide,C_tb_r,sum(C_tb_r,2)) * 100
 </pre><pre class="codeoutput">
 C_tb_r =
 
-   56.5872   43.4128
-   22.8266   77.1734
+   56.6241   43.3759
+   22.1957   77.8043
 
 </pre><h2>Compare Results<a name="20"></a></h2><pre class="codeinput">Cmat = [C_nn C_glm C_da C_knn C_nb C_svm C_t C_tb C_tb_r];
 labels = {<span class="string">'Neural Net '</span>, <span class="string">'Logistic Regression '</span>, <span class="string">'Discriminant Analysis '</span>,<span class="keyword">...</span>
@@ -443,9 +449,9 @@ disp(penguin(1:5,:));
 % We can segregate the data into response and predictors. This will make it
 % easier to call subsequent functions which expect the data in this format.
 
-X = [penguin.KeywordVolume penguin.KeywordCpc penguin.KeywordCompetition penguin.Pr penguin.Alexa penguin.RefPages penguin.RefDomains penguin.CitationFlow penguin.TrustFlow penguin.YesterdayPos penguin.ExactAnchorsRefDomains penguin.ExactAnchorsRefPages penguin.ContainingAnchorsRefDomains penguin.ContainingAnchorsRefPages];
+X = [penguin.KeywordVolume penguin.KeywordCpc penguin.KeywordCompetition penguin.Pr penguin.RefPages penguin.RefDomains penguin.CitationFlow penguin.TrustFlow penguin.YesterdayPos penguin.ExactAnchorsRefDomains penguin.ExactAnchorsRefPages penguin.ContainingAnchorsRefDomains penguin.ContainingAnchorsRefPages];
 
-catPred={'KeywordVolume' 'KeywordCpc' 'KeywordCompetition' 'Pr' 'Alexa' 'RefPages' 'RefDomains' 'CitationFlow' 'TrustFlow' 'YesterdayPos' 'ExactAnchorsRefDomains' 'ExactAnchorsRefPages' 'ContainingAnchorsRefDomains' 'ContainingAnchorsRefPages'};
+catPred={'KeywordVolume' 'KeywordCpc' 'KeywordCompetition' 'Pr' 'RefPages' 'RefDomains' 'CitationFlow' 'TrustFlow' 'YesterdayPos' 'ExactAnchorsRefDomains' 'ExactAnchorsRefPages' 'ContainingAnchorsRefDomains' 'ContainingAnchorsRefPages'};
 
 % output vector we try to forecast penguin.TodayPos penguin.Change penguin.Change_abs
 % this threshold is arbitrary ( a continuous classifier is done in another script )

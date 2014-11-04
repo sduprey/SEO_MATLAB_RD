@@ -20,9 +20,9 @@ disp(penguin(1:5,:));
 % We can segregate the data into response and predictors. This will make it
 % easier to call subsequent functions which expect the data in this format.
 
-X = [penguin.KeywordVolume penguin.KeywordCpc penguin.KeywordCompetition penguin.Pr penguin.Alexa penguin.RefPages penguin.RefDomains penguin.CitationFlow penguin.TrustFlow penguin.YesterdayPos penguin.ExactAnchorsRefDomains penguin.ExactAnchorsRefPages penguin.ContainingAnchorsRefDomains penguin.ContainingAnchorsRefPages];
+X = [penguin.KeywordVolume penguin.KeywordCpc penguin.KeywordCompetition penguin.Pr penguin.RefPages penguin.RefDomains penguin.CitationFlow penguin.TrustFlow penguin.YesterdayPos penguin.ExactAnchorsRefDomains penguin.ExactAnchorsRefPages penguin.ContainingAnchorsRefDomains penguin.ContainingAnchorsRefPages];
 
-catPred={'KeywordVolume' 'KeywordCpc' 'KeywordCompetition' 'Pr' 'Alexa' 'RefPages' 'RefDomains' 'CitationFlow' 'TrustFlow' 'YesterdayPos' 'ExactAnchorsRefDomains' 'ExactAnchorsRefPages' 'ContainingAnchorsRefDomains' 'ContainingAnchorsRefPages'};
+catPred={'KeywordVolume' 'KeywordCpc' 'KeywordCompetition' 'Pr' 'RefPages' 'RefDomains' 'CitationFlow' 'TrustFlow' 'YesterdayPos' 'ExactAnchorsRefDomains' 'ExactAnchorsRefPages' 'ContainingAnchorsRefDomains' 'ContainingAnchorsRefPages'};
 
 % output vector we try to forecast penguin.TodayPos penguin.Change penguin.Change_abs
 % this threshold is arbitrary ( a continuous classifier is done in another script )
