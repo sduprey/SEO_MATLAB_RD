@@ -18,7 +18,7 @@ for conc=1:length(my_concurrent)
     %         disp([' Global count for magasin ' current_magasin ' : ' num2str(double(global_count))]);
     % getting real data
     
-    my_string=['select am_keyword, am_search_position, am_search_volume from ' radical_for_base '_VS_CDISCOUNT_PRICING where cd_keyword is null and am_search_position<=15 and am_search_position >= 2 and am_search_volume<=50 and am_search_volume >= 5 and magasin=''' current_magasin ''' order by am_search_volume desc'];
+    my_string=['select am_keyword, am_search_position, am_search_volume from ' radical_for_base '_VS_CDISCOUNT_PRICING where cd_keyword is null and am_search_position<=15 and magasin=''' current_magasin ''' order by am_search_volume desc'];
     disp(my_string);
     setdbprefs ('DataReturnFormat', 'cellarray');
     curs = exec(conn, my_string);

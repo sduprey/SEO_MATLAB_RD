@@ -1,0 +1,676 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Reporting for the keywords referential</title><meta name="generator" content="MATLAB 8.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-11-07"><meta name="DC.source" content="global_keyword_reporting_search_position_lower_fifteen.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Reporting for the keywords referential</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Getting data from the database referential &amp; storing it efficiently in memory</a></li><li><a href="#2">Setting up magasins and concurrents</a></li><li><a href="#3">Metrics &amp; numbers</a></li><li><a href="#4">total number of keywords</a></li><li><a href="#5">Keyword per magasin</a></li><li><a href="#7">coverage rate per entity</a></li><li><a href="#8">average number of urls per keyword per entity</a></li><li><a href="#9">average position per entity</a></li><li><a href="#10">average volume per entity</a></li><li><a href="#12">results order by search_volume by entity and by magasin</a></li><li><a href="#13">Search position by search volume per magasin per entity</a></li><li><a href="#14">results order by search_position by entity and by magasin</a></li><li><a href="#15">Search volume by search position per magasin per entity</a></li><li><a href="#18">Saving all results to make nice charts</a></li><li><a href="#19">Closing the connection</a></li></ul></div><h2>Getting data from the database referential &amp; storing it efficiently in memory<a name="1"></a></h2><pre class="codeinput">javaaddpath(<span class="string">'C:\My_MathWorks_Work\PRODUCTS\postgresql-9.3-1102.jdbc4.jar'</span>);
+setdbprefs (<span class="string">'DataReturnFormat'</span>, <span class="string">'table'</span>);
+conn = database(<span class="string">'KEYWORDSDB'</span>,<span class="string">'postgres'</span>,<span class="string">'root'</span>,<span class="string">'Vendor'</span>,<span class="string">'PostgreSQL'</span>,<span class="keyword">...</span>
+    <span class="string">'Server'</span>,<span class="string">'localhost'</span>);
+</pre><h2>Setting up magasins and concurrents<a name="2"></a></h2><pre class="codeinput">my_magasin ={<span class="string">'informatique'</span>;<span class="string">'musique-cd-dvd'</span>;<span class="string">'musique-instruments'</span>;<span class="string">'dvd'</span>;<span class="string">'livres-bd'</span>;<span class="string">'juniors'</span>;<span class="string">'high-tech'</span>;<span class="string">'vin-champagne'</span>;<span class="string">'photo-numerique'</span>;<span class="string">'animalerie'</span>;<span class="string">'electromenager'</span>;<span class="string">'le-sport'</span>;<span class="string">'telephonie'</span>;<span class="string">'arts-loisirs'</span>;<span class="string">'pret-a-porter'</span>;<span class="string">'auto'</span>;<span class="string">'Unknown'</span>;<span class="string">'maison'</span>};
+my_entity = {<span class="string">'cdiscount.com'</span>;<span class="string">'amazon.fr'</span>;<span class="string">'rueducommerce.fr'</span>;<span class="string">'conforama.fr'</span>;<span class="string">'darty.com'</span>;<span class="string">'fnac.com'</span>;<span class="string">'priceminister.com'</span>;<span class="string">'zalando.fr'</span>;<span class="string">'ldlc.com'</span>;<span class="string">'boulanger.fr'</span>;<span class="string">'pixmania.fr'</span>};
+percentage_keywords_per_magasin=zeros(size(my_magasin,1),1);
+coverage_rate_per_entity=zeros(size(my_entity,1),1);
+average_number_of_urls_per_keyword_per_entity = zeros(size(my_entity,1),1);
+average_search_position_per_entity = zeros(size(my_entity,1),1);
+average_search_volume_per_entity = zeros(size(my_entity,1),1);
+coverage_rate_per_entity_per_magasin = zeros(size(my_entity,1),size(my_magasin,1));
+average_search_position_per_entity_per_magasin = zeros(size(my_entity,1),size(my_magasin,1));
+average_search_volume_per_entity_per_magasin = zeros(size(my_entity,1),size(my_magasin,1));
+keyword_pos_vol_by_vol=table;
+keyword_pos_vol_by_pos=table;
+</pre><h2>Metrics &amp; numbers<a name="3"></a></h2><h2>total number of keywords<a name="4"></a></h2><pre class="codeinput">requesting_string=[<span class="string">'select count(distinct keyword) from pricing_keywords'</span>];
+setdbprefs (<span class="string">'DataReturnFormat'</span>, <span class="string">'numeric'</span>);
+curs = exec(conn, requesting_string);
+curs = fetch(curs);
+close(curs);
+<span class="comment">%Assign data to output variable</span>
+total_count = curs.Data;
+disp([<span class="string">'Number of distinct keywords : '</span> num2str(total_count)])
+<span class="comment">% number of distinct keywords per magasin</span>
+<span class="keyword">for</span> mag=1:length(my_magasin)
+</pre><h2>Keyword per magasin<a name="5"></a></h2><pre class="codeinput">    current_mag=my_magasin{mag};
+    requesting_string=[<span class="string">'select count(distinct keyword) from pricing_keywords where magasin='''</span> current_mag <span class="string">''''</span>];
+    setdbprefs (<span class="string">'DataReturnFormat'</span>, <span class="string">'numeric'</span>);
+    curs = exec(conn, requesting_string);
+    curs = fetch(curs);
+    close(curs);
+    <span class="comment">%Assign data to output variable</span>
+    mag_count = curs.Data;
+    <span class="comment">% select count(distinct keyword) from pricing_keywords where magasin='informatique'</span>
+   <span class="comment">% disp(['Number of distinct keywords : ' num2str(mag_count) ' for magasin : ' current_mag])</span>
+    percentage_keywords_per_magasin(mag)=mag_count./total_count*100;
+    disp([<span class="string">'Percentage of keywords : '</span> num2str(mag_count./total_count*100) <span class="string">' for magasin : '</span> current_mag])
+</pre><pre class="codeinput"><span class="keyword">end</span>
+
+<span class="keyword">for</span> conc=1:length(my_entity)
+</pre><h2>coverage rate per entity<a name="7"></a></h2><pre class="codeinput">    current_ent = my_entity{conc};
+    requesting_string=[<span class="string">'select count(*) from (select keyword, count(url) as nb_url from pricing_keywords where domain= '''</span> current_ent <span class="string">''' group by keyword ) as temp'</span>];
+    <span class="comment">% select count(distinct keyword) from pricing_keywords where domain='cdiscount.com'</span>
+    <span class="comment">% this request would give the same number</span>
+    setdbprefs (<span class="string">'DataReturnFormat'</span>, <span class="string">'numeric'</span>);
+    curs = exec(conn, requesting_string);
+    curs = fetch(curs);
+    close(curs);
+    <span class="comment">%Assign data to output variable</span>
+    global_count = curs.Data;
+   <span class="comment">% disp(['Number of distinct keywords where' current_ent ' is ranking : ' num2str(global_count)])</span>
+    coverage_rate_per_entity(conc)=global_count/total_count*100;
+    disp([<span class="string">'Coverage rate where '</span> current_ent <span class="string">' is ranking : '</span> num2str(global_count/total_count*100)]);
+</pre><h2>average number of urls per keyword per entity<a name="8"></a></h2><pre class="codeinput">    requesting_string=[<span class="string">'select avg(nb_url) from (select keyword, count(url) as nb_url from pricing_keywords where search_position&lt;= 15 and domain= '''</span> current_ent <span class="string">''' group by keyword ) as temp'</span>];
+    setdbprefs (<span class="string">'DataReturnFormat'</span>, <span class="string">'numeric'</span>);
+    curs = exec(conn, requesting_string);
+    curs = fetch(curs);
+    close(curs);
+    <span class="comment">%Assign data to output variable</span>
+    global_count = curs.Data;
+    average_number_of_urls_per_keyword_per_entity(conc)=global_count;
+    disp([<span class="string">'Average number of urls per ranking keyword '</span> num2str(global_count)]);
+</pre><h2>average position per entity<a name="9"></a></h2><pre class="codeinput">    requesting_string=[<span class="string">'select avg(search_position) from pricing_keywords where search_position&lt;= 15 and domain= '''</span> current_ent <span class="string">''''</span>];
+    setdbprefs (<span class="string">'DataReturnFormat'</span>, <span class="string">'numeric'</span>);
+    curs = exec(conn, requesting_string);
+    curs = fetch(curs);
+    close(curs);
+    <span class="comment">%Assign data to output variable</span>
+    global_count = curs.Data;
+    average_search_position_per_entity(conc)=global_count;
+    disp([<span class="string">'Average search position for '</span> current_ent <span class="string">' : '</span> num2str(global_count)]);
+</pre><h2>average volume per entity<a name="10"></a></h2><pre class="codeinput">    requesting_string=[<span class="string">'select avg(search_volume) from pricing_keywords where search_position&lt;= 15 and domain= '''</span> current_ent <span class="string">''''</span>];
+    setdbprefs (<span class="string">'DataReturnFormat'</span>, <span class="string">'numeric'</span>);
+    curs = exec(conn, requesting_string);
+    curs = fetch(curs);
+    close(curs);
+    <span class="comment">%Assign data to output variable</span>
+    global_count = curs.Data;
+    average_search_volume_per_entity(conc)=global_count;
+    disp([<span class="string">'Average search volume for '</span> current_ent <span class="string">' : '</span> num2str(global_count)]);
+
+    <span class="keyword">for</span> mag=1:length(my_magasin)
+</pre><pre class="codeinput">        current_mag=my_magasin{mag};
+        requesting_string=[<span class="string">'select count(*) from (select keyword, count(url) as nb_url from pricing_keywords where search_position&lt;= 15 and magasin='''</span> current_mag <span class="string">''' and domain= '''</span> current_ent <span class="string">''' group by keyword ) as temp'</span>];
+        setdbprefs (<span class="string">'DataReturnFormat'</span>, <span class="string">'numeric'</span>);
+        curs = exec(conn, requesting_string);
+        curs = fetch(curs);
+        close(curs);
+        <span class="comment">%Assign data to output variable</span>
+        global_count = curs.Data;
+    <span class="comment">%    disp(['Number of keywords : ' num2str(global_count) ' where ' current_ent ' ranks for magasin : ' current_mag]);</span>
+        coverage_rate_per_entity_per_magasin(conc,mag)=global_count/total_count*100;
+        disp([<span class="string">'Coverage rate for magasin '</span> current_mag <span class="string">' where '</span> current_ent <span class="string">' is ranking : '</span> num2str(global_count/total_count*100)])
+
+        <span class="comment">% average position for an entity</span>
+        requesting_string=[<span class="string">'select avg(search_position) from pricing_keywords where search_position&lt;= 15 and domain= '''</span> current_ent <span class="string">''' and magasin='''</span> current_mag <span class="string">''''</span>];
+        setdbprefs (<span class="string">'DataReturnFormat'</span>, <span class="string">'numeric'</span>);
+        curs = exec(conn, requesting_string);
+        curs = fetch(curs);
+        close(curs);
+        <span class="comment">%Assign data to output variable</span>
+        global_count = curs.Data;
+        average_search_position_per_entity_per_magasin(conc,mag)=global_count;
+        disp([<span class="string">'Average search position for '</span> current_ent <span class="string">' in magasin '</span> current_mag <span class="string">' : '</span> num2str(global_count)]);
+
+        <span class="comment">% average volume for an entity and a magasin</span>
+        requesting_string=[<span class="string">'select avg(search_volume) from pricing_keywords where search_position&lt;= 15 and domain= '''</span> current_ent <span class="string">''' and magasin='''</span> current_mag <span class="string">''''</span>];
+        setdbprefs (<span class="string">'DataReturnFormat'</span>, <span class="string">'numeric'</span>);
+        curs = exec(conn, requesting_string);
+        curs = fetch(curs);
+        close(curs);
+        <span class="comment">%Assign data to output variable</span>
+        global_count = curs.Data;
+        average_search_volume_per_entity_per_magasin(conc,mag)=global_count;
+        disp([<span class="string">'Average search volume for '</span> current_ent <span class="string">' in magasin '</span> current_mag <span class="string">' : '</span> num2str(global_count)]);
+</pre><h2>results order by search_volume by entity and by magasin<a name="12"></a></h2><pre class="codeinput">        disp(current_mag);
+        disp(current_ent);
+        requesting_string=[<span class="string">'select keyword, search_position, search_volume from pricing_keywords where search_position&lt;= 15 and domain= '''</span> current_ent <span class="string">''' and magasin='''</span> current_mag <span class="string">''' order by search_volume desc'</span>];
+        setdbprefs (<span class="string">'DataReturnFormat'</span>, <span class="string">'table'</span>);
+        curs = exec(conn, requesting_string);
+        curs = fetch(curs);
+        close(curs);
+</pre><h2>Search position by search volume per magasin per entity<a name="13"></a></h2><pre class="codeinput">        keyword_pos_vol_by_vol = curs.Data;
+        disp(keyword_pos_vol_by_vol(1:min(size(keyword_pos_vol_by_vol,1),400),:));
+</pre><h2>results order by search_position by entity and by magasin<a name="14"></a></h2><pre class="codeinput">        disp(current_mag);
+        disp(current_ent);
+        requesting_string=[<span class="string">'select keyword, search_position, search_volume from pricing_keywords where search_position&lt;= 15 and domain= '''</span> current_ent <span class="string">''' and magasin='''</span> current_mag <span class="string">''' order by search_position desc'</span>];
+        setdbprefs (<span class="string">'DataReturnFormat'</span>, <span class="string">'table'</span>);
+        curs = exec(conn, requesting_string);
+        curs = fetch(curs);
+        close(curs);
+</pre><h2>Search volume by search position per magasin per entity<a name="15"></a></h2><pre class="codeinput">        keyword_pos_vol_by_pos = curs.Data;
+        disp(keyword_pos_vol_by_pos(1:min(size(keyword_pos_vol_by_pos,1),400),:));
+</pre><pre class="codeinput">    <span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><pre class="codeoutput error">Undefined function 'fetch' for input arguments of type 'struct'.
+
+Error in global_keyword_reporting_search_position_lower_fifteen (line 27)
+curs = fetch(curs);
+</pre><h2>Saving all results to make nice charts<a name="18"></a></h2><pre class="codeinput">save(<span class="string">'global_results_under_fifteen.mat'</span>);
+<span class="comment">% %% Cdiscount Vitrine pages analysis</span>
+<span class="comment">% type='Vitrine';</span>
+<span class="comment">% regexx='/v-';</span>
+<span class="comment">% current_conc = 'cdiscount.com';</span>
+<span class="comment">% pagetype_reporting(conn,type,regexx,current_conc);</span>
+<span class="comment">%</span>
+<span class="comment">% %% Cdiscount fiche produit pages analysis</span>
+<span class="comment">% type='Fiche produit';</span>
+<span class="comment">% regexx='/f-';</span>
+<span class="comment">%</span>
+<span class="comment">% pagetype_reporting(conn,type,regexx,current_conc);</span>
+<span class="comment">%</span>
+<span class="comment">% %% Cdiscount liste produit filtre pages analysis</span>
+<span class="comment">% type='Liste produit filtre';</span>
+<span class="comment">% regexx='/lf-';</span>
+<span class="comment">% pagetype_reporting(conn,type,regexx,current_conc);</span>
+<span class="comment">%</span>
+<span class="comment">% %% Cdiscount page marque pages analysis</span>
+<span class="comment">% type='Page Marque';</span>
+<span class="comment">% regexx='/m-';</span>
+<span class="comment">% pagetype_reporting(conn,type,regexx,current_conc);</span>
+<span class="comment">%</span>
+<span class="comment">% %% Cdiscount page concept pages analysis</span>
+<span class="comment">% type='Page Concept';</span>
+<span class="comment">% regexx='/ct-';</span>
+<span class="comment">% pagetype_reporting(conn,type,regexx,current_conc);</span>
+<span class="comment">%</span>
+<span class="comment">% %% Cdiscount SearchDexing pages analysis</span>
+<span class="comment">% type='SearchDexing';</span>
+<span class="comment">% regexx='/r-';</span>
+<span class="comment">% pagetype_reporting(conn,type,regexx,current_conc);</span>
+
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='informatique';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='musique-cd-dvd';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='musique-instruments';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='dvd';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='livres-bd';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='jeux-pc-video-console';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='juniors';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='high-tech';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='vin-champagne';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='photo-numerique';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='bagages';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='electromenager';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='le-sport';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='telephonie';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='arts-loisirs';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='ct-ordinateurs-portables';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='pret-a-porter';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='chaussures';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='destockage';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='auto';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='maison';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='boutique-cadeaux';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='bijouterie';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='au-quotidien';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='jardin';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='personnalisation-3d';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='animalerie';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='ct-electromenager-couleur';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+<span class="comment">%</span>
+<span class="comment">% %% magasin reporting</span>
+<span class="comment">% current_magasin='Unknown';</span>
+<span class="comment">% magasin_reporting(current_magasin,my_entity,conn);</span>
+</pre><h2>Closing the connection<a name="19"></a></h2><pre class="codeinput">close(conn);
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Reporting for the keywords referential
+%% Getting data from the database referential & storing it efficiently in memory
+javaaddpath('C:\My_MathWorks_Work\PRODUCTS\postgresql-9.3-1102.jdbc4.jar');
+setdbprefs ('DataReturnFormat', 'table');
+conn = database('KEYWORDSDB','postgres','root','Vendor','PostgreSQL',...
+    'Server','localhost');
+
+%% Setting up magasins and concurrents
+my_magasin ={'informatique';'musique-cd-dvd';'musique-instruments';'dvd';'livres-bd';'juniors';'high-tech';'vin-champagne';'photo-numerique';'animalerie';'electromenager';'le-sport';'telephonie';'arts-loisirs';'pret-a-porter';'auto';'Unknown';'maison'};
+my_entity = {'cdiscount.com';'amazon.fr';'rueducommerce.fr';'conforama.fr';'darty.com';'fnac.com';'priceminister.com';'zalando.fr';'ldlc.com';'boulanger.fr';'pixmania.fr'};
+percentage_keywords_per_magasin=zeros(size(my_magasin,1),1);
+coverage_rate_per_entity=zeros(size(my_entity,1),1);
+average_number_of_urls_per_keyword_per_entity = zeros(size(my_entity,1),1);
+average_search_position_per_entity = zeros(size(my_entity,1),1);
+average_search_volume_per_entity = zeros(size(my_entity,1),1);
+coverage_rate_per_entity_per_magasin = zeros(size(my_entity,1),size(my_magasin,1));
+average_search_position_per_entity_per_magasin = zeros(size(my_entity,1),size(my_magasin,1));
+average_search_volume_per_entity_per_magasin = zeros(size(my_entity,1),size(my_magasin,1));
+keyword_pos_vol_by_vol=table;
+keyword_pos_vol_by_pos=table;
+
+%% Metrics & numbers
+%% total number of keywords
+requesting_string=['select count(distinct keyword) from pricing_keywords'];
+setdbprefs ('DataReturnFormat', 'numeric');
+curs = exec(conn, requesting_string);
+curs = fetch(curs);
+close(curs);
+%Assign data to output variable
+total_count = curs.Data;
+disp(['Number of distinct keywords : ' num2str(total_count)])
+% number of distinct keywords per magasin
+for mag=1:length(my_magasin)
+    %% Keyword per magasin
+    current_mag=my_magasin{mag};
+    requesting_string=['select count(distinct keyword) from pricing_keywords where magasin=''' current_mag ''''];
+    setdbprefs ('DataReturnFormat', 'numeric');
+    curs = exec(conn, requesting_string);
+    curs = fetch(curs);
+    close(curs);
+    %Assign data to output variable
+    mag_count = curs.Data;
+    % select count(distinct keyword) from pricing_keywords where magasin='informatique'
+   % disp(['Number of distinct keywords : ' num2str(mag_count) ' for magasin : ' current_mag])
+    percentage_keywords_per_magasin(mag)=mag_count./total_count*100;
+    disp(['Percentage of keywords : ' num2str(mag_count./total_count*100) ' for magasin : ' current_mag])
+end
+
+for conc=1:length(my_entity)
+    %% coverage rate per entity
+    current_ent = my_entity{conc};
+    requesting_string=['select count(*) from (select keyword, count(url) as nb_url from pricing_keywords where domain= ''' current_ent ''' group by keyword ) as temp'];
+    % select count(distinct keyword) from pricing_keywords where domain='cdiscount.com'
+    % this request would give the same number
+    setdbprefs ('DataReturnFormat', 'numeric');
+    curs = exec(conn, requesting_string);
+    curs = fetch(curs);
+    close(curs);
+    %Assign data to output variable
+    global_count = curs.Data;
+   % disp(['Number of distinct keywords where' current_ent ' is ranking : ' num2str(global_count)])
+    coverage_rate_per_entity(conc)=global_count/total_count*100;
+    disp(['Coverage rate where ' current_ent ' is ranking : ' num2str(global_count/total_count*100)]); 
+    
+    %% average number of urls per keyword per entity
+    requesting_string=['select avg(nb_url) from (select keyword, count(url) as nb_url from pricing_keywords where search_position<= 15 and domain= ''' current_ent ''' group by keyword ) as temp'];
+    setdbprefs ('DataReturnFormat', 'numeric');
+    curs = exec(conn, requesting_string);
+    curs = fetch(curs);
+    close(curs);
+    %Assign data to output variable
+    global_count = curs.Data;
+    average_number_of_urls_per_keyword_per_entity(conc)=global_count;
+    disp(['Average number of urls per ranking keyword ' num2str(global_count)]);
+    
+    %% average position per entity
+    requesting_string=['select avg(search_position) from pricing_keywords where search_position<= 15 and domain= ''' current_ent ''''];
+    setdbprefs ('DataReturnFormat', 'numeric');
+    curs = exec(conn, requesting_string);
+    curs = fetch(curs);
+    close(curs);
+    %Assign data to output variable
+    global_count = curs.Data;
+    average_search_position_per_entity(conc)=global_count;
+    disp(['Average search position for ' current_ent ' : ' num2str(global_count)]);
+    
+    %% average volume per entity
+    requesting_string=['select avg(search_volume) from pricing_keywords where search_position<= 15 and domain= ''' current_ent ''''];
+    setdbprefs ('DataReturnFormat', 'numeric');
+    curs = exec(conn, requesting_string);
+    curs = fetch(curs);
+    close(curs);
+    %Assign data to output variable
+    global_count = curs.Data;
+    average_search_volume_per_entity(conc)=global_count;
+    disp(['Average search volume for ' current_ent ' : ' num2str(global_count)]);
+    
+    for mag=1:length(my_magasin)
+        current_mag=my_magasin{mag};
+        requesting_string=['select count(*) from (select keyword, count(url) as nb_url from pricing_keywords where search_position<= 15 and magasin=''' current_mag ''' and domain= ''' current_ent ''' group by keyword ) as temp'];
+        setdbprefs ('DataReturnFormat', 'numeric');
+        curs = exec(conn, requesting_string);
+        curs = fetch(curs);
+        close(curs);
+        %Assign data to output variable
+        global_count = curs.Data;
+    %    disp(['Number of keywords : ' num2str(global_count) ' where ' current_ent ' ranks for magasin : ' current_mag]);
+        coverage_rate_per_entity_per_magasin(conc,mag)=global_count/total_count*100;
+        disp(['Coverage rate for magasin ' current_mag ' where ' current_ent ' is ranking : ' num2str(global_count/total_count*100)])
+        
+        % average position for an entity
+        requesting_string=['select avg(search_position) from pricing_keywords where search_position<= 15 and domain= ''' current_ent ''' and magasin=''' current_mag ''''];
+        setdbprefs ('DataReturnFormat', 'numeric');
+        curs = exec(conn, requesting_string);
+        curs = fetch(curs);
+        close(curs);
+        %Assign data to output variable
+        global_count = curs.Data;
+        average_search_position_per_entity_per_magasin(conc,mag)=global_count;
+        disp(['Average search position for ' current_ent ' in magasin ' current_mag ' : ' num2str(global_count)]);     
+        
+        % average volume for an entity and a magasin
+        requesting_string=['select avg(search_volume) from pricing_keywords where search_position<= 15 and domain= ''' current_ent ''' and magasin=''' current_mag ''''];
+        setdbprefs ('DataReturnFormat', 'numeric');
+        curs = exec(conn, requesting_string);
+        curs = fetch(curs);
+        close(curs);
+        %Assign data to output variable
+        global_count = curs.Data;
+        average_search_volume_per_entity_per_magasin(conc,mag)=global_count;
+        disp(['Average search volume for ' current_ent ' in magasin ' current_mag ' : ' num2str(global_count)]);
+        
+        
+        
+        %% results order by search_volume by entity and by magasin
+        disp(current_mag);
+        disp(current_ent);
+        requesting_string=['select keyword, search_position, search_volume from pricing_keywords where search_position<= 15 and domain= ''' current_ent ''' and magasin=''' current_mag ''' order by search_volume desc'];
+        setdbprefs ('DataReturnFormat', 'table');
+        curs = exec(conn, requesting_string);
+        curs = fetch(curs);
+        close(curs);
+        %% Search position by search volume per magasin per entity
+        keyword_pos_vol_by_vol = curs.Data;
+        disp(keyword_pos_vol_by_vol(1:min(size(keyword_pos_vol_by_vol,1),400),:));
+        
+        
+        %% results order by search_position by entity and by magasin
+        disp(current_mag);
+        disp(current_ent);
+        requesting_string=['select keyword, search_position, search_volume from pricing_keywords where search_position<= 15 and domain= ''' current_ent ''' and magasin=''' current_mag ''' order by search_position desc'];
+        setdbprefs ('DataReturnFormat', 'table');
+        curs = exec(conn, requesting_string);
+        curs = fetch(curs);
+        close(curs);
+        %% Search volume by search position per magasin per entity
+        keyword_pos_vol_by_pos = curs.Data;
+        disp(keyword_pos_vol_by_pos(1:min(size(keyword_pos_vol_by_pos,1),400),:));
+    end
+end
+
+%% Saving all results to make nice charts
+save('global_results_under_fifteen.mat');
+% %% Cdiscount Vitrine pages analysis
+% type='Vitrine';
+% regexx='/v-';
+% current_conc = 'cdiscount.com';
+% pagetype_reporting(conn,type,regexx,current_conc);
+% 
+% %% Cdiscount fiche produit pages analysis
+% type='Fiche produit';
+% regexx='/f-';
+% 
+% pagetype_reporting(conn,type,regexx,current_conc);
+% 
+% %% Cdiscount liste produit filtre pages analysis
+% type='Liste produit filtre';
+% regexx='/lf-';
+% pagetype_reporting(conn,type,regexx,current_conc);
+% 
+% %% Cdiscount page marque pages analysis
+% type='Page Marque';
+% regexx='/m-';
+% pagetype_reporting(conn,type,regexx,current_conc);
+% 
+% %% Cdiscount page concept pages analysis
+% type='Page Concept';
+% regexx='/ct-';
+% pagetype_reporting(conn,type,regexx,current_conc);
+% 
+% %% Cdiscount SearchDexing pages analysis
+% type='SearchDexing';
+% regexx='/r-';
+% pagetype_reporting(conn,type,regexx,current_conc);
+
+% %% magasin reporting
+% current_magasin='informatique';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='musique-cd-dvd';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='musique-instruments';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='dvd';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='livres-bd';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='jeux-pc-video-console';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='juniors';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='high-tech';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='vin-champagne';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='photo-numerique';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='bagages';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='electromenager';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='le-sport';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='telephonie';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='arts-loisirs';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='ct-ordinateurs-portables';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='pret-a-porter';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='chaussures';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='destockage';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='auto';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='maison';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='boutique-cadeaux';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='bijouterie';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='au-quotidien';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='jardin';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='personnalisation-3d';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='animalerie';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='ct-electromenager-couleur';
+% magasin_reporting(current_magasin,my_entity,conn);
+% 
+% %% magasin reporting
+% current_magasin='Unknown';
+% magasin_reporting(current_magasin,my_entity,conn);
+
+%% Closing the connection
+close(conn);
+
+
+##### SOURCE END #####
+--></body></html>

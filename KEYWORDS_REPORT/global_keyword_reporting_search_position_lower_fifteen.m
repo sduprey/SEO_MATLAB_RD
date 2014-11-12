@@ -2,12 +2,12 @@
 %% Getting data from the database referential & storing it efficiently in memory
 javaaddpath('C:\My_MathWorks_Work\PRODUCTS\postgresql-9.3-1102.jdbc4.jar');
 setdbprefs ('DataReturnFormat', 'table');
-conn = database('KEYWORDSDB','postgres','root','Vendor','PostgreSQL',...
+conn = database('KEYWORDSDB','postgres','mogette','Vendor','PostgreSQL',...
     'Server','localhost');
 
 %% Setting up magasins and concurrents
-my_magasin = {'informatique';'musique-cd-dvd';'musique-instruments';'dvd';'livres-bd';'jeux-pc-video-console';'juniors';'high-tech';'vin-champagne';'photo-numerique';'bagages';'electromenager';'le-sport';'telephonie';'arts-loisirs';'pret-a-porter';'chaussures';'destockage';'auto';'Unknown';'maison';'boutique-cadeaux';'bijouterie';'au-quotidien';'jardin';'personnalisation-3d';'animalerie'};
-my_entity = {'amazon.fr';'ebay.fr';'rueducommerce.fr';'conforama.fr';'darty.com';'fnac.com';'priceminister.com';'zalando.fr';'ldlc.com';'boulanger.fr';'french.alibaba.com';'pixmania.fr'};
+my_magasin ={'informatique';'musique-cd-dvd';'musique-instruments';'dvd';'livres-bd';'juniors';'high-tech';'vin-champagne';'photo-numerique';'animalerie';'electromenager';'le-sport';'telephonie';'arts-loisirs';'pret-a-porter';'auto';'Unknown';'maison'};
+my_entity = {'cdiscount.com';'amazon.fr';'rueducommerce.fr';'conforama.fr';'darty.com';'fnac.com';'priceminister.com';'zalando.fr';'ldlc.com';'boulanger.fr';'pixmania.fr'};
 percentage_keywords_per_magasin=zeros(size(my_magasin,1),1);
 coverage_rate_per_entity=zeros(size(my_entity,1),1);
 average_number_of_urls_per_keyword_per_entity = zeros(size(my_entity,1),1);
@@ -160,7 +160,7 @@ for conc=1:length(my_entity)
 end
 
 %% Saving all results to make nice charts
-save('global_results.mat');
+save('global_results_under_fifteen.mat');
 % %% Cdiscount Vitrine pages analysis
 % type='Vitrine';
 % regexx='/v-';
