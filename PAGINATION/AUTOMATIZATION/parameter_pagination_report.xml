@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+<book lang="fr">
+<?dbhtml filename="parameter_pagination_report.html"?>
+<!--Created by: Report Generator v3.16-->
+<!--A report showing a series of Magic Squares and displaying
+them as images.
+
+A magic square is a matrix in which the columns, rows, and diagonals
+all sum to the same number.
+-->
+<bookinfo>
+    <title>Rapport pagination</title>
+    <subtitle>Atteignabilié des pages pour trois algorithmes : Concertina, Concertina redesignée et Nomao</subtitle>
+    <author>
+        <firstname>Stefan Duprey</firstname>
+    </author>
+    <pubdate>01-Oct-2014 12:09:05</pubdate>
+</bookinfo>
+<mediaobject>
+    <imageobject>
+        <imagedata
+            fileref="./parameter_pagination_report_pdf_files/image-001-hg.png" scalefit="1"/>
+    </imageobject>
+</mediaobject>
+<mediaobject>
+    <imageobject>
+        <imagedata
+            fileref="./parameter_pagination_report_pdf_files/image-003-hg.png" scalefit="1"/>
+    </imageobject>
+</mediaobject>
+<mediaobject>
+    <imageobject>
+        <imagedata
+            fileref="./parameter_pagination_report_pdf_files/image-005-hg.png" scalefit="1"/>
+    </imageobject>
+</mediaobject>
+<mediaobject>
+    <imageobject>
+        <imagedata
+            fileref="./parameter_pagination_report_pdf_files/image-007-hg.png" scalefit="1"/>
+    </imageobject>
+</mediaobject>
+<mediaobject>
+    <imageobject>
+        <imagedata
+            fileref="./parameter_pagination_report_pdf_files/image-009-hg.png" scalefit="1"/>
+    </imageobject>
+</mediaobject>
+<mediaobject>
+    <imageobject>
+        <imagedata
+            fileref="./parameter_pagination_report_pdf_files/image-011-hg.png" scalefit="1"/>
+    </imageobject>
+</mediaobject>
+<mediaobject>
+    <imageobject>
+        <imagedata
+            fileref="./parameter_pagination_report_pdf_files/image-013-hg.png" scalefit="1"/>
+    </imageobject>
+</mediaobject>
+<mediaobject>
+    <imageobject>
+        <imagedata
+            fileref="./parameter_pagination_report_pdf_files/image-015-hg.png" scalefit="1"/>
+    </imageobject>
+</mediaobject>
+<mediaobject>
+    <imageobject>
+        <imagedata
+            fileref="./parameter_pagination_report_pdf_files/image-017-hg.png" scalefit="1"/>
+    </imageobject>
+</mediaobject>
+<mediaobject>
+    <imageobject>
+        <imagedata
+            fileref="./parameter_pagination_report_pdf_files/image-019-hg.png" scalefit="1"/>
+    </imageobject>
+</mediaobject>
+<mediaobject>
+    <imageobject>
+        <imagedata
+            fileref="./parameter_pagination_report_pdf_files/image-021-hg.png" scalefit="1"/>
+    </imageobject>
+</mediaobject>
+<mediaobject>
+    <imageobject>
+        <imagedata
+            fileref="./parameter_pagination_report_pdf_files/image-023-hg.png" scalefit="1"/>
+    </imageobject>
+</mediaobject>
+</book>

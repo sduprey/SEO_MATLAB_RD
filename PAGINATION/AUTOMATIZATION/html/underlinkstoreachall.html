@@ -1,0 +1,317 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Comparing pagination efficiency in term of depth for different methodologies : Concertina, redesigned Concertina &amp; Nomao</title><meta name="generator" content="MATLAB 8.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-10-01"><meta name="DC.source" content="underlinkstoreachall.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Comparing pagination efficiency in term of depth for different methodologies : Concertina, redesigned Concertina &amp; Nomao</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">we want to reach all products with this size</a></li><li><a href="#2">Global parameters for all algorithms</a></li><li><a href="#3">Looping over each URL to access the efficiency of each methodology</a></li><li><a href="#4">Computing the distribution for the following URL :</a></li><li><a href="#6">Saving the results</a></li></ul></div><h2>we want to reach all products with this size<a name="1"></a></h2><pre class="codeinput">nb_product = 100000
+</pre><pre class="codeoutput">
+nb_product =
+
+      100000
+
+</pre><h2>Global parameters for all algorithms<a name="2"></a></h2><p>total number of displayable references in pagination</p><pre class="codeinput">Nlinks_beginning=15;
+Nlinks_end=20;
+<span class="comment">% padding parameter</span>
+Npadding=3;
+<span class="comment">% the depth of click we want to explore</span>
+depth_click=280;
+nb_product_per_page_array = [23,35];
+</pre><h2>Looping over each URL to access the efficiency of each methodology<a name="3"></a></h2><p>we output a visualization only for one tenth of the URLs we skip the 7 first nb products because of the exalead limitation to 100 000 products</p><pre class="codeinput"><span class="keyword">for</span> i=1:length(nb_product_per_page_array)
+    nb_product_per_page=nb_product_per_page_array(i);
+    <span class="keyword">for</span> Nlinks=Nlinks_beginning:2:Nlinks_end
+</pre><h2>Computing the distribution for the following URL :<a name="4"></a></h2><pre class="codeinput">        disp([<span class="string">'Computing depth reachability for '</span> num2str(nb_product) <span class="string">' product list'</span>]);
+        disp([<span class="string">'Computing depth reachability for '</span> num2str(Nlinks) <span class="string">' under links '</span>]);
+        disp([<span class="string">'Computing depth reachability for '</span> num2str(nb_product_per_page) <span class="string">' products per page '</span>]);
+        <span class="comment">% we here assume a number of 23 products per page</span>
+        Ntotal=round(nb_product./nb_product_per_page);
+        <span class="comment">% notice that relevant cases are Ntotal &gt;&gt; Nlink</span>
+        disp([<span class="string">'Number of pages to paginate : '</span> num2str(Ntotal)]);
+        <span class="comment">% affect the pagination computation methodology</span>
+        concertina_distrib=@(x)concertina_compute_pagination(x, Nlinks, Npadding, Ntotal);
+        designed_concertina_distrib=@(x)designed_concertina_compute_pagination(x, Nlinks, Npadding, Ntotal);
+        nomao_distrib=@(x)nomao_compute_pagination(x, Nlinks, Ntotal);
+
+        <span class="comment">% Computing the Concertina efficiency</span>
+        distribution=concertina_distrib(1);
+        click=1;
+        my_evolving_distrib=cell(depth_click,1);
+        <span class="keyword">while</span> (click &lt;= depth_click)
+            <span class="comment">%  links_to_add instantiation</span>
+            new_list=[];
+            <span class="keyword">for</span> link=1:size(distribution,1)
+                <span class="comment">% we here compute the number of pages reachable at the variable click</span>
+                new_list = union(new_list,concertina_distrib(distribution(link)));
+                <span class="keyword">if</span> max(new_list)&gt;Ntotal
+                    disp(<span class="string">'We have a problem here'</span>)
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+            my_evolving_distrib{click}=new_list;
+            distribution=new_list;
+            <span class="comment">%  links_to_add=added_links+newlist</span>
+            <span class="comment">% we here list the number of pages reached at click number</span>
+            click=click+1;
+        <span class="keyword">end</span>
+        concertina_length_vector = cellfun(@length, my_evolving_distrib);
+
+        <span class="comment">% Computing the Redesigned Concertina efficiency</span>
+        distribution=designed_concertina_distrib(1);
+        click=1;
+        my_evolving_distrib=cell(depth_click,1);
+        <span class="keyword">while</span> (click &lt;= depth_click)
+            <span class="comment">%  links_to_add instantiation</span>
+            new_list=[];
+            <span class="keyword">for</span> link=1:size(distribution,1)
+                <span class="comment">% we here compute the number of pages reachable at the variable click</span>
+                new_list = union(new_list,designed_concertina_distrib(distribution(link)));
+                <span class="keyword">if</span> max(new_list)&gt;Ntotal
+                    disp(<span class="string">'We have a problem here'</span>)
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+            my_evolving_distrib{click}=new_list;
+            distribution=new_list;
+            <span class="comment">%  links_to_add=added_links+newlist</span>
+            <span class="comment">% we here list the number of pages reached at click number</span>
+            click=click+1;
+        <span class="keyword">end</span>
+        redesigned_concertina_length_vector = cellfun(@length, my_evolving_distrib);
+
+        <span class="comment">% Computing the Nomao efficiency</span>
+        distribution=nomao_distrib(1);
+        click=1;
+        my_evolving_distrib=cell(depth_click,1);
+        <span class="keyword">while</span> (click &lt;= depth_click)
+            <span class="comment">%  links_to_add instantiation</span>
+            new_list=[];
+            <span class="keyword">for</span> link=1:size(distribution,1)
+                <span class="comment">% we here compute the number of pages reachable at the variable click</span>
+                new_list = union(new_list,nomao_distrib(distribution(link)));
+                <span class="keyword">if</span> max(new_list)&gt;Ntotal
+                    disp(<span class="string">'We have a problem here'</span>)
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+            my_evolving_distrib{click}=new_list;
+            distribution=new_list;
+            <span class="comment">%  links_to_add=added_links+newlist</span>
+            <span class="comment">% we here list the number of pages reached at click number</span>
+            click=click+1;
+        <span class="keyword">end</span>
+        nomao_distrib_length_vector = cellfun(@length, my_evolving_distrib);
+
+        <span class="comment">% Displaying both results on a same graph</span>
+        <span class="comment">% filtering the asymptote</span>
+        filter=(concertina_length_vector&lt;Ntotal | nomao_distrib_length_vector&lt;Ntotal | redesigned_concertina_length_vector&lt;Ntotal);
+        matrix=[concertina_length_vector(filter), redesigned_concertina_length_vector(filter), nomao_distrib_length_vector(filter)];
+        <span class="comment">% storing the result</span>
+        results{i}=matrix;
+        <span class="comment">%displaying the results</span>
+        figure;
+        createfigure(matrix,[<span class="string">'sous liens'</span> num2str(Nlinks) <span class="string">' nb product per page'</span> num2str(nb_product_per_page)]);
+</pre><pre class="codeoutput">Computing depth reachability for 100000 product list
+Computing depth reachability for 15 under links 
+Computing depth reachability for 23 products per page 
+Number of pages to paginate : 4348
+</pre><img vspace="5" hspace="5" src="underlinkstoreachall_01.png" alt=""> <img vspace="5" hspace="5" src="underlinkstoreachall_02.png" alt=""> <pre class="codeoutput">Computing depth reachability for 100000 product list
+Computing depth reachability for 17 under links 
+Computing depth reachability for 23 products per page 
+Number of pages to paginate : 4348
+</pre><img vspace="5" hspace="5" src="underlinkstoreachall_03.png" alt=""> <img vspace="5" hspace="5" src="underlinkstoreachall_04.png" alt=""> <pre class="codeoutput">Computing depth reachability for 100000 product list
+Computing depth reachability for 19 under links 
+Computing depth reachability for 23 products per page 
+Number of pages to paginate : 4348
+</pre><img vspace="5" hspace="5" src="underlinkstoreachall_05.png" alt=""> <img vspace="5" hspace="5" src="underlinkstoreachall_06.png" alt=""> <pre class="codeoutput">Computing depth reachability for 100000 product list
+Computing depth reachability for 15 under links 
+Computing depth reachability for 35 products per page 
+Number of pages to paginate : 2857
+</pre><img vspace="5" hspace="5" src="underlinkstoreachall_07.png" alt=""> <img vspace="5" hspace="5" src="underlinkstoreachall_08.png" alt=""> <pre class="codeoutput">Computing depth reachability for 100000 product list
+Computing depth reachability for 17 under links 
+Computing depth reachability for 35 products per page 
+Number of pages to paginate : 2857
+</pre><img vspace="5" hspace="5" src="underlinkstoreachall_09.png" alt=""> <img vspace="5" hspace="5" src="underlinkstoreachall_10.png" alt=""> <pre class="codeoutput">Computing depth reachability for 100000 product list
+Computing depth reachability for 19 under links 
+Computing depth reachability for 35 products per page 
+Number of pages to paginate : 2857
+</pre><img vspace="5" hspace="5" src="underlinkstoreachall_11.png" alt=""> <img vspace="5" hspace="5" src="underlinkstoreachall_12.png" alt=""> <pre class="codeinput">    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><h2>Saving the results<a name="6"></a></h2><pre class="codeinput">save(<span class="string">'global_results.mat'</span>);
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Comparing pagination efficiency in term of depth for different methodologies : Concertina, redesigned Concertina & Nomao
+%% we want to reach all products with this size
+nb_product = 100000
+
+%% Global parameters for all algorithms
+% total number of displayable references in pagination
+Nlinks_beginning=15;
+Nlinks_end=20;
+% padding parameter
+Npadding=3;
+% the depth of click we want to explore
+depth_click=280;
+nb_product_per_page_array = [23,35];
+
+%% Looping over each URL to access the efficiency of each methodology
+% we output a visualization only for one tenth of the URLs
+% we skip the 7 first nb products because of the exalead limitation to 100 000
+% products
+
+for i=1:length(nb_product_per_page_array)
+    nb_product_per_page=nb_product_per_page_array(i);
+    for Nlinks=Nlinks_beginning:2:Nlinks_end
+        %% Computing the distribution for the following URL :
+        disp(['Computing depth reachability for ' num2str(nb_product) ' product list']);
+        disp(['Computing depth reachability for ' num2str(Nlinks) ' under links ']);
+        disp(['Computing depth reachability for ' num2str(nb_product_per_page) ' products per page ']);
+        % we here assume a number of 23 products per page
+        Ntotal=round(nb_product./nb_product_per_page);
+        % notice that relevant cases are Ntotal >> Nlink
+        disp(['Number of pages to paginate : ' num2str(Ntotal)]);
+        % affect the pagination computation methodology
+        concertina_distrib=@(x)concertina_compute_pagination(x, Nlinks, Npadding, Ntotal);
+        designed_concertina_distrib=@(x)designed_concertina_compute_pagination(x, Nlinks, Npadding, Ntotal);
+        nomao_distrib=@(x)nomao_compute_pagination(x, Nlinks, Ntotal);
+        
+        % Computing the Concertina efficiency
+        distribution=concertina_distrib(1);
+        click=1;
+        my_evolving_distrib=cell(depth_click,1);
+        while (click <= depth_click)
+            %  links_to_add instantiation
+            new_list=[];
+            for link=1:size(distribution,1)
+                % we here compute the number of pages reachable at the variable click
+                new_list = union(new_list,concertina_distrib(distribution(link)));
+                if max(new_list)>Ntotal
+                    disp('We have a problem here')
+                end
+            end
+            my_evolving_distrib{click}=new_list;
+            distribution=new_list;
+            %  links_to_add=added_links+newlist
+            % we here list the number of pages reached at click number
+            click=click+1;
+        end
+        concertina_length_vector = cellfun(@length, my_evolving_distrib);
+        
+        % Computing the Redesigned Concertina efficiency
+        distribution=designed_concertina_distrib(1);
+        click=1;
+        my_evolving_distrib=cell(depth_click,1);
+        while (click <= depth_click)
+            %  links_to_add instantiation
+            new_list=[];
+            for link=1:size(distribution,1)
+                % we here compute the number of pages reachable at the variable click
+                new_list = union(new_list,designed_concertina_distrib(distribution(link)));
+                if max(new_list)>Ntotal 
+                    disp('We have a problem here')
+                end
+            end
+            my_evolving_distrib{click}=new_list;
+            distribution=new_list;
+            %  links_to_add=added_links+newlist
+            % we here list the number of pages reached at click number
+            click=click+1;
+        end
+        redesigned_concertina_length_vector = cellfun(@length, my_evolving_distrib);
+        
+        % Computing the Nomao efficiency
+        distribution=nomao_distrib(1);
+        click=1;
+        my_evolving_distrib=cell(depth_click,1);
+        while (click <= depth_click)
+            %  links_to_add instantiation
+            new_list=[];
+            for link=1:size(distribution,1)
+                % we here compute the number of pages reachable at the variable click
+                new_list = union(new_list,nomao_distrib(distribution(link)));
+                if max(new_list)>Ntotal
+                    disp('We have a problem here')
+                end
+            end
+            my_evolving_distrib{click}=new_list;
+            distribution=new_list;
+            %  links_to_add=added_links+newlist
+            % we here list the number of pages reached at click number
+            click=click+1;
+        end
+        nomao_distrib_length_vector = cellfun(@length, my_evolving_distrib);
+        
+        % Displaying both results on a same graph
+        % filtering the asymptote
+        filter=(concertina_length_vector<Ntotal | nomao_distrib_length_vector<Ntotal | redesigned_concertina_length_vector<Ntotal);
+        matrix=[concertina_length_vector(filter), redesigned_concertina_length_vector(filter), nomao_distrib_length_vector(filter)];
+        % storing the result
+        results{i}=matrix;
+        %displaying the results
+        figure;
+        createfigure(matrix,['sous liens' num2str(Nlinks) ' nb product per page' num2str(nb_product_per_page)]);
+        
+    end
+end
+%% Saving the results
+save('global_results.mat');
+##### SOURCE END #####
+--></body></html>

@@ -1,0 +1,447 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Machine Learning for e-commerce web page page type classification</title><meta name="generator" content="MATLAB 8.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-01-05"><meta name="DC.source" content="classifying_new_pages.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Machine Learning for e-commerce web page page type classification</h1><!--introduction--><p>Implementing and comparing different machine learning techniques to choose the best approach can be challenging. Machine learning is synonymous with <b>Non-parametric</b> modeling techniques. The term non-parametric is not meant to imply that such models completely lack parameters but that the number and nature of the parameters are flexible and determined from data.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Loading data</a></li><li><a href="#2">Cross Validation Hold Out</a></li><li><a href="#3">Single Tree performance on training and testing set</a></li><li><a href="#4">Single tree forecast on the validating set</a></li><li><a href="#5">Bootstrapped aggregated trees</a></li></ul></div><h2>Loading data<a name="1"></a></h2><pre class="codeinput">load(<span class="string">'multiple_source_shallow_crawl_cdiscount.mat'</span>);
+disp(catPred);
+</pre><pre class="codeoutput">  Columns 1 through 4
+
+    'depth'    'outlinks_size'    'inlinks_size'    'nb_breadcrumbs'
+
+  Columns 5 through 7
+
+    'nb_aggregated_ra...'    'nb_ratings_values'    'nb_prices'
+
+  Columns 8 through 11
+
+    'nb_availabilities'    'nb_reviews'    'nb_reviews_count'    'nb_images'
+
+</pre><h2>Cross Validation Hold Out<a name="2"></a></h2><p>Cross validation is almost an inherent part of machine learning. Cross validation may be used to compare the performance of different predictive modeling techniques. In this example, we use holdout validation. Other techniques including k-fold and leave-one-out cross validation are also available.</p><p>In this example, we partition the data into training set and test set. The training set will be used to calibrate/train the model parameters. The trained model is then used to make a prediction on the test set. Predicted values will be compared with actual data to compute the confusion matrix. Confusion matrix is one way to visualize the performance of a machine learning technique.</p><pre class="codeinput"><span class="comment">% In this example, we will hold 40% of the data, selected randomly, for</span>
+<span class="comment">% test phase.</span>
+cv = cvpartition(length(Y),<span class="string">'holdout'</span>,0.40);
+
+<span class="comment">% Training set</span>
+Xtrain = X(training(cv),:);
+Ytrain = Y(training(cv),:);
+<span class="comment">% Test set</span>
+Xtest = X(test(cv),:);
+Ytest = Y(test(cv),:);
+
+disp(<span class="string">'Training Set'</span>)
+tabulate(Ytrain)
+disp(<span class="string">'Test Set'</span>)
+tabulate(Ytest)
+</pre><pre class="codeoutput">Training Set
+               Value    Count   Percent
+        FicheProduit    12475     45.46%
+        ListeProduit     5079     18.51%
+  ListeProduitFiltre     3394     12.37%
+         PageConcept        6      0.02%
+          PageMarque     3306     12.05%
+        SearchDexing     2791     10.17%
+             Unknown        0      0.00%
+             Vitrine      393      1.43%
+Test Set
+               Value    Count   Percent
+        FicheProduit     8159     44.60%
+        ListeProduit     3386     18.51%
+  ListeProduitFiltre     2217     12.12%
+         PageConcept        3      0.02%
+          PageMarque     2341     12.80%
+        SearchDexing     1925     10.52%
+             Unknown        0      0.00%
+             Vitrine      264      1.44%
+</pre><h2>Single Tree performance on training and testing set<a name="3"></a></h2><pre class="codeinput">t = classregtree(Xtrain,Ytrain);
+<span class="comment">%  See tree</span>
+view(t)
+<span class="comment">% How well did the single tree perform on the training set</span>
+<span class="comment">% very well but overfit the noise</span>
+predY = t(Xtrain);
+<span class="comment">%predY = round(predY);</span>
+disp(<span class="string">'Single tree : we forecast on the training set where the algorithm has been trained'</span>)
+disp(<span class="string">'Full tree training set'</span>)
+myCategoricalErrorRate(predY,Ytrain);
+C_tree = confusionmat(categorical(predY),categorical(Ytrain));
+<span class="comment">% Examine the confusion matrix for each class as a percentage of the true class</span>
+C_tree = bsxfun(@rdivide,C_tree,sum(C_tree,2)) * 100 <span class="comment">%#ok&lt;*NOPTS&gt;</span>
+
+<span class="comment">% Calculate the single tree's predictions on the validating set...</span>
+predY = t(Xtest);
+disp(<span class="string">'Single tree : we forecast on the testing set where the algorithm has not been trained'</span>)
+disp(<span class="string">'Full tree testing set'</span>)
+myCategoricalErrorRate(predY,Ytest);
+[C_tree, order] = confusionmat(categorical(predY),categorical(Ytest));
+<span class="comment">% Examine the confusion matrix for each class as a percentage of the true class</span>
+C_tree = bsxfun(@rdivide,C_tree,sum(C_tree,2)) * 100 <span class="comment">%#ok&lt;*NOPTS&gt;</span>
+order
+</pre><pre class="codeoutput">Single tree : we forecast on the training set where the algorithm has been trained
+Full tree training set
+Tree, % Good classified rate on set  : 95.6712
+
+C_tree =
+
+  Columns 1 through 7
+
+   99.8080    0.1920         0         0         0         0         0
+         0   91.5291    3.6164         0    3.3215    0.0197    1.5134
+         0    5.6681   94.2144         0         0         0    0.1175
+         0         0         0   57.1429   14.2857   28.5714         0
+         0    4.9224    0.0597    0.0597   89.4690    4.6838    0.8055
+         0    0.2883         0         0    4.7928   94.8108    0.1081
+         0   10.0629         0         0    1.2579         0   88.6792
+       NaN       NaN       NaN       NaN       NaN       NaN       NaN
+
+  Column 8
+
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+       NaN
+
+Single tree : we forecast on the testing set where the algorithm has not been trained
+Full tree testing set
+Tree, % Good classified rate on set  : 92.6264
+
+C_tree =
+
+  Columns 1 through 7
+
+   99.8898    0.1102         0         0         0         0         0
+    0.1203   85.3233    6.7669         0    4.9624    0.1203    2.7068
+         0   12.1078   87.7154         0         0         0    0.1768
+         0         0         0         0   50.0000   50.0000         0
+         0    8.2580    0.2465    0.1233   84.4289    6.0805    0.8628
+         0    0.8390         0         0    5.8731   92.9208    0.3671
+         0   24.5000    0.5000         0    4.0000         0   71.0000
+       NaN       NaN       NaN       NaN       NaN       NaN       NaN
+
+  Column 8
+
+         0
+         0
+         0
+         0
+         0
+         0
+         0
+       NaN
+
+
+order = 
+
+     FicheProduit 
+     ListeProduit 
+     ListeProduitFiltre 
+     PageConcept 
+     PageMarque 
+     SearchDexing 
+     Vitrine 
+     Unknown 
+
+</pre><img vspace="5" hspace="5" src="classifying_new_pages_01.png" alt=""> <h2>Single tree forecast on the validating set<a name="4"></a></h2><pre class="codeinput">disp(<span class="string">'Single tree : we forecast on the brand new set : other sites Amazon, Darty, RDC'</span>)
+disp(<span class="string">'Full tree validating set'</span>)
+predYval = t(Xval);
+tabulate(predYval);
+</pre><pre class="codeoutput">Single tree : we forecast on the brand new set : other sites Amazon, Darty, RDC
+Full tree validating set
+         Value    Count   Percent
+    PageMarque    26446     35.03%
+       Vitrine     7331      9.71%
+  FicheProduit    12452     16.49%
+   PageConcept     3959      5.24%
+  SearchDexing     1828      2.42%
+  ListeProduit    23482     31.10%
+</pre><h2>Bootstrapped aggregated trees<a name="5"></a></h2><p>we calibrate the forest with 70 trees and we keep all predictors</p><pre class="codeinput">tb = TreeBagger(150,Xtrain,Ytrain,<span class="string">'method'</span>,<span class="string">'classification'</span>,<span class="string">'OOBVarImp'</span>,<span class="string">'on'</span>);
+disp(<span class="string">'Forest trees : we forecast on the training set where the algorithm has been trained'</span>)
+disp(<span class="string">'Full forest tree training set'</span>)
+<span class="comment">% Make a prediction for the test set</span>
+[Y_train_tb, classifScore_train] = tb.predict(Xtrain);
+myCategoricalErrorRate(Y_train_tb,Ytrain);
+<span class="comment">% Compute the confusion matrix</span>
+[C_tb, order] = confusionmat(categorical(Ytrain),categorical(Y_train_tb));
+<span class="comment">% Examine the confusion matrix for each class as a percentage of the true class</span>
+C_tb = bsxfun(@rdivide,C_tb,sum(C_tb,2)) * 100
+order
+disp(<span class="string">'Forest tree : we forecast on the testing set where the algorithm has not been trained'</span>)
+disp(<span class="string">'Full forest tree testing set'</span>)
+<span class="comment">% Make a prediction for the test set</span>
+[Y_test_tb, classifScore_test] = tb.predict(Xtest);
+myCategoricalErrorRate(Y_test_tb,Ytest);
+<span class="comment">% Compute the confusion matrix</span>
+[C_tb, order] = confusionmat(categorical(Ytrain),categorical(Y_train_tb));
+<span class="comment">% Examine the confusion matrix for each class as a percentage of the true class</span>
+C_tb = bsxfun(@rdivide,C_tb,sum(C_tb,2)) * 100
+order
+
+<span class="comment">% Make a prediction for the test set</span>
+disp(<span class="string">'Forest tree : we forecast on the brand new set : other sites Amazon, Darty, RDC'</span>)
+disp(<span class="string">'Full forest tree validating set'</span>)
+[Y_val_tb, classifScore_val] = tb.predict(Xval);
+
+tabulate(Y_val_tb);
+</pre><pre class="codeoutput">Forest trees : we forecast on the training set where the algorithm has been trained
+Full forest tree training set
+Tree, % Good classified rate on set  : 93.1424
+
+C_tb =
+
+  Columns 1 through 7
+
+  100.0000         0         0         0         0         0         0
+    0.4528   91.6716    4.8829         0    2.1855    0.1772         0
+         0   13.9069   86.0342         0    0.0589         0         0
+         0         0         0   16.6667   83.3333         0         0
+         0   13.4301         0         0   81.9722    4.5977         0
+         0         0         0         0    7.3450   92.6550         0
+       NaN       NaN       NaN       NaN       NaN       NaN       NaN
+         0   38.6768    0.7634         0    5.0891    1.0178         0
+
+  Column 8
+
+         0
+    0.6300
+         0
+         0
+         0
+         0
+       NaN
+   54.4529
+
+
+order = 
+
+     FicheProduit 
+     ListeProduit 
+     ListeProduitFiltre 
+     PageConcept 
+     PageMarque 
+     SearchDexing 
+     Unknown 
+     Vitrine 
+
+Forest tree : we forecast on the testing set where the algorithm has not been trained
+Full forest tree testing set
+Tree, % Good classified rate on set  : 92.7849
+
+C_tb =
+
+  Columns 1 through 7
+
+  100.0000         0         0         0         0         0         0
+    0.4528   91.6716    4.8829         0    2.1855    0.1772         0
+         0   13.9069   86.0342         0    0.0589         0         0
+         0         0         0   16.6667   83.3333         0         0
+         0   13.4301         0         0   81.9722    4.5977         0
+         0         0         0         0    7.3450   92.6550         0
+       NaN       NaN       NaN       NaN       NaN       NaN       NaN
+         0   38.6768    0.7634         0    5.0891    1.0178         0
+
+  Column 8
+
+         0
+    0.6300
+         0
+         0
+         0
+         0
+       NaN
+   54.4529
+
+
+order = 
+
+     FicheProduit 
+     ListeProduit 
+     ListeProduitFiltre 
+     PageConcept 
+     PageMarque 
+     SearchDexing 
+     Unknown 
+     Vitrine 
+
+Forest tree : we forecast on the brand new set : other sites Amazon, Darty, RDC
+Full forest tree validating set
+         Value    Count   Percent
+    PageMarque    10507     13.92%
+  ListeProduit    40586     53.76%
+       Vitrine    11184     14.81%
+  FicheProduit    12459     16.50%
+   PageConcept        7      0.01%
+  SearchDexing      755      1.00%
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Machine Learning for e-commerce web page page type classification
+% Implementing and comparing different machine learning techniques to
+% choose the best approach can be challenging. Machine learning is
+% synonymous with *Non-parametric* modeling techniques. The term
+% non-parametric is not meant to imply that such models completely lack
+% parameters but that the number and nature of the parameters are flexible
+% and determined from data.
+
+%% Loading data
+load('multiple_source_shallow_crawl_cdiscount.mat');
+disp(catPred);
+
+%% Cross Validation Hold Out
+% Cross validation is almost an inherent part of machine learning. Cross
+% validation may be used to compare the performance of different predictive
+% modeling techniques. In this example, we use holdout validation. Other
+% techniques including k-fold and leave-one-out cross validation are also
+% available.
+% 
+% In this example, we partition the data into training set and test set.
+% The training set will be used to calibrate/train the model parameters.
+% The trained model is then used to make a prediction on the test set.
+% Predicted values will be compared with actual data to compute the
+% confusion matrix. Confusion matrix is one way to visualize the
+% performance of a machine learning technique.
+
+% In this example, we will hold 40% of the data, selected randomly, for
+% test phase.
+cv = cvpartition(length(Y),'holdout',0.40);
+
+% Training set
+Xtrain = X(training(cv),:);
+Ytrain = Y(training(cv),:);
+% Test set
+Xtest = X(test(cv),:);
+Ytest = Y(test(cv),:);
+
+disp('Training Set')
+tabulate(Ytrain)
+disp('Test Set')
+tabulate(Ytest)
+
+%% Single Tree performance on training and testing set 
+t = classregtree(Xtrain,Ytrain);
+%  See tree
+view(t)
+% How well did the single tree perform on the training set
+% very well but overfit the noise
+predY = t(Xtrain);
+%predY = round(predY);
+disp('Single tree : we forecast on the training set where the algorithm has been trained')
+disp('Full tree training set')
+myCategoricalErrorRate(predY,Ytrain);
+C_tree = confusionmat(categorical(predY),categorical(Ytrain));
+% Examine the confusion matrix for each class as a percentage of the true class
+C_tree = bsxfun(@rdivide,C_tree,sum(C_tree,2)) * 100 %#ok<*NOPTS>
+
+% Calculate the single tree's predictions on the validating set...
+predY = t(Xtest);
+disp('Single tree : we forecast on the testing set where the algorithm has not been trained')
+disp('Full tree testing set')
+myCategoricalErrorRate(predY,Ytest);
+[C_tree, order] = confusionmat(categorical(predY),categorical(Ytest));
+% Examine the confusion matrix for each class as a percentage of the true class
+C_tree = bsxfun(@rdivide,C_tree,sum(C_tree,2)) * 100 %#ok<*NOPTS>
+order
+
+%% Single tree forecast on the validating set
+disp('Single tree : we forecast on the brand new set : other sites Amazon, Darty, RDC')
+disp('Full tree validating set')
+predYval = t(Xval);
+tabulate(predYval);
+
+
+%% Bootstrapped aggregated trees 
+% we calibrate the forest with 70 trees and we keep all predictors
+tb = TreeBagger(150,Xtrain,Ytrain,'method','classification','OOBVarImp','on');
+disp('Forest trees : we forecast on the training set where the algorithm has been trained')
+disp('Full forest tree training set')
+% Make a prediction for the test set
+[Y_train_tb, classifScore_train] = tb.predict(Xtrain);
+myCategoricalErrorRate(Y_train_tb,Ytrain);
+% Compute the confusion matrix
+[C_tb, order] = confusionmat(categorical(Ytrain),categorical(Y_train_tb));
+% Examine the confusion matrix for each class as a percentage of the true class
+C_tb = bsxfun(@rdivide,C_tb,sum(C_tb,2)) * 100
+order
+disp('Forest tree : we forecast on the testing set where the algorithm has not been trained')
+disp('Full forest tree testing set')
+% Make a prediction for the test set
+[Y_test_tb, classifScore_test] = tb.predict(Xtest);
+myCategoricalErrorRate(Y_test_tb,Ytest);
+% Compute the confusion matrix
+[C_tb, order] = confusionmat(categorical(Ytrain),categorical(Y_train_tb));
+% Examine the confusion matrix for each class as a percentage of the true class
+C_tb = bsxfun(@rdivide,C_tb,sum(C_tb,2)) * 100
+order
+
+% Make a prediction for the test set
+disp('Forest tree : we forecast on the brand new set : other sites Amazon, Darty, RDC')
+disp('Full forest tree validating set')
+[Y_val_tb, classifScore_val] = tb.predict(Xval);
+
+tabulate(Y_val_tb);
+
+##### SOURCE END #####
+--></body></html>

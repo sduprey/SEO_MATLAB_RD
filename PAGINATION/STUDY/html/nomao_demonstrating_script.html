@@ -1,0 +1,3213 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>nomao_demonstrating_script</title><meta name="generator" content="MATLAB 8.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-07-31"><meta name="DC.source" content="nomao_demonstrating_script.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Parameters for the first test list</a></li><li><a href="#2">Computing the right, left and middle distributions</a></li><li><a href="#3">Parameters for the first middle size product list</a></li><li><a href="#4">Computing the right, left and middle distributions</a></li><li><a href="#5">Computing the reached pages per number of clicks</a></li><li><a href="#6">Visualizing the evolution</a></li><li><a href="#7">Parameters for the second giant size product list</a></li><li><a href="#8">Computing the right, left and middle distributions</a></li><li><a href="#9">Computing the reached pages per number of clicks</a></li><li><a href="#10">Visualizing the evolution</a></li></ul></div><h2>Parameters for the first test list<a name="1"></a></h2><p>with 23 products per page total number of pages to display</p><pre class="codeinput">Ntotal=270;
+<span class="comment">% total number of displayable references in pagination</span>
+Nlinks=15;
+<span class="comment">% notice that relevant cases are Ntotal &gt;&gt; Nlink</span>
+<span class="comment">% our pagination distribution computation</span>
+my_lp_distrib=@(x)nomao_compute_pagination(x, Nlinks, Ntotal);
+</pre><h2>Computing the right, left and middle distributions<a name="2"></a></h2><p>when we land on the listing product page checking initial middle and end distribution</p><pre class="codeinput"><span class="keyword">for</span> k=1:270
+    distribution=my_lp_distrib(k)'<span class="comment">%#ok&lt;NOPTS,NASGU&gt;</span>
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">
+distribution =
+
+  Columns 1 through 13
+
+     1     1     2     3     4     5     6     7     8     9    10    20    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1     1     2     3     4     5     6     7     8     9    10    20    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1     1     2     3     4     5     6     7     8     9    10    20    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1     1     2     3     4     5     6     7     8     9    10    20    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1     1     2     3     4     5     6     7     8     9    10    20    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1     1     2     3     4     5     6     7     8     9    10    20    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1     1     2     3     4     5     6     7     8     9    10    20    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1     1     2     3     4     5     6     7     8     9    10    20    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1     1     2     3     4     5     6     7     8     9    10    20    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    10    11    12    13    14    15    16    17    18    19    20    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    10    11    12    13    14    15    16    17    18    19    20    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    10    11    12    13    14    15    16    17    18    19    20    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    10    11    12    13    14    15    16    17    18    19    20    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    10    11    12    13    14    15    16    17    18    19    20    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    10    11    12    13    14    15    16    17    18    19    20    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    10    11    12    13    14    15    16    17    18    19    20    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    10    11    12    13    14    15    16    17    18    19    20    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    10    11    12    13    14    15    16    17    18    19    20    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    10    11    12    13    14    15    16    17    18    19    20    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    10    20    21    22    23    24    25    26    27    28    29    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    10    20    21    22    23    24    25    26    27    28    29    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    10    20    21    22    23    24    25    26    27    28    29    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    10    20    21    22    23    24    25    26    27    28    29    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    10    20    21    22    23    24    25    26    27    28    29    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    10    20    21    22    23    24    25    26    27    28    29    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    10    20    21    22    23    24    25    26    27    28    29    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    10    20    21    22    23    24    25    26    27    28    29    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    10    20    21    22    23    24    25    26    27    28    29    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    10    20    21    22    23    24    25    26    27    28    29    30
+
+  Columns 14 through 15
+
+    40    50
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    20    30    31    32    33    34    35    36    37    38    39    40
+
+  Columns 14 through 15
+
+    50    60
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    20    30    31    32    33    34    35    36    37    38    39    40
+
+  Columns 14 through 15
+
+    50    60
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    20    30    31    32    33    34    35    36    37    38    39    40
+
+  Columns 14 through 15
+
+    50    60
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    20    30    31    32    33    34    35    36    37    38    39    40
+
+  Columns 14 through 15
+
+    50    60
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    20    30    31    32    33    34    35    36    37    38    39    40
+
+  Columns 14 through 15
+
+    50    60
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    20    30    31    32    33    34    35    36    37    38    39    40
+
+  Columns 14 through 15
+
+    50    60
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    20    30    31    32    33    34    35    36    37    38    39    40
+
+  Columns 14 through 15
+
+    50    60
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    20    30    31    32    33    34    35    36    37    38    39    40
+
+  Columns 14 through 15
+
+    50    60
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    20    30    31    32    33    34    35    36    37    38    39    40
+
+  Columns 14 through 15
+
+    50    60
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    20    30    31    32    33    34    35    36    37    38    39    40
+
+  Columns 14 through 15
+
+    50    60
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    30    40    41    42    43    44    45    46    47    48    49    50
+
+  Columns 14 through 15
+
+    60    70
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    30    40    41    42    43    44    45    46    47    48    49    50
+
+  Columns 14 through 15
+
+    60    70
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    30    40    41    42    43    44    45    46    47    48    49    50
+
+  Columns 14 through 15
+
+    60    70
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    30    40    41    42    43    44    45    46    47    48    49    50
+
+  Columns 14 through 15
+
+    60    70
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    30    40    41    42    43    44    45    46    47    48    49    50
+
+  Columns 14 through 15
+
+    60    70
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    30    40    41    42    43    44    45    46    47    48    49    50
+
+  Columns 14 through 15
+
+    60    70
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    30    40    41    42    43    44    45    46    47    48    49    50
+
+  Columns 14 through 15
+
+    60    70
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    30    40    41    42    43    44    45    46    47    48    49    50
+
+  Columns 14 through 15
+
+    60    70
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    30    40    41    42    43    44    45    46    47    48    49    50
+
+  Columns 14 through 15
+
+    60    70
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    30    40    41    42    43    44    45    46    47    48    49    50
+
+  Columns 14 through 15
+
+    60    70
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    40    50    51    52    53    54    55    56    57    58    59    60
+
+  Columns 14 through 15
+
+    70    80
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    40    50    51    52    53    54    55    56    57    58    59    60
+
+  Columns 14 through 15
+
+    70    80
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    40    50    51    52    53    54    55    56    57    58    59    60
+
+  Columns 14 through 15
+
+    70    80
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    40    50    51    52    53    54    55    56    57    58    59    60
+
+  Columns 14 through 15
+
+    70    80
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    40    50    51    52    53    54    55    56    57    58    59    60
+
+  Columns 14 through 15
+
+    70    80
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    40    50    51    52    53    54    55    56    57    58    59    60
+
+  Columns 14 through 15
+
+    70    80
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    40    50    51    52    53    54    55    56    57    58    59    60
+
+  Columns 14 through 15
+
+    70    80
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    40    50    51    52    53    54    55    56    57    58    59    60
+
+  Columns 14 through 15
+
+    70    80
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    40    50    51    52    53    54    55    56    57    58    59    60
+
+  Columns 14 through 15
+
+    70    80
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    40    50    51    52    53    54    55    56    57    58    59    60
+
+  Columns 14 through 15
+
+    70    80
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    50    60    61    62    63    64    65    66    67    68    69    70
+
+  Columns 14 through 15
+
+    80    90
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    50    60    61    62    63    64    65    66    67    68    69    70
+
+  Columns 14 through 15
+
+    80    90
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    50    60    61    62    63    64    65    66    67    68    69    70
+
+  Columns 14 through 15
+
+    80    90
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    50    60    61    62    63    64    65    66    67    68    69    70
+
+  Columns 14 through 15
+
+    80    90
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    50    60    61    62    63    64    65    66    67    68    69    70
+
+  Columns 14 through 15
+
+    80    90
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    50    60    61    62    63    64    65    66    67    68    69    70
+
+  Columns 14 through 15
+
+    80    90
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    50    60    61    62    63    64    65    66    67    68    69    70
+
+  Columns 14 through 15
+
+    80    90
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    50    60    61    62    63    64    65    66    67    68    69    70
+
+  Columns 14 through 15
+
+    80    90
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    50    60    61    62    63    64    65    66    67    68    69    70
+
+  Columns 14 through 15
+
+    80    90
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    50    60    61    62    63    64    65    66    67    68    69    70
+
+  Columns 14 through 15
+
+    80    90
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    60    70    71    72    73    74    75    76    77    78    79    80
+
+  Columns 14 through 15
+
+    90   100
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    60    70    71    72    73    74    75    76    77    78    79    80
+
+  Columns 14 through 15
+
+    90   100
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    60    70    71    72    73    74    75    76    77    78    79    80
+
+  Columns 14 through 15
+
+    90   100
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    60    70    71    72    73    74    75    76    77    78    79    80
+
+  Columns 14 through 15
+
+    90   100
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    60    70    71    72    73    74    75    76    77    78    79    80
+
+  Columns 14 through 15
+
+    90   100
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    60    70    71    72    73    74    75    76    77    78    79    80
+
+  Columns 14 through 15
+
+    90   100
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    60    70    71    72    73    74    75    76    77    78    79    80
+
+  Columns 14 through 15
+
+    90   100
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    60    70    71    72    73    74    75    76    77    78    79    80
+
+  Columns 14 through 15
+
+    90   100
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    60    70    71    72    73    74    75    76    77    78    79    80
+
+  Columns 14 through 15
+
+    90   100
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    60    70    71    72    73    74    75    76    77    78    79    80
+
+  Columns 14 through 15
+
+    90   100
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    70    80    81    82    83    84    85    86    87    88    89    90
+
+  Columns 14 through 15
+
+   100   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    70    80    81    82    83    84    85    86    87    88    89    90
+
+  Columns 14 through 15
+
+   100   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    70    80    81    82    83    84    85    86    87    88    89    90
+
+  Columns 14 through 15
+
+   100   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    70    80    81    82    83    84    85    86    87    88    89    90
+
+  Columns 14 through 15
+
+   100   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    70    80    81    82    83    84    85    86    87    88    89    90
+
+  Columns 14 through 15
+
+   100   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    70    80    81    82    83    84    85    86    87    88    89    90
+
+  Columns 14 through 15
+
+   100   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    70    80    81    82    83    84    85    86    87    88    89    90
+
+  Columns 14 through 15
+
+   100   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    70    80    81    82    83    84    85    86    87    88    89    90
+
+  Columns 14 through 15
+
+   100   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    70    80    81    82    83    84    85    86    87    88    89    90
+
+  Columns 14 through 15
+
+   100   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    70    80    81    82    83    84    85    86    87    88    89    90
+
+  Columns 14 through 15
+
+   100   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    80    90    91    92    93    94    95    96    97    98    99   100
+
+  Column 14
+
+   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    80    90    91    92    93    94    95    96    97    98    99   100
+
+  Column 14
+
+   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    80    90    91    92    93    94    95    96    97    98    99   100
+
+  Column 14
+
+   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    80    90    91    92    93    94    95    96    97    98    99   100
+
+  Column 14
+
+   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    80    90    91    92    93    94    95    96    97    98    99   100
+
+  Column 14
+
+   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    80    90    91    92    93    94    95    96    97    98    99   100
+
+  Column 14
+
+   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    80    90    91    92    93    94    95    96    97    98    99   100
+
+  Column 14
+
+   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    80    90    91    92    93    94    95    96    97    98    99   100
+
+  Column 14
+
+   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    80    90    91    92    93    94    95    96    97    98    99   100
+
+  Column 14
+
+   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    80    90    91    92    93    94    95    96    97    98    99   100
+
+  Column 14
+
+   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    90   100   101   102   103   104   105   106   107   108   109   110
+
+  Columns 14 through 15
+
+   120   130
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    90   100   101   102   103   104   105   106   107   108   109   110
+
+  Columns 14 through 15
+
+   120   130
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    90   100   101   102   103   104   105   106   107   108   109   110
+
+  Columns 14 through 15
+
+   120   130
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    90   100   101   102   103   104   105   106   107   108   109   110
+
+  Columns 14 through 15
+
+   120   130
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    90   100   101   102   103   104   105   106   107   108   109   110
+
+  Columns 14 through 15
+
+   120   130
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    90   100   101   102   103   104   105   106   107   108   109   110
+
+  Columns 14 through 15
+
+   120   130
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    90   100   101   102   103   104   105   106   107   108   109   110
+
+  Columns 14 through 15
+
+   120   130
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    90   100   101   102   103   104   105   106   107   108   109   110
+
+  Columns 14 through 15
+
+   120   130
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    90   100   101   102   103   104   105   106   107   108   109   110
+
+  Columns 14 through 15
+
+   120   130
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1    90   100   101   102   103   104   105   106   107   108   109   110
+
+  Columns 14 through 15
+
+   120   130
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   100   110   111   112   113   114   115   116   117   118   119   120
+
+  Columns 14 through 15
+
+   130   140
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   100   110   111   112   113   114   115   116   117   118   119   120
+
+  Columns 14 through 15
+
+   130   140
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   100   110   111   112   113   114   115   116   117   118   119   120
+
+  Columns 14 through 15
+
+   130   140
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   100   110   111   112   113   114   115   116   117   118   119   120
+
+  Columns 14 through 15
+
+   130   140
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   100   110   111   112   113   114   115   116   117   118   119   120
+
+  Columns 14 through 15
+
+   130   140
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   100   110   111   112   113   114   115   116   117   118   119   120
+
+  Columns 14 through 15
+
+   130   140
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   100   110   111   112   113   114   115   116   117   118   119   120
+
+  Columns 14 through 15
+
+   130   140
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   100   110   111   112   113   114   115   116   117   118   119   120
+
+  Columns 14 through 15
+
+   130   140
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   100   110   111   112   113   114   115   116   117   118   119   120
+
+  Columns 14 through 15
+
+   130   140
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   100   110   111   112   113   114   115   116   117   118   119   120
+
+  Columns 14 through 15
+
+   130   140
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   110   120   121   122   123   124   125   126   127   128   129   130
+
+  Columns 14 through 15
+
+   140   150
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   110   120   121   122   123   124   125   126   127   128   129   130
+
+  Columns 14 through 15
+
+   140   150
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   110   120   121   122   123   124   125   126   127   128   129   130
+
+  Columns 14 through 15
+
+   140   150
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   110   120   121   122   123   124   125   126   127   128   129   130
+
+  Columns 14 through 15
+
+   140   150
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   110   120   121   122   123   124   125   126   127   128   129   130
+
+  Columns 14 through 15
+
+   140   150
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   110   120   121   122   123   124   125   126   127   128   129   130
+
+  Columns 14 through 15
+
+   140   150
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   110   120   121   122   123   124   125   126   127   128   129   130
+
+  Columns 14 through 15
+
+   140   150
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   110   120   121   122   123   124   125   126   127   128   129   130
+
+  Columns 14 through 15
+
+   140   150
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   110   120   121   122   123   124   125   126   127   128   129   130
+
+  Columns 14 through 15
+
+   140   150
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   110   120   121   122   123   124   125   126   127   128   129   130
+
+  Columns 14 through 15
+
+   140   150
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   120   130   131   132   133   134   135   136   137   138   139   140
+
+  Columns 14 through 15
+
+   150   160
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   120   130   131   132   133   134   135   136   137   138   139   140
+
+  Columns 14 through 15
+
+   150   160
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   120   130   131   132   133   134   135   136   137   138   139   140
+
+  Columns 14 through 15
+
+   150   160
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   120   130   131   132   133   134   135   136   137   138   139   140
+
+  Columns 14 through 15
+
+   150   160
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   120   130   131   132   133   134   135   136   137   138   139   140
+
+  Columns 14 through 15
+
+   150   160
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   120   130   131   132   133   134   135   136   137   138   139   140
+
+  Columns 14 through 15
+
+   150   160
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   120   130   131   132   133   134   135   136   137   138   139   140
+
+  Columns 14 through 15
+
+   150   160
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   120   130   131   132   133   134   135   136   137   138   139   140
+
+  Columns 14 through 15
+
+   150   160
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   120   130   131   132   133   134   135   136   137   138   139   140
+
+  Columns 14 through 15
+
+   150   160
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   120   130   131   132   133   134   135   136   137   138   139   140
+
+  Columns 14 through 15
+
+   150   160
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   130   140   141   142   143   144   145   146   147   148   149   150
+
+  Columns 14 through 15
+
+   160   170
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   130   140   141   142   143   144   145   146   147   148   149   150
+
+  Columns 14 through 15
+
+   160   170
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   130   140   141   142   143   144   145   146   147   148   149   150
+
+  Columns 14 through 15
+
+   160   170
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   130   140   141   142   143   144   145   146   147   148   149   150
+
+  Columns 14 through 15
+
+   160   170
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   130   140   141   142   143   144   145   146   147   148   149   150
+
+  Columns 14 through 15
+
+   160   170
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   130   140   141   142   143   144   145   146   147   148   149   150
+
+  Columns 14 through 15
+
+   160   170
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   130   140   141   142   143   144   145   146   147   148   149   150
+
+  Columns 14 through 15
+
+   160   170
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   130   140   141   142   143   144   145   146   147   148   149   150
+
+  Columns 14 through 15
+
+   160   170
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   130   140   141   142   143   144   145   146   147   148   149   150
+
+  Columns 14 through 15
+
+   160   170
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   130   140   141   142   143   144   145   146   147   148   149   150
+
+  Columns 14 through 15
+
+   160   170
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   140   150   151   152   153   154   155   156   157   158   159   160
+
+  Columns 14 through 15
+
+   170   180
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   140   150   151   152   153   154   155   156   157   158   159   160
+
+  Columns 14 through 15
+
+   170   180
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   140   150   151   152   153   154   155   156   157   158   159   160
+
+  Columns 14 through 15
+
+   170   180
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   140   150   151   152   153   154   155   156   157   158   159   160
+
+  Columns 14 through 15
+
+   170   180
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   140   150   151   152   153   154   155   156   157   158   159   160
+
+  Columns 14 through 15
+
+   170   180
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   140   150   151   152   153   154   155   156   157   158   159   160
+
+  Columns 14 through 15
+
+   170   180
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   140   150   151   152   153   154   155   156   157   158   159   160
+
+  Columns 14 through 15
+
+   170   180
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   140   150   151   152   153   154   155   156   157   158   159   160
+
+  Columns 14 through 15
+
+   170   180
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   140   150   151   152   153   154   155   156   157   158   159   160
+
+  Columns 14 through 15
+
+   170   180
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   140   150   151   152   153   154   155   156   157   158   159   160
+
+  Columns 14 through 15
+
+   170   180
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   150   160   161   162   163   164   165   166   167   168   169   170
+
+  Columns 14 through 15
+
+   180   190
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   150   160   161   162   163   164   165   166   167   168   169   170
+
+  Columns 14 through 15
+
+   180   190
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   150   160   161   162   163   164   165   166   167   168   169   170
+
+  Columns 14 through 15
+
+   180   190
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   150   160   161   162   163   164   165   166   167   168   169   170
+
+  Columns 14 through 15
+
+   180   190
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   150   160   161   162   163   164   165   166   167   168   169   170
+
+  Columns 14 through 15
+
+   180   190
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   150   160   161   162   163   164   165   166   167   168   169   170
+
+  Columns 14 through 15
+
+   180   190
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   150   160   161   162   163   164   165   166   167   168   169   170
+
+  Columns 14 through 15
+
+   180   190
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   150   160   161   162   163   164   165   166   167   168   169   170
+
+  Columns 14 through 15
+
+   180   190
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   150   160   161   162   163   164   165   166   167   168   169   170
+
+  Columns 14 through 15
+
+   180   190
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   150   160   161   162   163   164   165   166   167   168   169   170
+
+  Columns 14 through 15
+
+   180   190
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   160   170   171   172   173   174   175   176   177   178   179   180
+
+  Columns 14 through 15
+
+   190   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   160   170   171   172   173   174   175   176   177   178   179   180
+
+  Columns 14 through 15
+
+   190   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   160   170   171   172   173   174   175   176   177   178   179   180
+
+  Columns 14 through 15
+
+   190   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   160   170   171   172   173   174   175   176   177   178   179   180
+
+  Columns 14 through 15
+
+   190   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   160   170   171   172   173   174   175   176   177   178   179   180
+
+  Columns 14 through 15
+
+   190   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   160   170   171   172   173   174   175   176   177   178   179   180
+
+  Columns 14 through 15
+
+   190   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   160   170   171   172   173   174   175   176   177   178   179   180
+
+  Columns 14 through 15
+
+   190   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   160   170   171   172   173   174   175   176   177   178   179   180
+
+  Columns 14 through 15
+
+   190   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   160   170   171   172   173   174   175   176   177   178   179   180
+
+  Columns 14 through 15
+
+   190   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   160   170   171   172   173   174   175   176   177   178   179   180
+
+  Columns 14 through 15
+
+   190   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   170   180   181   182   183   184   185   186   187   188   189   190
+
+  Column 14
+
+   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   170   180   181   182   183   184   185   186   187   188   189   190
+
+  Column 14
+
+   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   170   180   181   182   183   184   185   186   187   188   189   190
+
+  Column 14
+
+   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   170   180   181   182   183   184   185   186   187   188   189   190
+
+  Column 14
+
+   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   170   180   181   182   183   184   185   186   187   188   189   190
+
+  Column 14
+
+   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   170   180   181   182   183   184   185   186   187   188   189   190
+
+  Column 14
+
+   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   170   180   181   182   183   184   185   186   187   188   189   190
+
+  Column 14
+
+   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   170   180   181   182   183   184   185   186   187   188   189   190
+
+  Column 14
+
+   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   170   180   181   182   183   184   185   186   187   188   189   190
+
+  Column 14
+
+   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   170   180   181   182   183   184   185   186   187   188   189   190
+
+  Column 14
+
+   200
+
+
+distribution =
+
+     1   180   190   191   192   193   194   195   196   197   198   199   200
+
+
+distribution =
+
+     1   180   190   191   192   193   194   195   196   197   198   199   200
+
+
+distribution =
+
+     1   180   190   191   192   193   194   195   196   197   198   199   200
+
+
+distribution =
+
+     1   180   190   191   192   193   194   195   196   197   198   199   200
+
+
+distribution =
+
+     1   180   190   191   192   193   194   195   196   197   198   199   200
+
+
+distribution =
+
+     1   180   190   191   192   193   194   195   196   197   198   199   200
+
+
+distribution =
+
+     1   180   190   191   192   193   194   195   196   197   198   199   200
+
+
+distribution =
+
+     1   180   190   191   192   193   194   195   196   197   198   199   200
+
+
+distribution =
+
+     1   180   190   191   192   193   194   195   196   197   198   199   200
+
+
+distribution =
+
+     1   180   190   191   192   193   194   195   196   197   198   199   200
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   190   200   201   202   203   204   205   206   207   208   209   210
+
+  Columns 14 through 15
+
+   220   230
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   190   200   201   202   203   204   205   206   207   208   209   210
+
+  Columns 14 through 15
+
+   220   230
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   190   200   201   202   203   204   205   206   207   208   209   210
+
+  Columns 14 through 15
+
+   220   230
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   190   200   201   202   203   204   205   206   207   208   209   210
+
+  Columns 14 through 15
+
+   220   230
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   190   200   201   202   203   204   205   206   207   208   209   210
+
+  Columns 14 through 15
+
+   220   230
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   190   200   201   202   203   204   205   206   207   208   209   210
+
+  Columns 14 through 15
+
+   220   230
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   190   200   201   202   203   204   205   206   207   208   209   210
+
+  Columns 14 through 15
+
+   220   230
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   190   200   201   202   203   204   205   206   207   208   209   210
+
+  Columns 14 through 15
+
+   220   230
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   190   200   201   202   203   204   205   206   207   208   209   210
+
+  Columns 14 through 15
+
+   220   230
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   190   200   201   202   203   204   205   206   207   208   209   210
+
+  Columns 14 through 15
+
+   220   230
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   200   210   211   212   213   214   215   216   217   218   219   220
+
+  Columns 14 through 15
+
+   230   240
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   200   210   211   212   213   214   215   216   217   218   219   220
+
+  Columns 14 through 15
+
+   230   240
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   200   210   211   212   213   214   215   216   217   218   219   220
+
+  Columns 14 through 15
+
+   230   240
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   200   210   211   212   213   214   215   216   217   218   219   220
+
+  Columns 14 through 15
+
+   230   240
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   200   210   211   212   213   214   215   216   217   218   219   220
+
+  Columns 14 through 15
+
+   230   240
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   200   210   211   212   213   214   215   216   217   218   219   220
+
+  Columns 14 through 15
+
+   230   240
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   200   210   211   212   213   214   215   216   217   218   219   220
+
+  Columns 14 through 15
+
+   230   240
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   200   210   211   212   213   214   215   216   217   218   219   220
+
+  Columns 14 through 15
+
+   230   240
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   200   210   211   212   213   214   215   216   217   218   219   220
+
+  Columns 14 through 15
+
+   230   240
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   200   210   211   212   213   214   215   216   217   218   219   220
+
+  Columns 14 through 15
+
+   230   240
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   210   220   221   222   223   224   225   226   227   228   229   230
+
+  Columns 14 through 15
+
+   240   250
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   210   220   221   222   223   224   225   226   227   228   229   230
+
+  Columns 14 through 15
+
+   240   250
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   210   220   221   222   223   224   225   226   227   228   229   230
+
+  Columns 14 through 15
+
+   240   250
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   210   220   221   222   223   224   225   226   227   228   229   230
+
+  Columns 14 through 15
+
+   240   250
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   210   220   221   222   223   224   225   226   227   228   229   230
+
+  Columns 14 through 15
+
+   240   250
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   210   220   221   222   223   224   225   226   227   228   229   230
+
+  Columns 14 through 15
+
+   240   250
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   210   220   221   222   223   224   225   226   227   228   229   230
+
+  Columns 14 through 15
+
+   240   250
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   210   220   221   222   223   224   225   226   227   228   229   230
+
+  Columns 14 through 15
+
+   240   250
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   210   220   221   222   223   224   225   226   227   228   229   230
+
+  Columns 14 through 15
+
+   240   250
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   210   220   221   222   223   224   225   226   227   228   229   230
+
+  Columns 14 through 15
+
+   240   250
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   220   230   231   232   233   234   235   236   237   238   239   240
+
+  Columns 14 through 15
+
+   250   260
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   220   230   231   232   233   234   235   236   237   238   239   240
+
+  Columns 14 through 15
+
+   250   260
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   220   230   231   232   233   234   235   236   237   238   239   240
+
+  Columns 14 through 15
+
+   250   260
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   220   230   231   232   233   234   235   236   237   238   239   240
+
+  Columns 14 through 15
+
+   250   260
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   220   230   231   232   233   234   235   236   237   238   239   240
+
+  Columns 14 through 15
+
+   250   260
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   220   230   231   232   233   234   235   236   237   238   239   240
+
+  Columns 14 through 15
+
+   250   260
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   220   230   231   232   233   234   235   236   237   238   239   240
+
+  Columns 14 through 15
+
+   250   260
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   220   230   231   232   233   234   235   236   237   238   239   240
+
+  Columns 14 through 15
+
+   250   260
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   220   230   231   232   233   234   235   236   237   238   239   240
+
+  Columns 14 through 15
+
+   250   260
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   220   230   231   232   233   234   235   236   237   238   239   240
+
+  Columns 14 through 15
+
+   250   260
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   230   240   241   242   243   244   245   246   247   248   249   250
+
+  Columns 14 through 15
+
+   260   270
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   230   240   241   242   243   244   245   246   247   248   249   250
+
+  Columns 14 through 15
+
+   260   270
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   230   240   241   242   243   244   245   246   247   248   249   250
+
+  Columns 14 through 15
+
+   260   270
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   230   240   241   242   243   244   245   246   247   248   249   250
+
+  Columns 14 through 15
+
+   260   270
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   230   240   241   242   243   244   245   246   247   248   249   250
+
+  Columns 14 through 15
+
+   260   270
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   230   240   241   242   243   244   245   246   247   248   249   250
+
+  Columns 14 through 15
+
+   260   270
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   230   240   241   242   243   244   245   246   247   248   249   250
+
+  Columns 14 through 15
+
+   260   270
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   230   240   241   242   243   244   245   246   247   248   249   250
+
+  Columns 14 through 15
+
+   260   270
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   230   240   241   242   243   244   245   246   247   248   249   250
+
+  Columns 14 through 15
+
+   260   270
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   230   240   241   242   243   244   245   246   247   248   249   250
+
+  Columns 14 through 15
+
+   260   270
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   240   250   251   252   253   254   255   256   257   258   259   260
+
+  Column 14
+
+   270
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   240   250   251   252   253   254   255   256   257   258   259   260
+
+  Column 14
+
+   270
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   240   250   251   252   253   254   255   256   257   258   259   260
+
+  Column 14
+
+   270
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   240   250   251   252   253   254   255   256   257   258   259   260
+
+  Column 14
+
+   270
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   240   250   251   252   253   254   255   256   257   258   259   260
+
+  Column 14
+
+   270
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   240   250   251   252   253   254   255   256   257   258   259   260
+
+  Column 14
+
+   270
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   240   250   251   252   253   254   255   256   257   258   259   260
+
+  Column 14
+
+   270
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   240   250   251   252   253   254   255   256   257   258   259   260
+
+  Column 14
+
+   270
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   240   250   251   252   253   254   255   256   257   258   259   260
+
+  Column 14
+
+   270
+
+
+distribution =
+
+  Columns 1 through 13
+
+     1   240   250   251   252   253   254   255   256   257   258   259   260
+
+  Column 14
+
+   270
+
+
+distribution =
+
+     1   250   260   261   262   263   264   265   266   267   268   269   270
+
+
+distribution =
+
+     1   250   260   261   262   263   264   265   266   267   268   269   270
+
+
+distribution =
+
+     1   250   260   261   262   263   264   265   266   267   268   269   270
+
+
+distribution =
+
+     1   250   260   261   262   263   264   265   266   267   268   269   270
+
+
+distribution =
+
+     1   250   260   261   262   263   264   265   266   267   268   269   270
+
+
+distribution =
+
+     1   250   260   261   262   263   264   265   266   267   268   269   270
+
+
+distribution =
+
+     1   250   260   261   262   263   264   265   266   267   268   269   270
+
+
+distribution =
+
+     1   250   260   261   262   263   264   265   266   267   268   269   270
+
+
+distribution =
+
+     1   250   260   261   262   263   264   265   266   267   268   269   270
+
+
+distribution =
+
+     1   250   260   261   262   263   264   265   266   267   268   269   270
+
+
+distribution =
+
+     1   260   270
+
+</pre><h2>Parameters for the first middle size product list<a name="3"></a></h2><p>humour et jeux/l-10535</p><pre class="codeinput">nb_product=436.*23;
+<span class="comment">% with 23 products per page</span>
+<span class="comment">% the depth of click we want to explore</span>
+depth_click=10;
+<span class="comment">% total number of pages to display</span>
+Ntotal=436;
+<span class="comment">% total number of displayable references in pagination</span>
+Nlinks=15;
+<span class="comment">% notice that relevant cases are Ntotal &gt;&gt; Nlink</span>
+<span class="comment">% our pagination distribution computation</span>
+my_lp_distrib=@(x)nomao_compute_pagination(x, Nlinks,Ntotal);
+</pre><h2>Computing the right, left and middle distributions<a name="4"></a></h2><p>when we land on the listing product page checking initial middle and end distribution</p><pre class="codeinput">distribution=my_lp_distrib(202) <span class="comment">%#ok&lt;NOPTS,NASGU&gt;</span>
+distribution=my_lp_distrib(1)<span class="comment">%#ok&lt;NOPTS,NASGU&gt;</span>
+distribution=my_lp_distrib(436)<span class="comment">%#ok&lt;NOPTS,NASGU&gt;</span>
+</pre><pre class="codeoutput">
+distribution =
+
+     1
+   190
+   200
+   201
+   202
+   203
+   204
+   205
+   206
+   207
+   208
+   209
+   210
+   220
+   230
+
+
+distribution =
+
+     1
+     1
+     2
+     3
+     4
+     5
+     6
+     7
+     8
+     9
+    10
+    20
+    30
+    40
+    50
+
+
+distribution =
+
+     1
+   420
+   430
+   431
+   432
+   433
+   434
+   435
+   436
+
+</pre><h2>Computing the reached pages per number of clicks<a name="5"></a></h2><p>we compute the initial distribution</p><pre class="codeinput">distribution=my_lp_distrib(1);
+click=1;
+my_evolving_distrib=cell(depth_click,1);
+<span class="keyword">while</span> (click &lt;= depth_click)
+    <span class="comment">%  links_to_add instantiation</span>
+    new_list=[];
+    <span class="keyword">for</span> link=1:size(distribution,1)
+        <span class="comment">% we here compute the number of pages reachable at the variable click</span>
+        new_list = union(new_list,my_lp_distrib(distribution(link)));
+    <span class="keyword">end</span>
+    my_evolving_distrib{click}=new_list;
+    distribution=new_list;
+    <span class="comment">%  links_to_add=added_links+newlist</span>
+    <span class="comment">% we here list the number of pages reached at click number</span>
+    click=click+1;
+<span class="keyword">end</span>
+</pre><h2>Visualizing the evolution<a name="6"></a></h2><pre class="codeinput">my_length_vector = cellfun(@length, my_evolving_distrib);
+plot(1:size(my_evolving_distrib,1),my_length_vector,<span class="string">'-o'</span>);
+xlabel(<span class="string">'Nombre de clicks'</span>);
+ylabel(<span class="string">'Nombre de pages atteintes'</span>);
+title([<span class="string">'Atteignabilit&eacute; des pages pour '</span> num2str(nb_product) <span class="string">'produits'</span>]);
+</pre><img vspace="5" hspace="5" src="nomao_demonstrating_script_01.png" alt=""> <h2>Parameters for the second giant size product list<a name="7"></a></h2><p>batterie et chargeur batteries-chargeurs/l-1070929</p><pre class="codeinput">nb_product=60297;
+<span class="comment">% with 23 products per page;</span>
+<span class="comment">% the depth of click we want to explore</span>
+depth_click=200;
+<span class="comment">% total number of pages to display</span>
+Ntotal=26304;
+<span class="comment">% total number of displayable references in pagination</span>
+Nlinks=14;
+<span class="comment">% notice that relevant cases are Ntotal &gt;&gt; Nlink</span>
+<span class="comment">% padding parameter</span>
+Npadding=3;
+<span class="comment">% our pagination distribution computation</span>
+<span class="comment">% our pagination distribution computation</span>
+my_lp_distrib=@(x)nomao_compute_pagination(x, Nlinks, Ntotal);
+</pre><h2>Computing the right, left and middle distributions<a name="8"></a></h2><p>when we land on the listing product page checking initial middle and end distribution</p><pre class="codeinput">distribution=my_lp_distrib(13152) <span class="comment">%#ok&lt;NOPTS,NASGU&gt;</span>
+distribution=my_lp_distrib(1)<span class="comment">%#ok&lt;NOPTS,NASGU&gt;</span>
+distribution=my_lp_distrib(26304)<span class="comment">%#ok&lt;NOPTS,NASGU&gt;</span>
+</pre><pre class="codeoutput">
+distribution =
+
+           1
+       13140
+       13150
+       13151
+       13152
+       13153
+       13154
+       13155
+       13156
+       13157
+       13158
+       13159
+       13160
+       13170
+
+
+distribution =
+
+     1
+     1
+     2
+     3
+     4
+     5
+     6
+     7
+     8
+     9
+    10
+    20
+    30
+    40
+
+
+distribution =
+
+           1
+       26290
+       26300
+       26301
+       26302
+       26303
+       26304
+
+</pre><h2>Computing the reached pages per number of clicks<a name="9"></a></h2><p>we compute the initial distribution</p><pre class="codeinput">distribution=my_lp_distrib(1);
+click=1;
+my_evolving_distrib=cell(depth_click,1);
+<span class="keyword">while</span> (click &lt;= depth_click)
+    <span class="comment">%  links_to_add instantiation</span>
+    new_list=[];
+    <span class="keyword">for</span> link=1:size(distribution,1)
+        <span class="comment">% we here compute the number of pages reachable at the variable click</span>
+        new_list = union(new_list,my_lp_distrib(distribution(link)));
+    <span class="keyword">end</span>
+    my_evolving_distrib{click}=new_list;
+    distribution=new_list;
+    <span class="comment">%  links_to_add=added_links+newlist</span>
+    <span class="comment">% we here list the number of pages reached at click number</span>
+    click=click+1;
+<span class="keyword">end</span>
+</pre><h2>Visualizing the evolution<a name="10"></a></h2><pre class="codeinput">my_length_vector = cellfun(@length, my_evolving_distrib);
+plot(1:size(my_evolving_distrib,1),my_length_vector,<span class="string">'-o'</span>);
+xlabel(<span class="string">'Nombre de clicks'</span>);
+ylabel(<span class="string">'Nombre de pages atteintes'</span>);
+title([<span class="string">'Atteignabilit&eacute; des pages pour '</span> num2str(nb_product) <span class="string">'produits'</span>]);
+</pre><img vspace="5" hspace="5" src="nomao_demonstrating_script_02.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Parameters for the first test list
+% with 23 products per page
+% total number of pages to display
+Ntotal=270;
+% total number of displayable references in pagination
+Nlinks=15;
+% notice that relevant cases are Ntotal >> Nlink
+% our pagination distribution computation
+my_lp_distrib=@(x)nomao_compute_pagination(x, Nlinks, Ntotal);
+
+%% Computing the right, left and middle distributions
+% when we land on the listing product page
+% checking initial middle and end distribution
+for k=1:270
+    distribution=my_lp_distrib(k)'%#ok<NOPTS,NASGU>
+end
+
+
+%% Parameters for the first middle size product list
+% humour et jeux/l-10535
+nb_product=436.*23;
+% with 23 products per page
+% the depth of click we want to explore
+depth_click=10;
+% total number of pages to display
+Ntotal=436;
+% total number of displayable references in pagination
+Nlinks=15;
+% notice that relevant cases are Ntotal >> Nlink
+% our pagination distribution computation
+my_lp_distrib=@(x)nomao_compute_pagination(x, Nlinks,Ntotal);
+
+%% Computing the right, left and middle distributions
+% when we land on the listing product page
+% checking initial middle and end distribution
+distribution=my_lp_distrib(202) %#ok<NOPTS,NASGU>
+distribution=my_lp_distrib(1)%#ok<NOPTS,NASGU>
+distribution=my_lp_distrib(436)%#ok<NOPTS,NASGU>
+
+%% Computing the reached pages per number of clicks
+% we compute the initial distribution
+distribution=my_lp_distrib(1);
+click=1;
+my_evolving_distrib=cell(depth_click,1);
+while (click <= depth_click)
+    %  links_to_add instantiation
+    new_list=[];
+    for link=1:size(distribution,1)
+        % we here compute the number of pages reachable at the variable click
+        new_list = union(new_list,my_lp_distrib(distribution(link)));
+    end
+    my_evolving_distrib{click}=new_list;
+    distribution=new_list;
+    %  links_to_add=added_links+newlist
+    % we here list the number of pages reached at click number
+    click=click+1;
+end
+
+%% Visualizing the evolution
+my_length_vector = cellfun(@length, my_evolving_distrib);
+plot(1:size(my_evolving_distrib,1),my_length_vector,'-o');
+xlabel('Nombre de clicks');
+ylabel('Nombre de pages atteintes');
+title(['Atteignabilité des pages pour ' num2str(nb_product) 'produits']);
+
+
+%% Parameters for the second giant size product list
+% batterie et chargeur
+% batteries-chargeurs/l-1070929
+nb_product=60297;
+% with 23 products per page;
+% the depth of click we want to explore
+depth_click=200;
+% total number of pages to display
+Ntotal=26304;
+% total number of displayable references in pagination
+Nlinks=14;
+% notice that relevant cases are Ntotal >> Nlink
+% padding parameter
+Npadding=3;
+% our pagination distribution computation
+% our pagination distribution computation
+my_lp_distrib=@(x)nomao_compute_pagination(x, Nlinks, Ntotal);
+
+%% Computing the right, left and middle distributions
+% when we land on the listing product page
+% checking initial middle and end distribution
+distribution=my_lp_distrib(13152) %#ok<NOPTS,NASGU>
+distribution=my_lp_distrib(1)%#ok<NOPTS,NASGU>
+distribution=my_lp_distrib(26304)%#ok<NOPTS,NASGU>
+
+%% Computing the reached pages per number of clicks
+% we compute the initial distribution
+distribution=my_lp_distrib(1);
+click=1;
+my_evolving_distrib=cell(depth_click,1);
+while (click <= depth_click)
+    %  links_to_add instantiation
+    new_list=[];
+    for link=1:size(distribution,1)
+        % we here compute the number of pages reachable at the variable click
+        new_list = union(new_list,my_lp_distrib(distribution(link)));
+    end
+    my_evolving_distrib{click}=new_list;
+    distribution=new_list;
+    %  links_to_add=added_links+newlist
+    % we here list the number of pages reached at click number
+    click=click+1;
+end
+
+
+%% Visualizing the evolution
+my_length_vector = cellfun(@length, my_evolving_distrib);
+plot(1:size(my_evolving_distrib,1),my_length_vector,'-o');
+xlabel('Nombre de clicks');
+ylabel('Nombre de pages atteintes');
+title(['Atteignabilité des pages pour ' num2str(nb_product) 'produits']);
+##### SOURCE END #####
+--></body></html>

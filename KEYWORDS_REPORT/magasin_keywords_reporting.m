@@ -53,6 +53,11 @@ for conc=1:length(my_concurrent)
     %         saveas(h,[first_title '.jpg'],'jpg');
     %     else
     disp(data);
+    if isa(data,'cellarray')
+        if (size(data,1) > 0)
+            cell2csv(['CSV' radical_for_base '_VS_CDISCOUNT_PRICING.csv'], data);
+        end
+    end
     %local_count = 0;
     % disp(['Coverage rate : ' num2str(local_count./global_count)]);
     %     end

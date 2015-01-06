@@ -1,0 +1,11 @@
+function update_database_with_page_types(URLval, Y_val_tb)
+
+for i=1:length(Y_val_tb)
+    disp(['URL ' URLval(i) ' @@@Classifier page type results : ' Y_val_tb(i)]);
+    update_statement = 'update arbocrawl_results set page_type = ''' + Y_val_tb(i) + ''' where url = ''' URLval(i) '''';
+    curs = exec(conn, ['select url, status_code, depth, outlinks_size, inlinks_size, nb_breadcrumbs, nb_aggregated_ratings, nb_ratings_values, nb_prices, nb_availabilities, nb_reviews, nb_reviews_count, nb_images, page_rank, page_type, concurrent_name, last_update from arbocrawl_results where concurrent_name = ''' concurrent_name '''']);
+
+end
+
+end
+

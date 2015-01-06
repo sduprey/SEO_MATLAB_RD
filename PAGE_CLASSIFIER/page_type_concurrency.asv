@@ -1,0 +1,25 @@
+AMAZON
+1) /b/ref="id_boutique" : boutique, analogue de nos vitrines
+2) /b/ref="nom_marque" : page marque
+3) /s   : page de recherche, liste de produit
+4) "name_description"/dp : fiche produit
+5)  gp/product : fiche produit
+6) /offer-listing : liste des offres market place pour un même produit
+7) product-review : aggrégat des revues pour un produit spécifique
+
+RDC
+1) /m/ps/mpid   : fiche produit
+2) /selection : page de recherche
+3) /search : page de recherche sans réels produits qui matchent
+4) /m/pl/malid : liste produit
+5) /guides-dachat/
+6) www.rueducommerce.fr/MAGASIN/VITRINE/RAYON/PRODUIT
+
+Cdiscount
+1) /search : page de recherche
+2) /v : vitrine
+3) /f : fiche produit
+4) /lp : liste produit
+5) /lpf : liste produit filtré
+
+
