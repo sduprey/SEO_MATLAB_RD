@@ -1,0 +1,18 @@
+crawl complet du site concurrent
+données Majestic pour ce concurrent avec les backlinks par URL
+
+
+1) trouver l'URL de la page qui nous bat dans les SERPs
+
+2) prendre le maillage des liens entrants et sortants à proximité 4
+
+3) extraire la sémantique de toutes ces pages
+    mettre ici une capture d'écran de tous les champs (tf-idf, ngrams, ancres, titre, h1, meta-description)
+            3.1) sémantique absente ==> (termes avec très forte TF/IDF retour aux achats, sinon enrichissement du contenu avec le pôle édito)
+            3.2) sémantique présente : analyse de la qualité de la sémantique (densité dans le corps(panda), densité dans les ancres(penguin)), atteindre les densités d'une ontologie parfaite pour le produit
+
+4) analyser le maillage : 
+         4.1) détecter un meilleur silo : calculer les similarités sémantiques entre page pour le maillage à proximité 4 (cosinus de Salton ou plus complexe étant donné que cela se fait sur une proximité seulement)
+              calculer les deux différents page rank.
+         4.2) Calculer le page rank classique au sein des 2 sites et les comparer             
+
