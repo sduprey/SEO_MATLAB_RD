@@ -21,7 +21,8 @@ xlim([0 very_refining_limit])
 %% Getting the 500 first URLs
 [~,I] = sort(pagerankmaison.page_rank,'descend');
 pagerankmaison = pagerankmaison(I,:);
-disp(pagerankmaison(1:500,:));
+disp(pagerankmaison(1:500,1));
+
 
 %% Histogram per page types
 page_types = unique(pagerankmaison.page_type);
@@ -29,6 +30,8 @@ for i=1:length(page_types)
     figure;
     filtering_index=(pagerankmaison.page_type == page_types(i));
     pagerankmaison_pagetype_fitered =pagerankmaison(filtering_index,:);
+    disp(['100 best ranked pages for page type' char(page_types(i))]);
+    disp(pagerankmaison_pagetype_fitered(1:min(100,size(pagerankmaison_pagetype_fitered,1)),1));
     hist(pagerankmaison_pagetype_fitered.page_rank,100000);
     axis tight;
     title(['Page rank distribution per' char(page_types(i))]);
@@ -48,6 +51,8 @@ for i=1:length(depths)
     figure;
     filtering_index=(pagerankmaison.depth == depths(i));
     pagerankmaison_depth_fitered =pagerankmaison(filtering_index,:);
+    disp(['100 best ranked pages for depth' char(depths(i))]);
+    disp(pagerankmaison_depth_fitered(1:min(100,size(pagerankmaison_depth_fitered,1)),1));
     hist(pagerankmaison_depth_fitered.page_rank,100000);
     title(['Page rank distribution per' char(depths(i))]);
     figure;
