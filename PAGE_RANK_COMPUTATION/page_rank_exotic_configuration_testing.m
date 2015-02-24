@@ -63,6 +63,8 @@ title('Graph layout')
 gObj = biograph(G,U);
 figure;
 gObj = view(gObj); %#ok<*NASGU>
+disp('Number of links inside the site :')
+disp(sum(sum(G)))
 
 %% Computing the page rank for the fully arborescent site : home linking every where
 %pagerank;
@@ -105,6 +107,8 @@ title('Graph layout')
 gObj = biograph(G,U);
 figure;
 gObj = view(gObj); %#ok<*NASGU>
+disp('Number of links inside the site :')
+disp(sum(sum(G)))
 
 %% Computing the page rank for the fully arborescent site : home linking every where
 %pagerank;
@@ -147,6 +151,8 @@ title('Graph layout')
 gObj = biograph(G,U);
 figure;
 gObj = view(gObj); %#ok<*NASGU>
+disp('Number of links inside the site :')
+disp(sum(sum(G)))
 
 %% Computing the page rank for the siloing with reciprocating links
 %pagerank;
@@ -189,6 +195,8 @@ title('Graph layout')
 gObj = biograph(G,U);
 figure;
 gObj = view(gObj); %#ok<*NASGU>
+disp('Number of links inside the site :')
+disp(sum(sum(G)))
 
 %% Computing the page rank for the fully arborescent site : home linking every where
 %pagerank;

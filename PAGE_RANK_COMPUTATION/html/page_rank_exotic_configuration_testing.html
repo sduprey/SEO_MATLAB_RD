@@ -128,6 +128,11 @@ title(<span class="string">'Graph layout'</span>)
 gObj = biograph(G,U);
 figure;
 gObj = view(gObj); <span class="comment">%#ok&lt;*NASGU&gt;</span>
+disp(<span class="string">'Number of links inside the site :'</span>)
+disp(sum(sum(G)))
+</pre><pre class="codeoutput">Number of links inside the site :
+   101
+
 </pre><img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_01.png" alt=""> <img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_02.png" alt=""> <img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_03.png" alt=""> <img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_04.png" alt=""> <h2>Computing the page rank for the fully arborescent site : home linking every where<a name="3"></a></h2><pre class="codeinput"><span class="comment">%pagerank;</span>
 pagerankbis(U,G);
 </pre><pre class="codeoutput">     page-rank  in  out  url
@@ -188,6 +193,11 @@ title(<span class="string">'Graph layout'</span>)
 gObj = biograph(G,U);
 figure;
 gObj = view(gObj); <span class="comment">%#ok&lt;*NASGU&gt;</span>
+disp(<span class="string">'Number of links inside the site :'</span>)
+disp(sum(sum(G)))
+</pre><pre class="codeoutput">Number of links inside the site :
+    75
+
 </pre><img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_06.png" alt=""> <img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_07.png" alt=""> <img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_08.png" alt=""> <img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_09.png" alt=""> <h2>Computing the page rank for the fully arborescent site : home linking every where<a name="6"></a></h2><pre class="codeinput"><span class="comment">%pagerank;</span>
 pagerankbis(U,G);
 </pre><pre class="codeoutput">     page-rank  in  out  url
@@ -248,6 +258,11 @@ title(<span class="string">'Graph layout'</span>)
 gObj = biograph(G,U);
 figure;
 gObj = view(gObj); <span class="comment">%#ok&lt;*NASGU&gt;</span>
+disp(<span class="string">'Number of links inside the site :'</span>)
+disp(sum(sum(G)))
+</pre><pre class="codeoutput">Number of links inside the site :
+   133
+
 </pre><img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_11.png" alt=""> <img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_12.png" alt=""> <img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_13.png" alt=""> <img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_14.png" alt=""> <h2>Computing the page rank for the siloing with reciprocating links<a name="9"></a></h2><pre class="codeinput"><span class="comment">%pagerank;</span>
 pagerankbis(U,G);
 </pre><pre class="codeoutput">     page-rank  in  out  url
@@ -308,6 +323,11 @@ title(<span class="string">'Graph layout'</span>)
 gObj = biograph(G,U);
 figure;
 gObj = view(gObj); <span class="comment">%#ok&lt;*NASGU&gt;</span>
+disp(<span class="string">'Number of links inside the site :'</span>)
+disp(sum(sum(G)))
+</pre><pre class="codeoutput">Number of links inside the site :
+   227
+
 </pre><img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_16.png" alt=""> <img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_17.png" alt=""> <img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_18.png" alt=""> <img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_19.png" alt=""> <h2>Computing the page rank for the fully arborescent site : home linking every where<a name="12"></a></h2><pre class="codeinput"><span class="comment">%pagerank;</span>
 pagerankbis(U,G);
 </pre><pre class="codeoutput">     page-rank  in  out  url
@@ -401,6 +421,8 @@ title('Graph layout')
 gObj = biograph(G,U);
 figure;
 gObj = view(gObj); %#ok<*NASGU>
+disp('Number of links inside the site :')
+disp(sum(sum(G)))
 
 %% Computing the page rank for the fully arborescent site : home linking every where
 %pagerank;
@@ -443,6 +465,8 @@ title('Graph layout')
 gObj = biograph(G,U);
 figure;
 gObj = view(gObj); %#ok<*NASGU>
+disp('Number of links inside the site :')
+disp(sum(sum(G)))
 
 %% Computing the page rank for the fully arborescent site : home linking every where
 %pagerank;
@@ -485,6 +509,8 @@ title('Graph layout')
 gObj = biograph(G,U);
 figure;
 gObj = view(gObj); %#ok<*NASGU>
+disp('Number of links inside the site :')
+disp(sum(sum(G)))
 
 %% Computing the page rank for the siloing with reciprocating links
 %pagerank;
@@ -527,6 +553,8 @@ title('Graph layout')
 gObj = biograph(G,U);
 figure;
 gObj = view(gObj); %#ok<*NASGU>
+disp('Number of links inside the site :')
+disp(sum(sum(G)))
 
 %% Computing the page rank for the fully arborescent site : home linking every where
 %pagerank;
