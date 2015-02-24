@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>page_rank_configuration_testing</title><meta name="generator" content="MATLAB 8.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-02-16"><meta name="DC.source" content="page_rank_configuration_testing.m"><style type="text/css">
+      --><title>page_rank_configuration_testing</title><meta name="generator" content="MATLAB 8.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-02-23"><meta name="DC.source" content="page_rank_configuration_testing.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Fully arborescent site</a></li><li><a href="#2">Visualizing the adjacency matrix</a></li><li><a href="#3">Computing the page rank</a></li><li><a href="#4">Another configuration : siloing up to the home</a></li><li><a href="#5">Visualizing the adjacency matrix</a></li><li><a href="#6">Computing the page rank</a></li><li><a href="#7">Another configuration : links every where up to the home : no siloing</a></li><li><a href="#8">Visualizing the adjacency matrix</a></li><li><a href="#9">Computing the page rank</a></li><li><a href="#10">Another configuration : siloing up to the n-2</a></li><li><a href="#11">Visualizing the adjacency matrix</a></li><li><a href="#12">Computing the page rank</a></li><li><a href="#13">Another configuration : links every where up to the n-2 : no siloing</a></li><li><a href="#14">Visualizing the adjacency matrix</a></li><li><a href="#15">Computing the page rank</a></li><li><a href="#16">Another configuration : siloing up to the n-1</a></li><li><a href="#17">Visualizing the adjacency matrix</a></li><li><a href="#18">Computing the page rank</a></li><li><a href="#19">Another configuration : links every where up to the n-1 : no siloing</a></li><li><a href="#20">Visualizing the adjacency matrix</a></li><li><a href="#21">Computing the page rank</a></li></ul></div><h2>Fully arborescent site<a name="1"></a></h2><pre class="codeinput">U={<span class="string">'home'</span>,<span class="string">'meta_liste_produit1'</span>,<span class="string">'meta_liste_produit2'</span>,<span class="string">'liste_produit1'</span>,<span class="string">'liste_produit2'</span>,<span class="string">'liste_produit3'</span>,<span class="string">'liste_produit4'</span>,<span class="string">'fiche_produit1'</span>,<span class="string">'fiche_produit2'</span>,<span class="string">'fiche_produit3'</span>,<span class="string">'fiche_produit4'</span>,<span class="string">'fiche_produit5'</span>,<span class="string">'fiche_produit6'</span>,<span class="string">'fiche_produit7'</span>,<span class="string">'fiche_produit8'</span>,<span class="string">'fiche_produit9'</span>,<span class="string">'fiche_produit10'</span>,<span class="string">'fiche_produit11'</span>,<span class="string">'fiche_produit12'</span>,<span class="string">'fiche_produit13'</span>,<span class="string">'fiche_produit14'</span>,<span class="string">'fiche_produit15'</span>,<span class="string">'fiche_produit16'</span>};
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Fully arborescent site</a></li><li><a href="#2">Visualizing the adjacency matrix</a></li><li><a href="#3">Computing the page rank</a></li><li><a href="#4">Another configuration : siloing up to the home</a></li><li><a href="#5">Visualizing the adjacency matrix</a></li><li><a href="#6">Graph visualization</a></li><li><a href="#7">Computing the page rank</a></li><li><a href="#8">Another configuration : links every where up to the home : no siloing</a></li><li><a href="#9">Visualizing the adjacency matrix</a></li><li><a href="#10">Computing the page rank</a></li><li><a href="#11">Another configuration : siloing up to the n-2</a></li><li><a href="#12">Visualizing the adjacency matrix</a></li><li><a href="#13">Computing the page rank</a></li><li><a href="#14">Another configuration : links every where up to the n-2 : no siloing</a></li><li><a href="#15">Visualizing the adjacency matrix</a></li><li><a href="#16">Computing the page rank</a></li><li><a href="#17">Another configuration : siloing up to the n-1</a></li><li><a href="#18">Visualizing the adjacency matrix</a></li><li><a href="#19">Computing the page rank</a></li><li><a href="#20">Another configuration : links every where up to the n-1 : no siloing</a></li><li><a href="#21">Visualizing the adjacency matrix</a></li><li><a href="#22">Computing the page rank</a></li></ul></div><h2>Fully arborescent site<a name="1"></a></h2><pre class="codeinput">U={<span class="string">'home'</span>,<span class="string">'meta_liste_produit1'</span>,<span class="string">'meta_liste_produit2'</span>,<span class="string">'liste_produit1'</span>,<span class="string">'liste_produit2'</span>,<span class="string">'liste_produit3'</span>,<span class="string">'liste_produit4'</span>,<span class="string">'fiche_produit1'</span>,<span class="string">'fiche_produit2'</span>,<span class="string">'fiche_produit3'</span>,<span class="string">'fiche_produit4'</span>,<span class="string">'fiche_produit5'</span>,<span class="string">'fiche_produit6'</span>,<span class="string">'fiche_produit7'</span>,<span class="string">'fiche_produit8'</span>,<span class="string">'fiche_produit9'</span>,<span class="string">'fiche_produit10'</span>,<span class="string">'fiche_produit11'</span>,<span class="string">'fiche_produit12'</span>,<span class="string">'fiche_produit13'</span>,<span class="string">'fiche_produit14'</span>,<span class="string">'fiche_produit15'</span>,<span class="string">'fiche_produit16'</span>};
 
 coordinates = [<span class="keyword">...</span>
     0,0;<span class="keyword">...</span>
@@ -125,32 +125,39 @@ title(<span class="string">'Visualizing the adjacency matrix'</span>)
 figure;
 gplot(G,coordinates)
 title(<span class="string">'Graph layout'</span>)
-</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_01.png" alt=""> <img vspace="5" hspace="5" src="page_rank_configuration_testing_02.png" alt=""> <h2>Computing the page rank<a name="3"></a></h2><pre class="codeinput">pagerank;
+figure;
+gObj = biograph(G,U)
+<span class="comment">% The |view| method lays out the graph and displays it in a figure.</span>
+gObj = view(gObj);
+</pre><pre class="codeoutput">Warning: Self connecting nodes are not allowed, ignoring the diagonal of CM. 
+Biograph object with 23 nodes and 22 edges.
+</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_01.png" alt=""> <img vspace="5" hspace="5" src="page_rank_configuration_testing_02.png" alt=""> <img vspace="5" hspace="5" src="page_rank_configuration_testing_03.png" alt=""> <img vspace="5" hspace="5" src="page_rank_configuration_testing_04.png" alt=""> <h2>Computing the page rank<a name="3"></a></h2><pre class="codeinput"><span class="comment">%pagerank;</span>
+pagerankbis(U,G);
 </pre><pre class="codeoutput">     page-rank  in  out  url
-   1   0.6703    3    1  home
-   2   0.0553    2    1  meta_liste_produit1
-   3   0.0553    2    1  meta_liste_produit2
-   4   0.0287    4    1  liste_produit1
-   5   0.0287    4    1  liste_produit2
-   6   0.0287    4    1  liste_produit3
-   7   0.0287    4    1  liste_produit4
-   8   0.0065    0    1  fiche_produit1
-   9   0.0065    0    1  fiche_produit2
-  10   0.0065    0    1  fiche_produit3
-  11   0.0065    0    1  fiche_produit4
-  12   0.0065    0    1  fiche_produit5
-  13   0.0065    0    1  fiche_produit6
-  14   0.0065    0    1  fiche_produit7
-  15   0.0065    0    1  fiche_produit8
-  16   0.0065    0    1  fiche_produit9
-  17   0.0065    0    1  fiche_produit10
-  18   0.0065    0    1  fiche_produit11
-  19   0.0065    0    1  fiche_produit12
-  20   0.0065    0    1  fiche_produit13
-  21   0.0065    0    1  fiche_produit14
-  22   0.0065    0    1  fiche_produit15
-  23   0.0065    0    1  fiche_produit16
-</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_03.png" alt=""> <h2>Another configuration : siloing up to the home<a name="4"></a></h2><pre class="codeinput">G=[<span class="keyword">...</span>
+   1   0.2337    2    0  home
+   2   0.1285    2    1  meta_liste_produit1
+   3   0.1285    2    1  meta_liste_produit2
+   4   0.0667    4    1  liste_produit1
+   5   0.0667    4    1  liste_produit2
+   6   0.0667    4    1  liste_produit3
+   7   0.0667    4    1  liste_produit4
+   8   0.0152    0    1  fiche_produit1
+   9   0.0152    0    1  fiche_produit2
+  10   0.0152    0    1  fiche_produit3
+  11   0.0152    0    1  fiche_produit4
+  12   0.0152    0    1  fiche_produit5
+  13   0.0152    0    1  fiche_produit6
+  14   0.0152    0    1  fiche_produit7
+  15   0.0152    0    1  fiche_produit8
+  16   0.0152    0    1  fiche_produit9
+  17   0.0152    0    1  fiche_produit10
+  18   0.0152    0    1  fiche_produit11
+  19   0.0152    0    1  fiche_produit12
+  20   0.0152    0    1  fiche_produit13
+  21   0.0152    0    1  fiche_produit14
+  22   0.0152    0    1  fiche_produit15
+  23   0.0152    0    1  fiche_produit16
+</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_05.png" alt=""> <h2>Another configuration : siloing up to the home<a name="4"></a></h2><pre class="codeinput">G=[<span class="keyword">...</span>
     1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
     1 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
     1 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
@@ -178,34 +185,42 @@ title(<span class="string">'Graph layout'</span>)
 </pre><h2>Visualizing the adjacency matrix<a name="5"></a></h2><pre class="codeinput">figure;
 spy(G)
 title(<span class="string">'Visualizing the adjacency matrix'</span>)
+figure;
 gplot(G,coordinates)
 title(<span class="string">'Graph layout'</span>)
-</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_04.png" alt=""> <h2>Computing the page rank<a name="6"></a></h2><pre class="codeinput">pagerank;
+figure;
+gObj = biograph(G,U)
+<span class="comment">% The |view| method lays out the graph and displays it in a figure.</span>
+gObj = view(gObj);
+</pre><pre class="codeoutput">Warning: Self connecting nodes are not allowed, ignoring the diagonal of CM. 
+Biograph object with 23 nodes and 80 edges.
+</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_06.png" alt=""> <img vspace="5" hspace="5" src="page_rank_configuration_testing_07.png" alt=""> <img vspace="5" hspace="5" src="page_rank_configuration_testing_08.png" alt=""> <img vspace="5" hspace="5" src="page_rank_configuration_testing_09.png" alt=""> <h2>Graph visualization<a name="6"></a></h2><p>This gives some indication of the number of edges of the graph and also shows that the graph is not symmetric and, hence, is a directed graph. However, it is difficult to visualize what is going on. The <tt>biograph</tt> object is another way of representing a graph.</p><h2>Computing the page rank<a name="7"></a></h2><pre class="codeinput"><span class="comment">%pagerank;</span>
+pagerankbis(U,G);
 </pre><pre class="codeoutput">     page-rank  in  out  url
-   4   0.1088    6    5  liste_produit1
-   5   0.1088    6    5  liste_produit2
-   6   0.1088    6    5  liste_produit3
-   7   0.1088    6    5  liste_produit4
+   5   0.1089    6    5  liste_produit2
+   4   0.1089    6    5  liste_produit1
+   7   0.1089    6    5  liste_produit4
+   6   0.1089    6    5  liste_produit3
    2   0.0440    3   11  meta_liste_produit1
    3   0.0440    3   11  meta_liste_produit2
-   8   0.0289    3    1  fiche_produit1
    9   0.0289    3    1  fiche_produit2
+  15   0.0289    3    1  fiche_produit8
+   8   0.0289    3    1  fiche_produit1
   10   0.0289    3    1  fiche_produit3
   11   0.0289    3    1  fiche_produit4
   12   0.0289    3    1  fiche_produit5
   13   0.0289    3    1  fiche_produit6
   14   0.0289    3    1  fiche_produit7
-  15   0.0289    3    1  fiche_produit8
-  16   0.0289    3    1  fiche_produit9
-  17   0.0289    3    1  fiche_produit10
-  18   0.0289    3    1  fiche_produit11
   19   0.0289    3    1  fiche_produit12
   20   0.0289    3    1  fiche_produit13
   21   0.0289    3    1  fiche_produit14
   22   0.0289    3    1  fiche_produit15
   23   0.0289    3    1  fiche_produit16
-   1   0.0138    3   23  home
-</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_05.png" alt=""> <h2>Another configuration : links every where up to the home : no siloing<a name="7"></a></h2><pre class="codeinput">G=[<span class="keyword">...</span>
+  16   0.0289    3    1  fiche_produit9
+  17   0.0289    3    1  fiche_produit10
+  18   0.0289    3    1  fiche_produit11
+   1   0.0133    2   22  home
+</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_10.png" alt=""> <h2>Another configuration : links every where up to the home : no siloing<a name="8"></a></h2><pre class="codeinput">G=[<span class="keyword">...</span>
     1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
     1 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
     1 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
@@ -230,37 +245,44 @@ title(<span class="string">'Graph layout'</span>)
     1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
     1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
     ];
-</pre><h2>Visualizing the adjacency matrix<a name="8"></a></h2><pre class="codeinput">figure;
+</pre><h2>Visualizing the adjacency matrix<a name="9"></a></h2><pre class="codeinput">figure;
 spy(G)
 title(<span class="string">'Visualizing the adjacency matrix'</span>)
 gplot(G,coordinates)
 title(<span class="string">'Graph layout'</span>)
-</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_06.png" alt=""> <h2>Computing the page rank<a name="9"></a></h2><pre class="codeinput">pagerank;
+figure;
+gObj = biograph(G,U)
+<span class="comment">% The |view| method lays out the graph and displays it in a figure.</span>
+gObj = view(gObj);
+</pre><pre class="codeoutput">Warning: Self connecting nodes are not allowed, ignoring the diagonal of CM. 
+Biograph object with 23 nodes and 148 edges.
+</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_11.png" alt=""> <img vspace="5" hspace="5" src="page_rank_configuration_testing_12.png" alt=""> <img vspace="5" hspace="5" src="page_rank_configuration_testing_13.png" alt=""> <h2>Computing the page rank<a name="10"></a></h2><pre class="codeinput"><span class="comment">%pagerank;</span>
+pagerankbis(U,G);
 </pre><pre class="codeoutput">     page-rank  in  out  url
+   7   0.1142    7   17  liste_produit4
    4   0.1142    7   17  liste_produit1
    5   0.1142    7   17  liste_produit2
    6   0.1142    7   17  liste_produit3
-   7   0.1142    7   17  liste_produit4
+  10   0.0312    7    1  fiche_produit3
    8   0.0312    7    1  fiche_produit1
    9   0.0312    7    1  fiche_produit2
-  10   0.0312    7    1  fiche_produit3
   11   0.0312    7    1  fiche_produit4
   12   0.0312    7    1  fiche_produit5
-  13   0.0312    7    1  fiche_produit6
   14   0.0312    7    1  fiche_produit7
   15   0.0312    7    1  fiche_produit8
-  16   0.0312    7    1  fiche_produit9
   17   0.0312    7    1  fiche_produit10
   18   0.0312    7    1  fiche_produit11
-  19   0.0312    7    1  fiche_produit12
   20   0.0312    7    1  fiche_produit13
   21   0.0312    7    1  fiche_produit14
   22   0.0312    7    1  fiche_produit15
+  13   0.0312    7    1  fiche_produit6
+  19   0.0312    7    1  fiche_produit12
   23   0.0312    7    1  fiche_produit16
+  16   0.0312    7    1  fiche_produit9
    2   0.0183    3   21  meta_liste_produit1
    3   0.0183    3   21  meta_liste_produit2
-   1   0.0083    3   23  home
-</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_07.png" alt=""> <h2>Another configuration : siloing up to the n-2<a name="10"></a></h2><pre class="codeinput">G=[<span class="keyword">...</span>
+   1   0.0080    2   22  home
+</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_14.png" alt=""> <h2>Another configuration : siloing up to the n-2<a name="11"></a></h2><pre class="codeinput">G=[<span class="keyword">...</span>
     1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
     1 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
     1 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
@@ -285,37 +307,44 @@ title(<span class="string">'Graph layout'</span>)
     0 0 1 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
     0 0 1 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
     ];
-</pre><h2>Visualizing the adjacency matrix<a name="11"></a></h2><pre class="codeinput">figure;
+</pre><h2>Visualizing the adjacency matrix<a name="12"></a></h2><pre class="codeinput">figure;
 spy(G)
 title(<span class="string">'Visualizing the adjacency matrix'</span>)
 gplot(G,coordinates)
 title(<span class="string">'Graph layout'</span>)
-</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_08.png" alt=""> <h2>Computing the page rank<a name="12"></a></h2><pre class="codeinput">pagerank;
+figure;
+gObj = biograph(G,U)
+<span class="comment">% The |view| method lays out the graph and displays it in a figure.</span>
+gObj = view(gObj);
+</pre><pre class="codeoutput">Warning: Self connecting nodes are not allowed, ignoring the diagonal of CM. 
+Biograph object with 23 nodes and 64 edges.
+</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_15.png" alt=""> <img vspace="5" hspace="5" src="page_rank_configuration_testing_16.png" alt=""> <img vspace="5" hspace="5" src="page_rank_configuration_testing_17.png" alt=""> <h2>Computing the page rank<a name="13"></a></h2><pre class="codeinput"><span class="comment">%pagerank;</span>
+pagerankbis(U,G);
 </pre><pre class="codeoutput">     page-rank  in  out  url
-   4   0.1090    6    5  liste_produit1
-   5   0.1090    6    5  liste_produit2
-   6   0.1090    6    5  liste_produit3
-   7   0.1090    6    5  liste_produit4
-   2   0.0455    3   11  meta_liste_produit1
-   3   0.0455    3   11  meta_liste_produit2
-   8   0.0286    2    1  fiche_produit1
-   9   0.0286    2    1  fiche_produit2
-  10   0.0286    2    1  fiche_produit3
-  11   0.0286    2    1  fiche_produit4
-  12   0.0286    2    1  fiche_produit5
-  13   0.0286    2    1  fiche_produit6
-  14   0.0286    2    1  fiche_produit7
+   6   0.1093    6    5  liste_produit3
+   7   0.1093    6    5  liste_produit4
+   5   0.1093    6    5  liste_produit2
+   4   0.1093    6    5  liste_produit1
+   3   0.0456    3   11  meta_liste_produit2
+   2   0.0456    3   11  meta_liste_produit1
   15   0.0286    2    1  fiche_produit8
-  16   0.0286    2    1  fiche_produit9
-  17   0.0286    2    1  fiche_produit10
-  18   0.0286    2    1  fiche_produit11
-  19   0.0286    2    1  fiche_produit12
+  12   0.0286    2    1  fiche_produit5
   20   0.0286    2    1  fiche_produit13
   21   0.0286    2    1  fiche_produit14
   22   0.0286    2    1  fiche_produit15
   23   0.0286    2    1  fiche_produit16
-   1   0.0154    3    7  home
-</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_09.png" alt=""> <h2>Another configuration : links every where up to the n-2 : no siloing<a name="13"></a></h2><pre class="codeinput">G=[<span class="keyword">...</span>
+  13   0.0286    2    1  fiche_produit6
+  14   0.0286    2    1  fiche_produit7
+  17   0.0286    2    1  fiche_produit10
+  18   0.0286    2    1  fiche_produit11
+  19   0.0286    2    1  fiche_produit12
+  16   0.0286    2    1  fiche_produit9
+   9   0.0286    2    1  fiche_produit2
+  10   0.0286    2    1  fiche_produit3
+   8   0.0286    2    1  fiche_produit1
+  11   0.0286    2    1  fiche_produit4
+   1   0.0136    2    6  home
+</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_18.png" alt=""> <h2>Another configuration : links every where up to the n-2 : no siloing<a name="14"></a></h2><pre class="codeinput">G=[<span class="keyword">...</span>
     1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
     1 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
     1 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
@@ -340,37 +369,44 @@ title(<span class="string">'Graph layout'</span>)
     0 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
     0 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
     ];
-</pre><h2>Visualizing the adjacency matrix<a name="14"></a></h2><pre class="codeinput">figure;
+</pre><h2>Visualizing the adjacency matrix<a name="15"></a></h2><pre class="codeinput">figure;
 spy(G)
 title(<span class="string">'Visualizing the adjacency matrix'</span>)
 gplot(G,coordinates)
 title(<span class="string">'Graph layout'</span>)
-</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_10.png" alt=""> <h2>Computing the page rank<a name="15"></a></h2><pre class="codeinput">pagerank;
+figure;
+gObj = biograph(G,U)
+<span class="comment">% The |view| method lays out the graph and displays it in a figure.</span>
+gObj = view(gObj);
+</pre><pre class="codeoutput">Warning: Self connecting nodes are not allowed, ignoring the diagonal of CM. 
+Biograph object with 23 nodes and 132 edges.
+</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_19.png" alt=""> <img vspace="5" hspace="5" src="page_rank_configuration_testing_20.png" alt=""> <img vspace="5" hspace="5" src="page_rank_configuration_testing_21.png" alt=""> <h2>Computing the page rank<a name="16"></a></h2><pre class="codeinput"><span class="comment">%pagerank;</span>
+pagerankbis(U,G);
 </pre><pre class="codeoutput">     page-rank  in  out  url
-   4   0.1143    7   17  liste_produit1
-   5   0.1143    7   17  liste_produit2
-   6   0.1143    7   17  liste_produit3
-   7   0.1143    7   17  liste_produit4
-   8   0.0310    6    1  fiche_produit1
+   7   0.1145    7   17  liste_produit4
+   5   0.1145    7   17  liste_produit2
+   4   0.1145    7   17  liste_produit1
+   6   0.1145    7   17  liste_produit3
    9   0.0310    6    1  fiche_produit2
-  10   0.0310    6    1  fiche_produit3
+   8   0.0310    6    1  fiche_produit1
   11   0.0310    6    1  fiche_produit4
   12   0.0310    6    1  fiche_produit5
-  13   0.0310    6    1  fiche_produit6
-  14   0.0310    6    1  fiche_produit7
   15   0.0310    6    1  fiche_produit8
   16   0.0310    6    1  fiche_produit9
   17   0.0310    6    1  fiche_produit10
-  18   0.0310    6    1  fiche_produit11
-  19   0.0310    6    1  fiche_produit12
   20   0.0310    6    1  fiche_produit13
   21   0.0310    6    1  fiche_produit14
   22   0.0310    6    1  fiche_produit15
+  10   0.0310    6    1  fiche_produit3
+  13   0.0310    6    1  fiche_produit6
+  14   0.0310    6    1  fiche_produit7
+  18   0.0310    6    1  fiche_produit11
+  19   0.0310    6    1  fiche_produit12
   23   0.0310    6    1  fiche_produit16
    2   0.0191    3   21  meta_liste_produit1
    3   0.0191    3   21  meta_liste_produit2
-   1   0.0092    3    7  home
-</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_11.png" alt=""> <h2>Another configuration : siloing up to the n-1<a name="16"></a></h2><pre class="codeinput">G=[<span class="keyword">...</span>
+   1   0.0081    2    6  home
+</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_22.png" alt=""> <h2>Another configuration : siloing up to the n-1<a name="17"></a></h2><pre class="codeinput">G=[<span class="keyword">...</span>
     1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
     1 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
     1 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
@@ -395,37 +431,44 @@ title(<span class="string">'Graph layout'</span>)
     0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
     0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
     ];
-</pre><h2>Visualizing the adjacency matrix<a name="17"></a></h2><pre class="codeinput">figure;
+</pre><h2>Visualizing the adjacency matrix<a name="18"></a></h2><pre class="codeinput">figure;
 spy(G)
 title(<span class="string">'Visualizing the adjacency matrix'</span>)
 gplot(G,coordinates)
 title(<span class="string">'Graph layout'</span>)
-</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_12.png" alt=""> <h2>Computing the page rank<a name="18"></a></h2><pre class="codeinput">pagerank;
+figure;
+gObj = biograph(G,U)
+<span class="comment">% The |view| method lays out the graph and displays it in a figure.</span>
+gObj = view(gObj);
+</pre><pre class="codeoutput">Warning: Self connecting nodes are not allowed, ignoring the diagonal of CM. 
+Biograph object with 23 nodes and 44 edges.
+</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_23.png" alt=""> <img vspace="5" hspace="5" src="page_rank_configuration_testing_24.png" alt=""> <img vspace="5" hspace="5" src="page_rank_configuration_testing_25.png" alt=""> <h2>Computing the page rank<a name="19"></a></h2><pre class="codeinput"><span class="comment">%pagerank;</span>
+pagerankbis(U,G);
 </pre><pre class="codeoutput">     page-rank  in  out  url
-   4   0.1075    5    5  liste_produit1
-   5   0.1075    5    5  liste_produit2
-   6   0.1075    5    5  liste_produit3
-   7   0.1075    5    5  liste_produit4
-   2   0.0589    3    3  meta_liste_produit1
-   3   0.0589    3    3  meta_liste_produit2
-   1   0.0556    3    3  home
-   8   0.0248    1    1  fiche_produit1
-   9   0.0248    1    1  fiche_produit2
-  10   0.0248    1    1  fiche_produit3
-  11   0.0248    1    1  fiche_produit4
-  12   0.0248    1    1  fiche_produit5
-  13   0.0248    1    1  fiche_produit6
-  14   0.0248    1    1  fiche_produit7
-  15   0.0248    1    1  fiche_produit8
-  16   0.0248    1    1  fiche_produit9
-  17   0.0248    1    1  fiche_produit10
-  18   0.0248    1    1  fiche_produit11
-  19   0.0248    1    1  fiche_produit12
-  20   0.0248    1    1  fiche_produit13
-  21   0.0248    1    1  fiche_produit14
-  22   0.0248    1    1  fiche_produit15
-  23   0.0248    1    1  fiche_produit16
-</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_13.png" alt=""> <h2>Another configuration : links every where up to the n-1 : no siloing<a name="19"></a></h2><pre class="codeinput">G=[<span class="keyword">...</span>
+   4   0.1090    5    5  liste_produit1
+   6   0.1090    5    5  liste_produit3
+   5   0.1090    5    5  liste_produit2
+   7   0.1090    5    5  liste_produit4
+   2   0.0611    3    3  meta_liste_produit1
+   3   0.0611    3    3  meta_liste_produit2
+   1   0.0411    2    2  home
+  11   0.0251    1    1  fiche_produit4
+   9   0.0251    1    1  fiche_produit2
+  10   0.0251    1    1  fiche_produit3
+   8   0.0251    1    1  fiche_produit1
+  12   0.0251    1    1  fiche_produit5
+  13   0.0251    1    1  fiche_produit6
+  23   0.0251    1    1  fiche_produit16
+  15   0.0251    1    1  fiche_produit8
+  17   0.0251    1    1  fiche_produit10
+  18   0.0251    1    1  fiche_produit11
+  19   0.0251    1    1  fiche_produit12
+  22   0.0251    1    1  fiche_produit15
+  14   0.0251    1    1  fiche_produit7
+  20   0.0251    1    1  fiche_produit13
+  21   0.0251    1    1  fiche_produit14
+  16   0.0251    1    1  fiche_produit9
+</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_26.png" alt=""> <h2>Another configuration : links every where up to the n-1 : no siloing<a name="20"></a></h2><pre class="codeinput">G=[<span class="keyword">...</span>
     1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
     1 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
     1 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
@@ -450,37 +493,44 @@ title(<span class="string">'Graph layout'</span>)
     0 0 0 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
     0 0 0 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;<span class="keyword">...</span>
     ];
-</pre><h2>Visualizing the adjacency matrix<a name="20"></a></h2><pre class="codeinput">figure;
+</pre><h2>Visualizing the adjacency matrix<a name="21"></a></h2><pre class="codeinput">figure;
 spy(G)
 title(<span class="string">'Visualizing the adjacency matrix'</span>)
 gplot(G,coordinates)
 title(<span class="string">'Graph layout'</span>)
-</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_14.png" alt=""> <h2>Computing the page rank<a name="21"></a></h2><pre class="codeinput">pagerank;
+figure;
+gObj = biograph(G,U)
+<span class="comment">% The |view| method lays out the graph and displays it in a figure.</span>
+gObj = view(gObj);
+</pre><pre class="codeoutput">Warning: Self connecting nodes are not allowed, ignoring the diagonal of CM. 
+Biograph object with 23 nodes and 96 edges.
+</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_27.png" alt=""> <img vspace="5" hspace="5" src="page_rank_configuration_testing_28.png" alt=""> <img vspace="5" hspace="5" src="page_rank_configuration_testing_29.png" alt=""> <h2>Computing the page rank<a name="22"></a></h2><pre class="codeinput"><span class="comment">%pagerank;</span>
+pagerankbis(U,G);
 </pre><pre class="codeoutput">     page-rank  in  out  url
-   4   0.1149    6   17  liste_produit1
-   5   0.1149    6   17  liste_produit2
-   6   0.1149    6   17  liste_produit3
-   7   0.1149    6   17  liste_produit4
-   8   0.0295    4    1  fiche_produit1
-   9   0.0295    4    1  fiche_produit2
-  10   0.0295    4    1  fiche_produit3
-  11   0.0295    4    1  fiche_produit4
-  12   0.0295    4    1  fiche_produit5
-  13   0.0295    4    1  fiche_produit6
-  14   0.0295    4    1  fiche_produit7
-  15   0.0295    4    1  fiche_produit8
-  16   0.0295    4    1  fiche_produit9
-  17   0.0295    4    1  fiche_produit10
-  18   0.0295    4    1  fiche_produit11
-  19   0.0295    4    1  fiche_produit12
-  20   0.0295    4    1  fiche_produit13
-  21   0.0295    4    1  fiche_produit14
-  22   0.0295    4    1  fiche_produit15
-  23   0.0295    4    1  fiche_produit16
-   2   0.0238    3    5  meta_liste_produit1
-   3   0.0238    3    5  meta_liste_produit2
-   1   0.0204    3    3  home
-</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_15.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a><br></p></div><!--
+   6   0.1156    6   17  liste_produit3
+   5   0.1156    6   17  liste_produit2
+   4   0.1156    6   17  liste_produit1
+   7   0.1156    6   17  liste_produit4
+  10   0.0296    4    1  fiche_produit3
+  12   0.0296    4    1  fiche_produit5
+  15   0.0296    4    1  fiche_produit8
+  13   0.0296    4    1  fiche_produit6
+  14   0.0296    4    1  fiche_produit7
+  16   0.0296    4    1  fiche_produit9
+  17   0.0296    4    1  fiche_produit10
+  19   0.0296    4    1  fiche_produit12
+  20   0.0296    4    1  fiche_produit13
+  23   0.0296    4    1  fiche_produit16
+   8   0.0296    4    1  fiche_produit1
+   9   0.0296    4    1  fiche_produit2
+  11   0.0296    4    1  fiche_produit4
+  18   0.0296    4    1  fiche_produit11
+  21   0.0296    4    1  fiche_produit14
+  22   0.0296    4    1  fiche_produit15
+   2   0.0244    3    5  meta_liste_produit1
+   3   0.0244    3    5  meta_liste_produit2
+   1   0.0148    2    2  home
+</pre><img vspace="5" hspace="5" src="page_rank_configuration_testing_30.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Fully arborescent site
 U={'home','meta_liste_produit1','meta_liste_produit2','liste_produit1','liste_produit2','liste_produit3','liste_produit4','fiche_produit1','fiche_produit2','fiche_produit3','fiche_produit4','fiche_produit5','fiche_produit6','fiche_produit7','fiche_produit8','fiche_produit9','fiche_produit10','fiche_produit11','fiche_produit12','fiche_produit13','fiche_produit14','fiche_produit15','fiche_produit16'};
@@ -544,9 +594,15 @@ title('Visualizing the adjacency matrix')
 figure;
 gplot(G,coordinates)
 title('Graph layout')
+figure;
+gObj = biograph(G,U)
+% The |view| method lays out the graph and displays it in a figure. 
+gObj = view(gObj);
+
 
 %% Computing the page rank
-pagerank;
+%pagerank;
+pagerankbis(U,G);
 
 %% Another configuration : siloing up to the home
 G=[...
@@ -579,11 +635,24 @@ G=[...
 figure;
 spy(G)
 title('Visualizing the adjacency matrix')
+figure;
 gplot(G,coordinates)
 title('Graph layout')
+figure;
+gObj = biograph(G,U)
+% The |view| method lays out the graph and displays it in a figure. 
+gObj = view(gObj);
+
+%% Graph visualization
+% This gives some indication of the number of edges of the graph and also
+% shows that the graph is not symmetric and, hence, is a directed graph.
+% However, it is difficult to visualize what is going on. The |biograph|
+% object is another way of representing a graph.
+
 
 %% Computing the page rank
-pagerank;
+%pagerank;
+pagerankbis(U,G);
 
 %% Another configuration : links every where up to the home : no siloing
 G=[...
@@ -618,9 +687,14 @@ spy(G)
 title('Visualizing the adjacency matrix')
 gplot(G,coordinates)
 title('Graph layout')
+figure;
+gObj = biograph(G,U)
+% The |view| method lays out the graph and displays it in a figure. 
+gObj = view(gObj);
 
 %% Computing the page rank
-pagerank;
+%pagerank;
+pagerankbis(U,G);
 
 %% Another configuration : siloing up to the n-2
 G=[...
@@ -655,9 +729,14 @@ spy(G)
 title('Visualizing the adjacency matrix')
 gplot(G,coordinates)
 title('Graph layout')
+figure;
+gObj = biograph(G,U)
+% The |view| method lays out the graph and displays it in a figure. 
+gObj = view(gObj);
 
 %% Computing the page rank
-pagerank;
+%pagerank;
+pagerankbis(U,G);
 
 %% Another configuration : links every where up to the n-2 : no siloing
 G=[...
@@ -692,9 +771,14 @@ spy(G)
 title('Visualizing the adjacency matrix')
 gplot(G,coordinates)
 title('Graph layout')
+figure;
+gObj = biograph(G,U)
+% The |view| method lays out the graph and displays it in a figure. 
+gObj = view(gObj);
 
 %% Computing the page rank
-pagerank;
+%pagerank;
+pagerankbis(U,G);
 
 %% Another configuration : siloing up to the n-1
 G=[...
@@ -729,9 +813,14 @@ spy(G)
 title('Visualizing the adjacency matrix')
 gplot(G,coordinates)
 title('Graph layout')
+figure;
+gObj = biograph(G,U)
+% The |view| method lays out the graph and displays it in a figure. 
+gObj = view(gObj);
 
 %% Computing the page rank
-pagerank;
+%pagerank;
+pagerankbis(U,G);
 
 %% Another configuration : links every where up to the n-1 : no siloing
 G=[...
@@ -766,8 +855,13 @@ spy(G)
 title('Visualizing the adjacency matrix')
 gplot(G,coordinates)
 title('Graph layout')
+figure;
+gObj = biograph(G,U)
+% The |view| method lays out the graph and displays it in a figure. 
+gObj = view(gObj);
 
 %% Computing the page rank
-pagerank;
+%pagerank;
+pagerankbis(U,G);
 ##### SOURCE END #####
 --></body></html>

@@ -1,5 +1,5 @@
 %  Program: googlePower.m
-%  
+%  Author: Tim Chartier
 %  Description:  
 %   This program find the PageRank for a network where the network is 
 %   created in the adjacency matrix G.  The program uses the Power Method. 

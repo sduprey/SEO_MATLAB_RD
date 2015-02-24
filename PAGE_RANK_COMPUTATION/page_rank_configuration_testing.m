@@ -60,9 +60,15 @@ title('Visualizing the adjacency matrix')
 figure;
 gplot(G,coordinates)
 title('Graph layout')
+figure;
+gObj = biograph(G,U)
+% The |view| method lays out the graph and displays it in a figure. 
+gObj = view(gObj);
+
 
 %% Computing the page rank
-pagerank;
+%pagerank;
+pagerankbis(U,G);
 
 %% Another configuration : siloing up to the home
 G=[...
@@ -95,11 +101,24 @@ G=[...
 figure;
 spy(G)
 title('Visualizing the adjacency matrix')
+figure;
 gplot(G,coordinates)
 title('Graph layout')
+figure;
+gObj = biograph(G,U)
+% The |view| method lays out the graph and displays it in a figure. 
+gObj = view(gObj);
+
+%% Graph visualization
+% This gives some indication of the number of edges of the graph and also
+% shows that the graph is not symmetric and, hence, is a directed graph.
+% However, it is difficult to visualize what is going on. The |biograph|
+% object is another way of representing a graph.
+
 
 %% Computing the page rank
-pagerank;
+%pagerank;
+pagerankbis(U,G);
 
 %% Another configuration : links every where up to the home : no siloing
 G=[...
@@ -134,9 +153,14 @@ spy(G)
 title('Visualizing the adjacency matrix')
 gplot(G,coordinates)
 title('Graph layout')
+figure;
+gObj = biograph(G,U)
+% The |view| method lays out the graph and displays it in a figure. 
+gObj = view(gObj);
 
 %% Computing the page rank
-pagerank;
+%pagerank;
+pagerankbis(U,G);
 
 %% Another configuration : siloing up to the n-2
 G=[...
@@ -171,9 +195,14 @@ spy(G)
 title('Visualizing the adjacency matrix')
 gplot(G,coordinates)
 title('Graph layout')
+figure;
+gObj = biograph(G,U)
+% The |view| method lays out the graph and displays it in a figure. 
+gObj = view(gObj);
 
 %% Computing the page rank
-pagerank;
+%pagerank;
+pagerankbis(U,G);
 
 %% Another configuration : links every where up to the n-2 : no siloing
 G=[...
@@ -208,9 +237,14 @@ spy(G)
 title('Visualizing the adjacency matrix')
 gplot(G,coordinates)
 title('Graph layout')
+figure;
+gObj = biograph(G,U)
+% The |view| method lays out the graph and displays it in a figure. 
+gObj = view(gObj);
 
 %% Computing the page rank
-pagerank;
+%pagerank;
+pagerankbis(U,G);
 
 %% Another configuration : siloing up to the n-1
 G=[...
@@ -245,9 +279,14 @@ spy(G)
 title('Visualizing the adjacency matrix')
 gplot(G,coordinates)
 title('Graph layout')
+figure;
+gObj = biograph(G,U)
+% The |view| method lays out the graph and displays it in a figure. 
+gObj = view(gObj);
 
 %% Computing the page rank
-pagerank;
+%pagerank;
+pagerankbis(U,G);
 
 %% Another configuration : links every where up to the n-1 : no siloing
 G=[...
@@ -282,6 +321,11 @@ spy(G)
 title('Visualizing the adjacency matrix')
 gplot(G,coordinates)
 title('Graph layout')
+figure;
+gObj = biograph(G,U)
+% The |view| method lays out the graph and displays it in a figure. 
+gObj = view(gObj);
 
 %% Computing the page rank
-pagerank;
+%pagerank;
+pagerankbis(U,G);

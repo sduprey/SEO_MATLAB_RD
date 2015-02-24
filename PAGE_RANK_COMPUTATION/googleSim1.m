@@ -1,4 +1,5 @@
 %  Program: googleSim1.m
+%  Author: Tim Chartier
 %  Description:  
 %   This program find the PageRank for a network where the network is 
 %   created in the adjacency matrix G.  
