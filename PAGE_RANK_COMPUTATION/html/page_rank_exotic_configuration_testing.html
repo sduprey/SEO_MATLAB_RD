@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>page_rank_exotic_configuration_testing</title><meta name="generator" content="MATLAB 8.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-02-24"><meta name="DC.source" content="page_rank_exotic_configuration_testing.m"><style type="text/css">
+      --><title>page_rank_exotic_configuration_testing</title><meta name="generator" content="MATLAB 8.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-02-25"><meta name="DC.source" content="page_rank_exotic_configuration_testing.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,6 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
   </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Fully arborescent site : home linking every where : no siloing</a></li><li><a href="#2">Visualizing the adjacency matrix and the directed graph</a></li><li><a href="#3">Computing the page rank for the fully arborescent site : home linking every where</a></li><li><a href="#4">Another configuration : siloing up to the home : link within branch only</a></li><li><a href="#5">Visualizing the adjacency matrix and the directed graph</a></li><li><a href="#6">Computing the page rank for the fully arborescent site : home linking every where</a></li><li><a href="#7">Another configuration : siloing with reciprocating links</a></li><li><a href="#8">Visualizing the adjacency matrix and the directed graph</a></li><li><a href="#9">Computing the page rank for the siloing with reciprocating links</a></li><li><a href="#10">Another configuration : linking every where with reciprocating links</a></li><li><a href="#11">Visualizing the adjacency matrix and the directed graph</a></li><li><a href="#12">Computing the page rank for the fully arborescent site : home linking every where</a></li></ul></div><h2>Fully arborescent site : home linking every where : no siloing<a name="1"></a></h2><pre class="codeinput">warning(<span class="string">'OFF'</span>); <span class="comment">%#ok&lt;*WNOFF&gt;</span>
+rng(<span class="string">'default'</span>);
 U={<span class="string">'home'</span>,<span class="string">'meta_liste_produit1'</span>,<span class="string">'meta_liste_produit2'</span>,<span class="string">'liste_produit1'</span>,<span class="string">'liste_produit2'</span>,<span class="string">'liste_produit3'</span>,<span class="string">'liste_produit4'</span>,<span class="string">'fiche_produit1'</span>,<span class="string">'fiche_produit2'</span>,<span class="string">'fiche_produit3'</span>,<span class="string">'fiche_produit4'</span>,<span class="string">'fiche_produit5'</span>,<span class="string">'fiche_produit6'</span>,<span class="string">'fiche_produit7'</span>,<span class="string">'fiche_produit8'</span>,<span class="string">'fiche_produit9'</span>,<span class="string">'fiche_produit10'</span>,<span class="string">'fiche_produit11'</span>,<span class="string">'fiche_produit12'</span>,<span class="string">'fiche_produit13'</span>,<span class="string">'fiche_produit14'</span>,<span class="string">'fiche_produit15'</span>,<span class="string">'fiche_produit16'</span>};
 coordinates = [<span class="keyword">...</span>
     0,0;<span class="keyword">...</span>
@@ -134,7 +135,7 @@ disp(sum(sum(G)))
    101
 
 </pre><img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_01.png" alt=""> <img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_02.png" alt=""> <img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_03.png" alt=""> <img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_04.png" alt=""> <h2>Computing the page rank for the fully arborescent site : home linking every where<a name="3"></a></h2><pre class="codeinput"><span class="comment">%pagerank;</span>
-pagerankbis(U,G);
+pagerank_power(U,G);
 </pre><pre class="codeoutput">     page-rank  in  out  url
    1   0.3151   22    0  home
    2   0.1320   20    1  meta_liste_produit1
@@ -199,7 +200,7 @@ disp(sum(sum(G)))
     75
 
 </pre><img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_06.png" alt=""> <img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_07.png" alt=""> <img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_08.png" alt=""> <img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_09.png" alt=""> <h2>Computing the page rank for the fully arborescent site : home linking every where<a name="6"></a></h2><pre class="codeinput"><span class="comment">%pagerank;</span>
-pagerankbis(U,G);
+pagerank_power(U,G);
 </pre><pre class="codeoutput">     page-rank  in  out  url
    1   0.3221   22    0  home
    2   0.0920   10    1  meta_liste_produit1
@@ -264,7 +265,7 @@ disp(sum(sum(G)))
    133
 
 </pre><img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_11.png" alt=""> <img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_12.png" alt=""> <img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_13.png" alt=""> <img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_14.png" alt=""> <h2>Computing the page rank for the siloing with reciprocating links<a name="9"></a></h2><pre class="codeinput"><span class="comment">%pagerank;</span>
-pagerankbis(U,G);
+pagerank_power(U,G);
 </pre><pre class="codeoutput">     page-rank  in  out  url
    1   0.1483   22   22  home
    2   0.0772   11   11  meta_liste_produit1
@@ -329,7 +330,7 @@ disp(sum(sum(G)))
    227
 
 </pre><img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_16.png" alt=""> <img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_17.png" alt=""> <img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_18.png" alt=""> <img vspace="5" hspace="5" src="page_rank_exotic_configuration_testing_19.png" alt=""> <h2>Computing the page rank for the fully arborescent site : home linking every where<a name="12"></a></h2><pre class="codeinput"><span class="comment">%pagerank;</span>
-pagerankbis(U,G);
+pagerank_power(U,G);
 </pre><pre class="codeoutput">     page-rank  in  out  url
    1   0.1010   22   22  home
    2   0.0973   21   21  meta_liste_produit1
@@ -358,6 +359,7 @@ pagerankbis(U,G);
 ##### SOURCE BEGIN #####
 %% Fully arborescent site : home linking every where : no siloing
 warning('OFF'); %#ok<*WNOFF>
+rng('default');
 U={'home','meta_liste_produit1','meta_liste_produit2','liste_produit1','liste_produit2','liste_produit3','liste_produit4','fiche_produit1','fiche_produit2','fiche_produit3','fiche_produit4','fiche_produit5','fiche_produit6','fiche_produit7','fiche_produit8','fiche_produit9','fiche_produit10','fiche_produit11','fiche_produit12','fiche_produit13','fiche_produit14','fiche_produit15','fiche_produit16'};
 coordinates = [...
     0,0;...
@@ -426,7 +428,7 @@ disp(sum(sum(G)))
 
 %% Computing the page rank for the fully arborescent site : home linking every where
 %pagerank;
-pagerankbis(U,G);
+pagerank_power(U,G);
 
 %% Another configuration : siloing up to the home : link within branch only
 G=[...
@@ -470,7 +472,7 @@ disp(sum(sum(G)))
 
 %% Computing the page rank for the fully arborescent site : home linking every where
 %pagerank;
-pagerankbis(U,G);
+pagerank_power(U,G);
 
 %% Another configuration : siloing with reciprocating links
 G=[...
@@ -514,7 +516,7 @@ disp(sum(sum(G)))
 
 %% Computing the page rank for the siloing with reciprocating links
 %pagerank;
-pagerankbis(U,G);
+pagerank_power(U,G);
 
 %% Another configuration : linking every where with reciprocating links
 G=[...
@@ -558,6 +560,6 @@ disp(sum(sum(G)))
 
 %% Computing the page rank for the fully arborescent site : home linking every where
 %pagerank;
-pagerankbis(U,G);
+pagerank_power(U,G);
 ##### SOURCE END #####
 --></body></html>
